@@ -1,1 +1,1 @@
-# ActsAsResourceful
+# ActsAsResource
