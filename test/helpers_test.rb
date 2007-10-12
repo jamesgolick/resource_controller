@@ -65,4 +65,59 @@ class HelpersTest < Test::Unit::TestCase
       assert_equal @collection, @controller.instance_variable_get("@posts")
     end
   end
+  
+  context "object params helper" do
+    setup do
+      @params.expects(:[]).with("post").returns(2)
+    end
+    
+    should "get params for object" do
+      assert_equal 2, @controller.object_params
+    end
+  end
+  
+  context "build object helper" do
+    setup do
+      Post.expects(:build).with("1").returns("a new post")
+    end
+    
+    should "build new object" do
+      assert_equal "a new post", @controller.build_object
+    end
+  end
+  
+  context "response_for" do
+    setup do
+      @options = ResourceController::ActionOptions.new
+      @options.response {|wants| wants.html}
+      @controller.expects(:respond_to).yields(mock(:html => ""))
+      @controller.stubs(:options_for).with(:create).returns( @options )
+    end
+
+    should "yield a wants object to the response block" do      
+      @controller.response_for(:create)
+    end
+  end
+  
+  context "get options for action" do
+    setup do
+      @action_options = {}
+      @action_options[:create] = ResourceController::FailableActionOptions.new
+      
+      PostsController.send :cattr_accessor, :action_options
+      PostsController.action_options = @action_options
+    end
+
+    should "get correct object for failure action" do
+      assert_equal @action_options[:create].fails, @controller.options_for(:create_fails)
+    end
+    
+    should "get correct object for successful action" do
+      assert_equal @action_options[:create].success, @controller.options_for(:create)
+    end
+    
+    should "get correct object for non-failable action" do
+      assert_equal @action_options[:index], @controller.options_for(:index)
+    end
+  end
 end
