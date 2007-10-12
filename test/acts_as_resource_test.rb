@@ -1,8 +1,9 @@
 require 'test/unit'
+require File.dirname(__FILE__)+'/../../../../config/environment.rb'
+require 'application'
 
 class ActsAsResourceTest < Test::Unit::TestCase
-  # Replace this with your real tests.
-  def test_this_plugin
-    flunk
+  should "Instantiate ResourceController" do
+    ResourceController.new
   end
 end
