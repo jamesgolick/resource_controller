@@ -18,37 +18,37 @@ class HelpersTest < Test::Unit::TestCase
   
   context "model helper" do
     should "return constant" do
-      assert_equal Post, @controller.model
+      assert_equal Post, @controller.send(:model)
     end
   end
   
   context "collection helper" do
     should "find all" do
-      assert_equal @collection, @controller.collection
+      assert_equal @collection, @controller.send(:collection)
     end
   end
   
   context "param helper" do
     should "return the correct param" do
-      assert_equal "1", @controller.param
+      assert_equal "1", @controller.send(:param)
     end
   end
   
   context "object helper" do    
     should "find the correct object" do
-      assert_equal @object, @controller.object
+      assert_equal @object, @controller.send(:object)
     end
   end
   
   context "model name helper" do
     should "default to returning the singular name of the controller" do
-      assert_equal "post", @controller.model_name
+      assert_equal "post", @controller.send(:model_name)
     end
   end
   
-  context "load collection" do
+  context "load object helper" do
     setup do
-      @controller.load_object
+      @controller.send(:load_object)
     end
       
     should "load object as instance variable" do
@@ -58,7 +58,7 @@ class HelpersTest < Test::Unit::TestCase
   
   context "load_collection helper" do
     setup do
-      @controller.load_collection
+      @controller.send(:load_collection)
     end
 
     should "load collection in to instance variable with plural model_name" do
@@ -72,7 +72,7 @@ class HelpersTest < Test::Unit::TestCase
     end
     
     should "get params for object" do
-      assert_equal 2, @controller.object_params
+      assert_equal 2, @controller.send(:object_params)
     end
   end
   
@@ -82,7 +82,7 @@ class HelpersTest < Test::Unit::TestCase
     end
     
     should "build new object" do
-      assert_equal "a new post", @controller.build_object
+      assert_equal "a new post", @controller.send(:build_object)
     end
   end
   
@@ -95,7 +95,7 @@ class HelpersTest < Test::Unit::TestCase
     end
 
     should "yield a wants object to the response block" do      
-      @controller.response_for(:create)
+      @controller.send :response_for, :create
     end
   end
   
@@ -107,7 +107,7 @@ class HelpersTest < Test::Unit::TestCase
     end
 
     should "grab the correct block for after create" do
-      @controller.after(:create)
+      @controller.send :after, :create
     end
   end
   
@@ -121,15 +121,15 @@ class HelpersTest < Test::Unit::TestCase
     end
 
     should "get correct object for failure action" do
-      assert_equal @action_options[:create].fails, @controller.options_for(:create_fails)
+      assert_equal @action_options[:create].fails, @controller.send(:options_for, :create_fails)
     end
     
     should "get correct object for successful action" do
-      assert_equal @action_options[:create].success, @controller.options_for(:create)
+      assert_equal @action_options[:create].success, @controller.send(:options_for, :create)
     end
     
     should "get correct object for non-failable action" do
-      assert_equal @action_options[:index], @controller.options_for(:index)
+      assert_equal @action_options[:index], @controller.send(:options_for, :index)
     end
   end
   
