@@ -21,9 +21,11 @@ module ResourceController
       before :create
       if object.save
         after :create
+        set_flash :create
         response_for :create
       else
         after :create_fails
+        set_flash :create_fails
         response_for :create_fails
       end
     end
@@ -33,9 +35,11 @@ module ResourceController
       before :update
       if object.update_attributes object_params
         after :update
+        set_flash :update
         response_for :update
       else
         after :update_fails
+        set_flash :update_fails
         response_for :update_fails
       end
     end
@@ -58,9 +62,11 @@ module ResourceController
       before :destroy
       if object.destroy
         after :destroy
+        set_flash :destroy
         response_for :destroy
       else
         after :destroy_fails
+        set_flash :destroy_fails
         response_for :destroy_fails
       end
     end
