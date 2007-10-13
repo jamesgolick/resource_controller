@@ -99,6 +99,18 @@ class HelpersTest < Test::Unit::TestCase
     end
   end
   
+  context "after" do
+    setup do
+      @options = ResourceController::FailableActionOptions.new
+      @options.success.after { }
+      @controller.stubs(:options_for).with(:create).returns( @options )
+    end
+
+    should "grab the correct block for after create" do
+      @controller.after(:create)
+    end
+  end
+  
   context "get options for action" do
     setup do
       @action_options = {}
@@ -120,4 +132,5 @@ class HelpersTest < Test::Unit::TestCase
       assert_equal @action_options[:index], @controller.options_for(:index)
     end
   end
+  
 end

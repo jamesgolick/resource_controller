@@ -42,6 +42,18 @@ module ResourceController
       end
     end
     
+    def after(action)
+      options_for(action).after.call
+    end
+    
+    def before(action)
+      action_options[action].before.call
+    end
+    
+    def set_flash(action)
+      flash[:notice] = options_for(action).flash
+    end
+    
     def options_for(action)
       action = "#{action}".split('_').map(&:to_sym)
       options = action_options[action.first]
