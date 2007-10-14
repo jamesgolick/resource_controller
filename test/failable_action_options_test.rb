@@ -22,7 +22,7 @@ class FailableActionOptionsTest < Test::Unit::TestCase
   end
   
   should "delegate flash to success" do
-    @create.flash = "Successfully created."
+    @create.flash "Successfully created."
     assert_equal "Successfully created.", @create.success.flash
   end
   

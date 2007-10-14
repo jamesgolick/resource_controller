@@ -7,7 +7,7 @@ class ActionOptionsTest < Test::Unit::TestCase
   end
   
   should "have attr accessor for flash" do
-    @create.flash = "Successfully created."
+    @create.flash "Successfully created."
     assert_equal "Successfully created.", @create.flash
   end
 

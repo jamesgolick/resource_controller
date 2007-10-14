@@ -2,14 +2,14 @@ module ResourceController
   class FailableActionOptions
     extend BlockAccessor
     
-    attr_accessor :success, :fails
+    scoping_reader :success, :fails
     block_accessor :before
     
     def initialize
-      self.success = ActionOptions.new
-      self.fails   = ActionOptions.new
+      @success = ActionOptions.new
+      @fails   = ActionOptions.new
     end
     
-    delegate :flash=, :after, :response, :to => :success
+    delegate :flash, :after, :response, :to => :success
   end
 end
