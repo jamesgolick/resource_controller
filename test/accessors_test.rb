@@ -1,11 +1,10 @@
 require File.dirname(__FILE__)+'/test_helper'
-require 'resource_controller/block_accessor'
-require 'attributes'
+require 'resource_controller/accessors'
 
-class BlockAccessorTest < Test::Unit::TestCase
+class AccessorsTest < Test::Unit::TestCase
   def setup
     PostsController.class_eval do
-      extend ResourceController::BlockAccessor
+      extend ResourceController::Accessors
     end
   end
   

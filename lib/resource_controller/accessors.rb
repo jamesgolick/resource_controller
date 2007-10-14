@@ -1,5 +1,5 @@
 module ResourceController
-  module BlockAccessor
+  module Accessors
     private
       def block_accessor(*accessors)
         accessors.each do |block_accessor|

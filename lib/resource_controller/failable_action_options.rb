@@ -1,6 +1,6 @@
 module ResourceController
   class FailableActionOptions
-    extend BlockAccessor
+    extend Accessors
     
     scoping_reader :success, :fails
     block_accessor :before
