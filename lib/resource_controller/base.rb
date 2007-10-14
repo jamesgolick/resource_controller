@@ -1,6 +1,6 @@
 module ResourceController
   class Base < ApplicationController
-    include Actions
-    include Helpers
+    include ResourceController::Helpers
+    include ResourceController::Actions
   end
 end

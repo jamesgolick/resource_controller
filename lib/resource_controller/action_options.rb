@@ -1,6 +1,6 @@
 module ResourceController
   class ActionOptions
-    extend Accessors
+    extend ResourceController::Accessors
     
     reader_writer :flash
     block_accessor :response, :after, :before
