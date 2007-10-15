@@ -34,14 +34,14 @@ module ResourceController
           flash "Successfully created!"
           wants.html { redirect_to send("#{model_name}_path", object) }
           
-          fails.wants.html { render :action => "new" }
+          failure.wants.html { render :action => "new" }
         end
         
         update do
           flash "Successfully updated!"
           wants.html { redirect_to send("#{model_name}_path", object) }
           
-          fails.wants.html { render :action => "edit" }
+          failure.wants.html { render :action => "edit" }
         end
         
         destroy do

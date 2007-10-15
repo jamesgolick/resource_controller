@@ -3,6 +3,8 @@ module ResourceController
     extend ResourceController::Accessors
     
     scoping_reader :success, :fails
+    alias_method :failure, :fails
+    
     block_accessor :before
     
     def initialize
