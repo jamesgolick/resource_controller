@@ -5,8 +5,8 @@
 ActiveRecord::Schema.define(:version => 1) do
 
   create_table "posts", :force => true do |t|
-    t.column "title", :string, :default => "'NULL'"
-    t.column "body",  :text,   :default => "'NULL'"
+    t.column "title", :string, :default => "'''''''NULL'''''''"
+    t.column "body",  :text,   :default => "'''''''NULL'''''''"
   end
 
 end

@@ -77,7 +77,7 @@ class HelpersTest < Test::Unit::TestCase
   
   context "build object helper" do
     setup do
-      Post.expects(:build).with("1").returns("a new post")
+      Post.expects(:new).with("1").returns("a new post")
     end
     
     should "build new object" do
