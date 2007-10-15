@@ -17,5 +17,10 @@ class ResponseCollectorTest < Test::Unit::TestCase
       assert Proc, @collector.responses[:js].class
       assert Proc, @collector.responses[:xml].class
     end
+    
+    should "clear responses with clear method" do
+      @collector.clear
+      assert @collector.responses.empty?
+    end
   end
 end

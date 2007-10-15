@@ -3,6 +3,8 @@ module ResourceController
     
     attr_reader :responses
     
+    delegate :clear, :to => :responses
+    
     def initialize
       @responses = {}
     end

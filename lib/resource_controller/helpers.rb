@@ -39,7 +39,9 @@ module ResourceController
     
       def response_for(action)
         respond_to do |wants|
-          options_for(action).response.call(wants)
+          options_for(action).response.each do |method, block|
+            wants.send(method) { instance_eval(&block) }
+          end
         end
       end
     

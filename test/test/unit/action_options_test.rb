@@ -11,13 +11,34 @@ class ActionOptionsTest < Test::Unit::TestCase
     assert_equal "Successfully created.", @create.flash
   end
 
-  %w(before after response).each do |accessor|
+  %w(before after).each do |accessor|
     should "have a block accessor for #{accessor}" do
       @create.send(accessor) do
         "return_something"
       end
     
       assert_equal "return_something", @create.send(accessor).call(nil)
+    end
+  end
+  
+  context "response yielding to response collector" do
+    setup do
+      @create.response do |wants|
+        wants.html
+      end
+    end
+
+    should "collect responses" do
+      assert_equal Proc, @create.response[:html].class
+    end
+    
+    should "clear the collector on a subsequent call" do
+      @create.response do |wants|
+        wants.js
+      end
+      
+      assert_nil @create.response[:html]
+      assert_equal Proc, @create.response[:js].class
     end
   end
 end

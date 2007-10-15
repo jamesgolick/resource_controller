@@ -36,10 +36,10 @@ class FailableActionOptionsTest < Test::Unit::TestCase
   
   should "delegate response to success" do
     @create.response do |wants|
-      "something"
+      wants.html
     end
     
-    assert_equal "something", @create.success.response.call(nil)
+    assert @create.success.response[:html]
   end  
   
 end
