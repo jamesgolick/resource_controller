@@ -9,9 +9,12 @@ class PostsControllerTest < Test::Unit::TestCase
     @controller = PostsController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
+    @post       = Post.find 1
   end
   
-  def test_something
-    
+  should_be_restful do |resource|
+    resource.formats = [:html]
+
+    resource.actions = :all
   end
 end

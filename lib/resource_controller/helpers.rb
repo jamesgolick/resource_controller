@@ -34,7 +34,7 @@ module ResourceController
       end
     
       def build_object
-        @object ||= model.build object_params
+        @object ||= model.new object_params
       end
     
       def response_for(action)

@@ -9,8 +9,8 @@ module ResourceController
       @responses = {}
     end
     
-    def method_missing(method_name, *args)
-      @responses[method_name] = args.first || lambda {}
+    def method_missing(method_name, &block)
+      @responses[method_name] = block || lambda {}
     end
   end
 end
