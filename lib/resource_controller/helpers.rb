@@ -44,11 +44,13 @@ module ResourceController
       end
     
       def after(action)
-        options_for(action).after.call
+        block = options_for(action).after
+        block.call unless block.nil?
       end
     
       def before(action)
-        action_options[action].before.call
+        block = action_options[action].before
+        block.call unless block.nil?
       end
     
       def set_flash(action)

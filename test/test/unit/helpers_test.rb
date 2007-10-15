@@ -103,10 +103,33 @@ class HelpersTest < Test::Unit::TestCase
       @options = ResourceController::FailableActionOptions.new
       @options.success.after { }
       @controller.stubs(:options_for).with(:create).returns( @options )
+      @nil_options = ResourceController::FailableActionOptions.new      
+      @controller.stubs(:options_for).with(:non_existent).returns(@nil_options)
     end
 
     should "grab the correct block for after create" do
       @controller.send :after, :create
+    end
+
+    should "not choke if there is no block" do
+      assert_nothing_raised do
+        @controller.send :after, :non_existent
+      end
+    end
+  end
+  
+  context "before" do
+    setup do
+      @action_options = {:non_existent => ResourceController::ActionOptions.new}
+
+      PostsController.send :cattr_accessor, :action_options
+      PostsController.action_options = @action_options
+    end
+    
+    should "not choke if there is no block" do
+      assert_nothing_raised do
+        @controller.send :before, :non_existent
+      end
     end
   end
   
