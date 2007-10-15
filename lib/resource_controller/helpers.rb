@@ -54,7 +54,7 @@ module ResourceController
       end
     
       def set_flash(action)
-        flash[:notice] = options_for(action).flash
+        flash[:notice] = options_for(action).flash if options_for(action).flash
       end
     
       def options_for(action)
