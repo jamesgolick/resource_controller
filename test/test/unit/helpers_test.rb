@@ -153,6 +153,11 @@ class HelpersTest < Test::Unit::TestCase
     should "get correct object for non-failable action" do
       assert_equal @action_options[:index], @controller.send(:options_for, :index)
     end
+    
+    should "understand new_action to mean new" do
+      @action_options[:new_action] = ResourceController::ActionOptions.new
+      assert_equal @action_options[:new_action], @controller.send(:options_for, :new_action)
+    end
   end
   
 end

@@ -58,7 +58,7 @@ module ResourceController
       end
     
       def options_for(action)
-        action = "#{action}".split('_').map(&:to_sym)
+        action = action == :new_action ? [action] : "#{action}".split('_').map(&:to_sym)
         options = action_options[action.first]
         options = options.send(action.last == :fails ? :fails : :success) if FAILABLE_ACTIONS.include? action.first
       

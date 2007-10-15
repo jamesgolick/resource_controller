@@ -47,8 +47,8 @@ module ResourceController
     def new
       build_object
       load_object
-      before :new
-      response_for :new
+      before :new_action
+      response_for :new_action
     end
 
     def edit
