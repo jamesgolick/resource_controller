@@ -40,6 +40,11 @@ class FailableActionOptionsTest < Test::Unit::TestCase
     end
     
     assert @create.success.response[:html]
-  end  
+  end
   
+  should "delegate wants to success" do
+    @create.wants.html
+    
+    assert @create.success.response[:html]
+  end
 end

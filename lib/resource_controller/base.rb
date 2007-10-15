@@ -22,55 +22,31 @@ module ResourceController
           self.action_options[action] = send action
         end
         
-        index.response do |wants|
-          wants.html
-        end
-        
-        edit.response do |wants|
-          wants.html
-        end
-        
-        new_action.response do |wants|
-          wants.html
-        end
+        index.wants.html
+        edit.wants.html
+        new_action.wants.html
         
         show do
-          response do |wants|
-            wants.html
-          end
+          wants.html
         end
         
         create do
           flash "Successfully created!"
-          response do |wants|
-            wants.html { redirect_to send("#{model_name}_path", object) }
-          end
+          wants.html { redirect_to send("#{model_name}_path", object) }
           
-          fails do
-            response do |wants|
-              wants.html { render :action => "new" }
-            end
-          end  
+          fails.wants.html { render :action => "new" }
         end
         
         update do
           flash "Successfully updated!"
-          response do |wants|
-            wants.html { redirect_to send("#{model_name}_path", object) }
-          end
+          wants.html { redirect_to send("#{model_name}_path", object) }
           
-          fails do
-            response do |wants|
-              wants.html { render :action => "edit" }
-            end
-          end
+          fails.wants.html { render :action => "edit" }
         end
         
         destroy do
           flash "Successfully removed!"
-          response do |wants|
-            wants.html { redirect_to send("#{model_name.pluralize}_path") }
-          end
+          wants.html { redirect_to send("#{model_name.pluralize}_path") }
         end
         
       end

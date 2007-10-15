@@ -10,6 +10,6 @@ module ResourceController
       @fails   = ActionOptions.new
     end
     
-    delegate :flash, :after, :response, :to => :success
+    delegate :flash, :after, :response, :wants, :to => :success
   end
 end

@@ -40,5 +40,11 @@ class ActionOptionsTest < Test::Unit::TestCase
       assert_nil @create.response[:html]
       assert_equal Proc, @create.response[:js].class
     end
+    
+    should "add response without clearing" do
+      @create.wants.js
+      assert_equal Proc, @create.response[:js].class
+      assert_equal Proc, @create.response[:html].class
+    end
   end
 end

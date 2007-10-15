@@ -17,5 +17,9 @@ module ResourceController
       
       @collector.responses
     end
+    
+    def wants
+      @collector
+    end
   end
 end
