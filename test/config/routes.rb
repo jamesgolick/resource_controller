@@ -7,6 +7,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :posts do |post|
     post.resources :comments, :name_prefix => "post_"
   end
+  
+  map.resources :comments
 
   # The priority is based upon order of creation: first created -> highest priority.
   
