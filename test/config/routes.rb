@@ -1,5 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :products, :name_prefix => "cms_"
+
+  map.resources :products, :name_prefix => "cms_" do |product|
+    product.resources :options, :name_prefix => "cms_product_"
+  end
 
   map.resources :posts do |post|
     post.resources :comments, :name_prefix => "post_"
