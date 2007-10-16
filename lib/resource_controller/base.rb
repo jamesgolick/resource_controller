@@ -3,6 +3,7 @@ module ResourceController
     include ResourceController::Helpers
     include ResourceController::Actions
     extend  ResourceController::Accessors
+    include Urligence
     
     def self.inherited(subclass)
       super
