@@ -12,13 +12,13 @@
     <td><%=h comment.post_id %></td>
     <td><%=h comment.author %></td>
     <td><%=h comment.body %></td>
-    <td><%= link_to 'Show', post_comment_path(@post, comment) %></td>
-    <td><%= link_to 'Edit', post_edit_comment_path(@post, comment) %></td>
-    <td><%= link_to 'Destroy', post_comment_path(@post,comment), :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Show', object_url(comment) %></td>
+    <td><%= link_to 'Edit', edit_object_url(comment) %></td>
+    <td><%= link_to 'Destroy', object_url(comment), :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New comment', post_new_comment_path(@post)%>
+<%= link_to 'New comment', new_object_url%>

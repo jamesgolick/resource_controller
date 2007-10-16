@@ -196,7 +196,7 @@ class HelpersTest < Test::Unit::TestCase
     end
     
     should "return the correct object options" do
-      assert_equal [nil, @object], @controller.send(:object_url_options)
+      assert_equal [nil, nil, @object], @controller.send(:object_url_options)
     end
     
     should "return the correct collection options for a namespaced controller" do
@@ -204,7 +204,16 @@ class HelpersTest < Test::Unit::TestCase
     end
     
     should "return the correct object options for a namespaced controller" do
-      assert_equal [:cms, nil, @product], @products_controller.send(:object_url_options)
+      assert_equal [:cms, nil, nil, @product], @products_controller.send(:object_url_options)
+    end
+    
+    should "return the correct object options when passed an action" do
+      assert_equal [:cms, nil, :edit, @product], @products_controller.send(:object_url_options, :edit)
+    end
+    
+    should "accept an alternate object when passed one" do
+      p = Product.new
+      assert_equal [:cms, nil, nil, p], @products_controller.send(:object_url_options, nil, p)
     end
   end
   

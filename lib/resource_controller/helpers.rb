@@ -78,12 +78,20 @@ module ResourceController
         [namespaces, parent_object, model_name.pluralize.to_sym].flatten
       end
       
-      def object_url_options
-        [namespaces, parent_object, object].flatten
+      def object_url_options(action_prefix = nil, alternate_object = nil)
+        [namespaces, parent_object, action_prefix, alternate_object || object].flatten
       end
       
-      def object_url
-        smart_url *object_url_options
+      def object_url(alternate_object = nil)
+        smart_url *object_url_options(nil, alternate_object)
+      end
+      
+      def edit_object_url(alternate_object = nil)
+        smart_url *object_url_options(:edit, alternate_object)
+      end
+      
+      def new_object_url
+        smart_url *object_url_options(:new, model_name.to_sym)
       end
       
       def collection_url
