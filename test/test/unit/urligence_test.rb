@@ -1,4 +1,4 @@
-require 'test_helpers'
+require File.dirname(__FILE__)+'/../test_helper'
 require 'urligence'
 
 class PhotosController
