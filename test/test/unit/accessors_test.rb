@@ -53,6 +53,13 @@ class AccessorsTest < Test::Unit::TestCase
       PostsController.class_eval do
         class_reader_writer :flash
       end
+      
+      @controller = PostsController.new
+    end
+    
+    should "initialize var" do
+      assert_nil PostsController.flash
+      assert_nil @controller.flash
     end
 
     should "set and get var" do
