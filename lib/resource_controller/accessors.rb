@@ -44,5 +44,14 @@ module ResourceController
           end
         end_eval
       end
+      
+      def class_reader_writer(accessor_name)
+        class_eval <<-"end_eval", __FILE__, __LINE__
+          def self.#{accessor_name}(*args)
+            @@#{accessor_name} = args.first unless args.empty?
+            @@#{accessor_name}
+          end
+        end_eval
+      end
   end
 end

@@ -48,4 +48,17 @@ class AccessorsTest < Test::Unit::TestCase
     end
   end
   
+  context "class reader/writer method" do
+    setup do
+      PostsController.class_eval do
+        class_reader_writer :flash
+      end
+    end
+
+    should "set and get var" do
+      PostsController.flash "something"
+      assert_equal "something", PostsController.flash
+    end
+  end
+  
 end
