@@ -29,7 +29,7 @@ class ActionOptionsTest < Test::Unit::TestCase
     end
 
     should "collect responses" do
-      assert_equal Proc, @create.response[:html].class
+      assert @create.wants[:html]
     end
     
     should "clear the collector on a subsequent call" do
@@ -37,14 +37,14 @@ class ActionOptionsTest < Test::Unit::TestCase
         wants.js
       end
       
-      assert_nil @create.response[:html]
-      assert_equal Proc, @create.response[:js].class
+      assert_nil @create.wants[:html]
+      assert @create.wants[:js]
     end
     
     should "add response without clearing" do
       @create.wants.js
-      assert_equal Proc, @create.response[:js].class
-      assert_equal Proc, @create.response[:html].class
+      assert @create.wants[:js]
+      assert @create.wants[:html]
     end
   end
 end

@@ -13,14 +13,19 @@ class ResponseCollectorTest < Test::Unit::TestCase
     end
 
     should "collect responses" do
-      assert Proc, @collector.responses[:html].class
-      assert Proc, @collector.responses[:js].class
-      assert Proc, @collector.responses[:xml].class
+      assert_equal Proc, @collector[:html][1].class, @collector[:html].inspect
+      assert_equal Proc, @collector[:js][1].class, @collector[:js].inspect
+      assert @collector[:xml][1].nil?, @collector[:xml].inspect
     end
     
     should "clear responses with clear method" do
       @collector.clear
       assert @collector.responses.empty?
+    end
+    
+    should "destroy methods before readding them, if they're already there" do
+      @collector.html
+      assert @collector[:html][1].nil?
     end
   end
 end

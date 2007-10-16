@@ -39,12 +39,12 @@ class FailableActionOptionsTest < Test::Unit::TestCase
       wants.html
     end
     
-    assert @create.success.response[:html]
+    assert @create.wants[:html]
   end
   
   should "delegate wants to success" do
     @create.wants.html
     
-    assert @create.success.response[:html]
+    assert @create.wants[:html]
   end
 end

@@ -101,19 +101,23 @@ module ResourceController
       def response_for(action)
         respond_to do |wants|
           options_for(action).response.each do |method, block|
-            wants.send(method) { instance_eval(&block) }
+            if block.nil?
+              wants.send(method)
+            else
+              wants.send(method) { instance_eval(&block) }
+            end
           end
         end
       end
     
       def after(action)
         block = options_for(action).after
-        block.call unless block.nil?
+        instance_eval &block unless block.nil?
       end
     
       def before(action)
         block = action_options[action].before
-        block.call unless block.nil?
+        instance_eval &block unless block.nil?
       end
     
       def set_flash(action)

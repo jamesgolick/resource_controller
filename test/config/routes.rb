@@ -1,4 +1,9 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :photos do |photo|
+    photo.resources :tags, :name_prefix => "photo_"
+  end
+  
+  map.resources :tags
 
   map.resources :products, :name_prefix => "cms_" do |product|
     product.resources :options, :name_prefix => "cms_product_"
