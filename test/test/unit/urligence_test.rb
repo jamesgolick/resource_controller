@@ -1,8 +1,13 @@
-require File.dirname(__FILE__)+'/../test_helper'
+require 'test_helpers'
+require 'urligence'
+
+class PhotosController
+  include Urligence
+end
 
 class UrligenceTest < Test::Unit::TestCase  
   def setup
-    @controller = PostsController.new
+    @controller = PhotosController.new
     @tag   = stub(:class => stub(:name => "Tag"), :to_param => 'awesomestuff')
     @photo = stub(:class => stub(:name => "Photo"), :to_param => 1)
   end
