@@ -4,6 +4,7 @@ module ResourceController
     include ResourceController::Actions
     extend  ResourceController::Accessors
     include Urligence
+    unloadable
     
     def self.actions(*opts)
       config = opts.pop if opts.last.is_a?(Hash)
