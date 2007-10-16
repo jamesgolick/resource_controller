@@ -1,0 +1,8 @@
+<p>
+  <b>Name:</b>
+  <%=h @product.name %>
+</p>
+
+
+<%= link_to 'Edit', smart_url(:cms, :edit, @product) %> |
+<%= link_to 'Back', smart_url(:cms, :products) %>

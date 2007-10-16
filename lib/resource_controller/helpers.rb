@@ -37,12 +37,19 @@ module ResourceController
         @object ||= model.new object_params
       end
       
+      def namespaces
+        names = self.class.name.split("::")
+        names.pop
+        
+        names.map(&:downcase).map(&:to_sym)
+      end
+      
       def collection_url_options
-        [model_name.pluralize.to_sym]
+        [namespaces, model_name.pluralize.to_sym].flatten
       end
       
       def object_url_options
-        [object]
+        [namespaces, object].flatten
       end
       
       def object_url
