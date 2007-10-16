@@ -12,6 +12,8 @@ module ResourceController
       
       subclass.class_eval do
         
+        class_reader_writer :belongs_to
+        
         cattr_accessor :action_options
         self.action_options ||= {}
         

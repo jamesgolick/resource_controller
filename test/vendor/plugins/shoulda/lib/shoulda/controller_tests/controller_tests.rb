@@ -246,7 +246,10 @@ module ThoughtBot # :nodoc:
             @parent          = [@parent] unless @parent.is_a? Array
 
             singular_args = @parent.map {|n| "@#{object}.#{n}"}
-            @namespace_prefix = @namespace.join('_')
+            
+            namespace_pieces = [@namespace, @parent].flatten
+            @namespace_prefix = ''
+            @namespace_prefix << namespace_pieces.join('_')
             @namespace_prefix << '_' unless @namespace_prefix == ''
             
             @destroy.redirect ||= "#{@namespace_prefix}#{@object.pluralize}_url(#{singular_args.join(', ')})" 

@@ -1,7 +1,9 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :products, :name_prefix => "cms_"
 
-  map.resources :posts
+  map.resources :posts do |post|
+    post.resources :comments, :name_prefix => "post_"
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   

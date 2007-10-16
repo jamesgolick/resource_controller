@@ -76,12 +76,33 @@ class HelpersTest < Test::Unit::TestCase
   end
   
   context "build object helper" do
-    setup do
-      Post.expects(:new).with("1").returns("a new post")
+    context "with no parents" do
+      setup do
+        Post.expects(:new).with("1").returns("a new post")
+      end
+    
+      should "build new object" do
+        assert_equal "a new post", @controller.send(:build_object)
+      end
     end
     
-    should "build new object" do
-      assert_equal "a new post", @controller.send(:build_object)
+    context "with parent" do
+      setup do
+        @comments_controller = CommentsController.new
+        @comment_params = stub()
+        @comment_params.stubs(:[]).with(:post_id).returns 2
+        @comment_params.stubs(:[]).with('comment').returns ""
+        @comments_controller.stubs(:params).returns(@comment_params)
+        
+        Post.expects(:find).with(2).returns(Post.new)
+        @comments = stub()
+        @comments.expects(:build).with("").returns("a new comment")
+        Post.any_instance.stubs(:comments).returns(@comments)
+      end
+
+      should "build new object" do
+        assert_equal "a new comment", @comments_controller.send(:build_object)
+      end
     end
   end
   
@@ -171,20 +192,72 @@ class HelpersTest < Test::Unit::TestCase
     end
     
     should "return the correct collection options" do
-      assert_equal [:posts], @controller.send(:collection_url_options)
+      assert_equal [nil, :posts], @controller.send(:collection_url_options)
     end
     
     should "return the correct object options" do
-      assert_equal [@object], @controller.send(:object_url_options)
+      assert_equal [nil, @object], @controller.send(:object_url_options)
     end
     
     should "return the correct collection options for a namespaced controller" do
-      assert_equal [:cms, :products], @products_controller.send(:collection_url_options)
+      assert_equal [:cms, nil, :products], @products_controller.send(:collection_url_options)
     end
     
     should "return the correct object options for a namespaced controller" do
-      assert_equal [:cms, @product], @products_controller.send(:object_url_options)
+      assert_equal [:cms, nil, @product], @products_controller.send(:object_url_options)
     end
   end
   
+  context "parent type helper" do
+    setup do
+      @comments_controller = CommentsController.new
+      @comment_params = stub()
+      @comment_params.stubs(:[]).with(:post_id).returns 2
+      
+      @comments_controller.stubs(:params).returns(@comment_params)
+    end
+
+    should "get the params for the current parent" do
+      assert_equal :post, @comments_controller.send(:parent_type)
+    end
+    
+    context "with multiple possible parents" do
+      setup do
+        CommentsController.class_eval do
+          belongs_to :post, :product
+        end
+        
+        @comment_params = stub()
+        @comment_params.stubs(:[]).with(:product_id).returns 5
+        @comment_params.stubs(:[]).with(:post_id).returns nil
+        @comments_controller.stubs(:params).returns(@comment_params)
+      end
+
+      should "get the params for whatever models are available" do
+        assert_equal :product, @comments_controller.send(:parent_type)
+      end
+    end
+    
+    context "with no possible parent" do
+      should "return nil" do
+        assert_nil @controller.send(:parent_type)
+      end
+    end
+  end
+  
+  context "parent object helper" do
+    setup do
+      @comments_controller = CommentsController.new
+      @comment_params = stub()
+      @comment_params.stubs(:[]).with(:post_id).returns 2
+      
+      @comments_controller.stubs(:params).returns(@comment_params)
+      @post = Post.new
+      Post.stubs(:find).with(2).returns @post
+    end
+
+    should "return post with id 2" do
+      assert_equal @post, @comments_controller.send(:parent_object)
+    end
+  end
 end

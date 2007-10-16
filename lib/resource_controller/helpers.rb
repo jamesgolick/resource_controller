@@ -10,7 +10,7 @@ module ResourceController
       end
     
       def collection
-        model.find(:all)
+        end_of_association_chain.find(:all)
       end
     
       def param
@@ -18,14 +18,16 @@ module ResourceController
       end
     
       def object
-        @object ||= model.find(param)
+        @object ||= end_of_association_chain.find(param)
       end
     
       def load_object
+        instance_variable_set "@#{parent_type}", parent_object if parent?
         instance_variable_set "@#{model_name}", object
       end
     
       def load_collection
+        instance_variable_set "@#{parent_type}", parent_object if parent?
         instance_variable_set "@#{model_name.pluralize}", collection
       end
     
@@ -34,7 +36,35 @@ module ResourceController
       end
     
       def build_object
-        @object ||= model.new object_params
+        @object ||= end_of_association_chain.send parent? ? :build : :new, object_params
+      end
+      
+      def end_of_association_chain
+        parent? ? parent_association : model
+      end
+      
+      def parent_association
+        @parent_association ||= parent_object.send(model_name.pluralize.to_sym)
+      end
+      
+      def parent_type
+        @parent_type ||= [*belongs_to].find { |parent| !params["#{parent}_id".to_sym].nil? }
+      end
+      
+      def parent?
+        !parent_type.nil?
+      end
+      
+      def parent_param
+        params["#{parent_type}_id".to_sym]
+      end
+      
+      def parent_model
+        parent_type.to_s.camelize.constantize
+      end
+      
+      def parent_object
+        parent? ? parent_model.find(parent_param) : nil
       end
       
       def namespaces
@@ -45,11 +75,11 @@ module ResourceController
       end
       
       def collection_url_options
-        [namespaces, model_name.pluralize.to_sym].flatten
+        [namespaces, parent_object, model_name.pluralize.to_sym].flatten
       end
       
       def object_url_options
-        [namespaces, object].flatten
+        [namespaces, parent_object, object].flatten
       end
       
       def object_url
