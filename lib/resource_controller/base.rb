@@ -33,21 +33,21 @@ module ResourceController
         
         create do
           flash "Successfully created!"
-          wants.html { redirect_to send("#{model_name}_path", object) }
+          wants.html { redirect_to object_url }
           
           failure.wants.html { render :action => "new" }
         end
         
         update do
           flash "Successfully updated!"
-          wants.html { redirect_to send("#{model_name}_path", object) }
+          wants.html { redirect_to object_url }
           
           failure.wants.html { render :action => "edit" }
         end
         
         destroy do
           flash "Successfully removed!"
-          wants.html { redirect_to send("#{model_name.pluralize}_path") }
+          wants.html { redirect_to collection_url }
         end
         
       end

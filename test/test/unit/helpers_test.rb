@@ -160,4 +160,14 @@ class HelpersTest < Test::Unit::TestCase
     end
   end
   
+  context "*_url_options helpers" do
+    should "return the correct collection options" do
+      assert_equal [:posts], @controller.send(:collection_url_options)
+    end
+    
+    should "return the correct object options" do
+      assert_equal [@object], @controller.send(:object_url_options)
+    end
+  end
+  
 end

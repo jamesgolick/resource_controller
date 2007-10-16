@@ -36,7 +36,23 @@ module ResourceController
       def build_object
         @object ||= model.new object_params
       end
-    
+      
+      def collection_url_options
+        [model_name.pluralize.to_sym]
+      end
+      
+      def object_url_options
+        [object]
+      end
+      
+      def object_url
+        smart_url *object_url_options
+      end
+      
+      def collection_url
+        smart_url *collection_url_options
+      end
+      
       def response_for(action)
         respond_to do |wants|
           options_for(action).response.each do |method, block|
