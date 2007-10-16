@@ -1,8 +1,8 @@
 class CreatePosts < ActiveRecord::Migration
   def self.up
     create_table :posts do |t|
-      t.column :title, :string
-      t.column :body, :text
+      t.column :title, :string, :default => ''
+      t.column :body, :text, :default => ''
     end
   end
 
