@@ -5,7 +5,7 @@ module ResourceController
     extend  ResourceController::Accessors
     include Urligence
     
-    helper_method :smart_url
+    helper_method :smart_url, :object_url, :collection_url, :object, :collection
     
     def self.inherited(subclass)
       super
