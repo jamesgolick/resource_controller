@@ -19,7 +19,8 @@ module ResourceController
       actions_to_remove.each { |action| undef_method(action)}
     end
     
-    helper_method :smart_url, :object_url, :edit_object_url, :new_object_url, :collection_url, :object, :collection
+    helper_method :smart_url, :object_url, :edit_object_url, :new_object_url, :collection_url, :object, :collection, 
+                    :parent, :parent_type, :model_name, :model
     
     def self.inherited(subclass)
       super
