@@ -16,6 +16,8 @@ SVN (stable): {http://svn.jamesgolick.com/resource_controller/tags/stable}[http:
 
 SVN (ongoing): {http://svn.jamesgolick.com/resource_controller/trunk}[http://svn.jamesgolick.com/resource_controller/trunk]
 
+  Note: If you want to run the tests, cd in to the test directory, and type rake test.
+
 === Edge/Rails 2.0 Compatible
 
 Install it:
@@ -25,6 +27,8 @@ Install it:
 SVN (stable): {http://svn.jamesgolick.com/resource_controller/tags/edge_compatible/stable}[http://svn.jamesgolick.com/resource_controller/tags/edge_compatible/stable]
 
 SVN (ongoing): {http://svn.jamesgolick.com/resource_controller/branches/edge_compatible}[http://svn.jamesgolick.com/resource_controller/branches/edge_compatible]
+
+  Note: If you want to run the tests in the edge-compatible version, cd in to the test directory, and type rake rails:freeze:edge, and then rake test.
 
 = Usage
 
