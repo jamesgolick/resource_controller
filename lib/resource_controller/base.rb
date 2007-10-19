@@ -1,4 +1,9 @@
 module ResourceController
+  
+  # == ResourceController::Base
+  # 
+  # Inherit from this class to create your RESTful controller.  See the README for usage.
+  # 
   class Base < ApplicationController
     include ResourceController::Helpers
     include ResourceController::Actions
@@ -6,6 +11,11 @@ module ResourceController
     include Urligence
     unloadable
     
+    # Use this method in your controller to specify which actions you'd like it to respond to.
+    #
+    #   class PostsController < ResourceController::Base
+    #     actions :all, :except => :create
+    #   end
     def self.actions(*opts)
       config = opts.pop if opts.last.is_a?(Hash)
 

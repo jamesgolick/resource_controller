@@ -1,5 +1,5 @@
-module ResourceController
-  module Accessors
+module ResourceController # :nodoc:
+  module Accessors # :nodoc:
     private
       def block_accessor(*accessors)
         accessors.each do |block_accessor|
