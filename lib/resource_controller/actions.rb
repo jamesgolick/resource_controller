@@ -11,7 +11,7 @@ module ResourceController
       load_object
       before :show
       response_for :show
-    rescue ActiveRecord::Base
+    rescue ActiveRecord::RecordNotFound
       response_for :show_fails
     end
 
