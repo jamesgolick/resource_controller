@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :somethings
+
   map.resources :photos do |photo|
     photo.resources :tags, :name_prefix => "photo_"
   end

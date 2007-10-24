@@ -16,15 +16,14 @@ module ResourceController
     #     actions :all, :except => :create
     #   end
     def self.actions(*opts)
-      config = opts.pop if opts.last.is_a?(Hash)
+      config = {}
+      config.merge!(opts.pop) if opts.last.is_a?(Hash)
 
-      actions_to_remove = unless opts.first == :all
-                            (ResourceController::ACTIONS - [:new_action] + [:new]) - opts
-                          else
-                            []
-                          end
-      actions_to_remove -= [*config[:only]] if config[:only]
+      actions_to_remove = []
+      actions_to_remove += (ResourceController::ACTIONS - [:new_action] + [:new]) - opts unless opts.first == :all                
       actions_to_remove += [*config[:except]] if config[:except]
+      actions_to_remove.uniq!
+      
       actions_to_remove.each { |action| undef_method(action)}
     end
     
