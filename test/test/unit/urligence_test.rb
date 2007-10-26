@@ -52,6 +52,26 @@ class UrligenceTest < Test::Unit::TestCase
     assert_equal @expected_return, @controller.smart_url(:new, :admin, :products)
   end
   
+  def test_should_accept_array_parameters_for_routes_with_alternate_names
+    setup_mocks '/something_tags/1', :something_tag_path, @tag
+    assert_equal @expected_return, @controller.smart_url([:something_tag, @tag])
+  end
+  
+  def test_should_accept_array_parameters_with_symbol_parameters
+    setup_mocks '/admin/something_tags/1', :admin_something_tag_path, @tag
+    assert_equal @expected_return, @controller.smart_url(:admin, [:something_tag, @tag])
+  end
+  
+  def test_should_accept_array_parameters_with_symbol_namespace_and_symbol_ending_parameters
+    setup_mocks '/admin/something_tags/1/photos', :admin_something_tag_photos_path, @tag
+    assert_equal @expected_return, @controller.smart_url(:admin, [:something_tag, @tag], :photos)
+  end
+  
+  def test_should_accept_array_parameters_with_symbol_namespace_and_normal_model_parameters
+    setup_mocks '/admin/something_tags/1/photos/1', :admin_something_tag_photo_path, @tag, @photo
+    assert_equal @expected_return, @controller.smart_url(:admin, [:something_tag, @tag], @photo)
+  end
+  
   private
     def setup_mocks(expected_return, method, *params)
       @expected_return = expected_return
