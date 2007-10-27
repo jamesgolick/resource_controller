@@ -1,4 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :people
+  
+  map.resources :dudes, :controller => "users"
+
   map.resources :somethings
 
   map.resources :photos do |photo|
