@@ -28,7 +28,7 @@ module ResourceController
     end
     
     helper_method :object_url, :edit_object_url, :new_object_url, :collection_url, :object, :collection, 
-                    :parent, :parent_type, :model_name, :model
+                    :parent, :parent_type, :parent_object, :model_name, :model
     
     def self.inherited(subclass)
       super
