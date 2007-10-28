@@ -243,6 +243,25 @@ class HelpersTest < Test::Unit::TestCase
       p = Product.new
       assert_equal [:cms, nil, nil, [:product, p]], @products_controller.send(:object_url_options, nil, p)
     end
+    
+    context "with parent" do
+      setup do
+        @params = stub :parent_type => 'user'
+        @user = mock
+        @controller.expects(:parent_object).returns @user
+        @controller.expects(:parent?).returns(true)
+        @controller.expects(:parent_type).returns "user"
+      end
+
+      should "return the correct object options for object_url_options" do
+        @controller.expects(:object).returns @object
+        assert_equal [[:user, @user], :edit, [:post, @object]], @controller.send(:object_url_options, :edit)
+      end
+      
+      should "return the correct object options for collection" do
+        assert_equal [[:user, @user], :posts], @controller.send(:collection_url_options)
+      end
+    end
   end
   
   context "parent type helper" do

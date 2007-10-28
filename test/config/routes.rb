@@ -3,6 +3,10 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resources :dudes, :controller => "users"
 
+  map.resources :users do |user|
+    user.resources :photos, :name_prefix => "user_"
+  end
+
   map.resources :somethings
 
   map.resources :photos do |photo|
