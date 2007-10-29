@@ -9,7 +9,7 @@ module ResourceController
     
     def self.inherited(subclass)
       super
-      subclass.class_eval { include ResourceController::Controller }
+      subclass.class_eval { resource_controller }
     end
   end
 end
