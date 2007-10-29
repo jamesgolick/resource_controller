@@ -37,6 +37,15 @@ Creating a basic RESTful controller is as easy as...
   class PostsController < ResourceController::Base
   end
   
+...or if you prefer, you can use the method-call syntax.  If you need to inherit from some other class, this syntax is definitely for you:
+
+  class PostsController < ApplicationController
+    resource_controller
+  end
+
+Both syntaxes are identical in their behavior.  Just make sure you call resource_controller before you use any other r_c functionality in your controller.
+  
+  
 Nobody just uses the default RESTful controller, though.  resource_controller provides a simple API for customizations.
 
 == Action Lifecycle
@@ -187,6 +196,55 @@ You also get some helpers for reflecting on your parent.
   parent_type   # => :post
   parent_model  # => Post
   parent_object # => @post
+
+=== Non-standard resource names
+
+resource_controller supports overrides for every non-standard configuration of resources.
+
+The most common example is where the resource has a different name than the associated model.  Simply overriding the model_name helper will get resource_controller working with your model.
+
+  map.resources :tags
+  ...
+  class PhotoTag < ActiveRecord::Base
+  ...
+  class TagsController < ResourceController::Base
+    private
+      def model_name
+        'photo_tag'
+      end
+  end
+  
+In the above example, the variable, and params will be set to @tag, @tags, and params[:tag].  If you'd like to change that, override object_name.
+
+  def object_name
+    'photo_tag'
+  end
+
+If you're using a non-standard controller name, but everything else is standard, overriding resource_name will propagate through all of the other helpers.
+
+  map.resources :tags, :controller => "somethings"
+  ...
+  class Tag < ActiveRecord::Base
+  ...
+  class SomethingsController < ResourceController::Base
+    private
+      def resource_name
+        'tag'
+      end
+  end
+  
+Finally, the route_name helper is used by Urligence to determine which url helper to call, so if you have non-standard route names, override it.
+
+  map.resources :tags, :controller => "taggings"
+  ...
+  class Taggings < ActiveRecord::Base
+  ...
+  class TaggingsController < ResourceController::Base
+    private
+      def route_name
+        'tag'
+      end
+  end
 
 == Url Helpers
 
