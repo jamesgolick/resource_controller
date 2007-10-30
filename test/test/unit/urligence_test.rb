@@ -14,127 +14,169 @@ class UrligenceTest < Test::Unit::TestCase
   
   context "with one object" do
     setup do
-      setup_mocks "/photos/#{@photo.to_param}", :photo_path, @photo
+      setup_mocks "/photos/#{@photo.to_param}", :photo, @photo
     end
-
-    should "return the correct url" do
-      assert_equal @expected_return, @controller.smart_url(@photo)
+    
+    context "urligence" do
+      should "return the correct path" do
+        assert_equal @expected_path, @controller.urligence(@photo, :path)
+      end
+    end
+    
+    context "smart_url" do
+      should "return the correct url" do
+        assert_equal @expected_url, @controller.smart_url(@photo)
+      end
+    end
+    
+    context "smart_path" do
+      should "return the correct path" do
+        assert_equal @expected_path, @controller.smart_path(@photo)
+      end
+    end
+    
+    context "hash_for_smart_url" do
+      should "return the correct hash" do
+        assert_equal @expected_hash, @controller.hash_for_smart_url(@photo)
+      end
     end
   end
   
   context "with two objects" do
     setup do
-      setup_mocks "/tags/#{@tag.to_param}/photos/#{@photo.to_param}", :tag_photo_path, @tag, @photo
+      setup_mocks "/tags/#{@tag.to_param}/photos/#{@photo.to_param}", :tag_photo, @tag, @photo
     end
-
-    should "return the correct url" do
-      assert_equal @expected_return, @controller.smart_url(@tag, @photo)
+    
+    should "return the correct path" do
+      assert_equal @expected_path, @controller.urligence(@tag, @photo, :path)
     end
   end
   
   context "with a namespace as first param" do
     setup do
-      setup_mocks "/admin/tags/#{@tag.to_param}/photos/#{@photo.to_param}", :admin_tag_photo_path, @tag, @photo
+      setup_mocks "/admin/tags/#{@tag.to_param}/photos/#{@photo.to_param}", :admin_tag_photo, @tag, @photo
     end
     
-    should "return the correct url" do
-      assert_equal @expected_return, @controller.smart_url(:admin, @tag, @photo)
+    should "return the correct path" do
+      assert_equal @expected_path, @controller.urligence(:admin, @tag, @photo, :path)
     end
   end
   
   context "with many nil options anywhere in the arguments" do
     setup do
-      setup_mocks "/tags/#{@tag.to_param}/photos/#{@photo.to_param}", :tag_photo_path, @tag, @photo
+      setup_mocks "/tags/#{@tag.to_param}/photos/#{@photo.to_param}", :tag_photo, @tag, @photo
     end
     
-    should "return the correct url" do
-      assert_equal @expected_return, @controller.smart_url(nil, nil, nil, @tag, nil, @photo, nil)
+    should "return the correct path" do
+      assert_equal @expected_path, @controller.urligence(nil, nil, nil, @tag, nil, @photo, nil, :path)
     end
   end
   
   context "with a symbol as the last parameter" do
     setup do
-      setup_mocks "/tags/#{@tag.to_param}/photos", :tag_photos_path, @tag
+      setup_mocks "/tags/#{@tag.to_param}/photos", :tag_photos, @tag
     end
 
     should "use that as the last fragment of the url" do
-      assert_equal @expected_return, @controller.smart_url(@tag, :photos)
+      assert_equal @expected_path, @controller.urligence(@tag, :photos, :path)
     end
   end
   
   context "with a symbol as the only parameter" do
     setup do
-      setup_mocks "/photos", :photos_path
+      setup_mocks "/photos", :photos
     end
 
     should "use that as the only url fragment" do
-      assert_equal @expected_return, @controller.smart_url(nil, :photos)
+      assert_equal @expected_path, @controller.urligence(nil, :photos, :path)
     end
   end
   
   context "with a namespace, and a plural symbol" do
     setup do
-      setup_mocks "/admin/products", :admin_products_path
+      setup_mocks "/admin/products", :admin_products
     end
 
     should "call the correct url handler" do
-      assert_equal @expected_return, @controller.smart_url(:admin, :products)
+      assert_equal @expected_path, @controller.urligence(:admin, :products, :path)
     end
   end
   
   context "with only symbols" do
     setup do
-      setup_mocks '/admin/products/new', :new_admin_products_path
+      setup_mocks '/admin/products/new', :new_admin_products
     end
     
-    should "return the correct url" do
-      assert_equal @expected_return, @controller.smart_url(:new, :admin, :products)
+    should "return the correct path" do
+      assert_equal @expected_path, @controller.urligence(:new, :admin, :products, :path)
     end
   end
   
   context "with array parameters for specifying the names of routes that don't match the class name of the object" do
     setup do
-      setup_mocks '/something_tags/1', :something_tag_path, @tag
+      setup_mocks '/something_tags/1', :something_tag, @tag
     end
-
-    should "use the name of the symbol as the url fragment" do
-      assert_equal @expected_return, @controller.smart_url([:something_tag, @tag])
+    
+    context "urligence" do
+      should "use the name of the symbol as the url fragment" do
+        assert_equal @expected_path, @controller.urligence([:something_tag, @tag], :path)
+      end
+    end
+    
+    context "smart_url" do
+      should "return the correct path" do
+        assert_equal @expected_url, @controller.smart_url([:something_tag, @tag])
+      end
+    end
+    
+    context "smart_path" do
+      should "return the correct path" do
+        assert_equal @expected_path, @controller.smart_path([:something_tag, @tag])
+      end
+    end
+    
+    context "hash_for_smart_url" do
+      should "return the correct hash" do
+        assert_equal @expected_hash, @controller.hash_for_smart_url([:something_tag, @tag])
+      end
     end
   end
   
   context "with array parameters and a namespace" do
     setup do
-      setup_mocks '/admin/something_tags/1', :admin_something_tag_path, @tag
+      setup_mocks '/admin/something_tags/1', :admin_something_tag, @tag
     end
 
     should "return the correct url" do
-      assert_equal @expected_return, @controller.smart_url(:admin, [:something_tag, @tag])
+      assert_equal @expected_path, @controller.urligence(:admin, [:something_tag, @tag], :path)
     end
   end
   
   context "with array parameters, a namespace, and an ending symbol" do
     setup do
-      setup_mocks '/admin/something_tags/1/photos', :admin_something_tag_photos_path, @tag
+      setup_mocks '/admin/something_tags/1/photos', :admin_something_tag_photos, @tag
     end
 
     should "return the correct url" do
-      assert_equal @expected_return, @controller.smart_url(:admin, [:something_tag, @tag], :photos)
+      assert_equal @expected_path, @controller.urligence(:admin, [:something_tag, @tag], :photos, :path)
     end
   end
   
   context "with array parameters, a symbol namespace, and normal model parameters" do
     setup do
-      setup_mocks '/admin/something_tags/1/photos/1', :admin_something_tag_photo_path, @tag, @photo
+      setup_mocks '/admin/something_tags/1/photos/1', :admin_something_tag_photo, @tag, @photo
     end
 
     should "return the correct url" do
-      assert_equal @expected_return, @controller.smart_url(:admin, [:something_tag, @tag], @photo)
+      assert_equal @expected_path, @controller.urligence(:admin, [:something_tag, @tag], @photo, :path)
     end
   end
   
   private
-    def setup_mocks(expected_return, method, *params)
-      @expected_return = expected_return
-      @controller.stubs(method).with(*params).returns(@expected_return)
+    def setup_mocks(expected_path, method, *params)
+      @expected_path = expected_path
+      @controller.stubs("#{method}_path".to_sym).with(*params).returns(@expected_path)
+      @controller.stubs("#{method}_url".to_sym).with(*params).returns(@expected_url = "http://localhost#{@expected_path}")
+      @controller.stubs("hash_for_#{method}_url".to_sym).with(*params).returns(@expected_hash = @expected_url.hash)
     end
 end
