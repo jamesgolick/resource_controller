@@ -211,21 +211,56 @@ module ResourceController
       # 
       # You get the idea.  Everything is automagical!  All parameters are inferred.
       # 
-      
-      def object_url(alternate_object = nil)
-        smart_url *object_url_options(nil, alternate_object)
-      end
-      
-      def edit_object_url(alternate_object = nil)
-        smart_url *object_url_options(:edit, alternate_object)
+      ['', 'edit_'].each do |type|
+        symbol = type.blank? ? nil : type.gsub(/_/, '').to_sym
+        
+        define_method("#{type}object_url") do |*alternate_object|
+          smart_url *object_url_options(symbol, alternate_object.first)
+        end
+        
+        define_method("#{type}object_path") do |*alternate_object|
+          smart_path *object_url_options(symbol, alternate_object.first)
+        end
+        
+        define_method("hash_for_#{type}object_url") do |*alternate_object|
+          hash_for_smart_url *object_url_options(symbol, alternate_object.first)
+        end
+        
+        define_method("hash_for_#{type}object_path") do |*alternate_object|
+          hash_for_smart_path *object_url_options(symbol, alternate_object.first)
+        end
       end
       
       def new_object_url
-        smart_url *object_url_options(:new, model_name.to_sym)
+        smart_url *new_object_url_options
+      end
+      
+      def new_object_path
+        smart_path *new_object_url_options
+      end
+      
+      def hash_for_new_object_url
+        hash_for_smart_url *new_object_url_options
+      end
+      
+      def hash_for_new_object_path
+        hash_for_smart_path *new_object_url_options
       end
       
       def collection_url
         smart_url *collection_url_options
+      end
+      
+      def collection_path
+        smart_path *collection_url_options
+      end
+      
+      def hash_for_collection_url
+        hash_for_smart_url *collection_url_options
+      end
+      
+      def hash_for_collection_path
+        hash_for_smart_path *collection_url_options
       end
       
       # Used internally to provide the options to smart_url from Urligence.
@@ -238,6 +273,12 @@ module ResourceController
       #
       def object_url_options(action_prefix = nil, alternate_object = nil)
         namespaces + [parent_url_options, action_prefix, [route_name.to_sym, alternate_object || object]]
+      end
+      
+      # Used internally to provide the options to smart_url from Urligence.
+      #
+      def new_object_url_options
+        namespaces + [parent_url_options, :new, route_name.to_sym]
       end
       
       def parent_url_options
