@@ -34,12 +34,6 @@ class UrligenceTest < Test::Unit::TestCase
         assert_equal @expected_path, @controller.smart_path(@photo)
       end
     end
-    
-    context "hash_for_smart_url" do
-      should "return the correct hash" do
-        assert_equal @expected_hash, @controller.hash_for_smart_url(@photo)
-      end
-    end
   end
   
   context "with two objects" do
@@ -134,12 +128,6 @@ class UrligenceTest < Test::Unit::TestCase
         assert_equal @expected_path, @controller.smart_path([:something_tag, @tag])
       end
     end
-    
-    context "hash_for_smart_url" do
-      should "return the correct hash" do
-        assert_equal @expected_hash, @controller.hash_for_smart_url([:something_tag, @tag])
-      end
-    end
   end
   
   context "with array parameters and a namespace" do
@@ -172,11 +160,44 @@ class UrligenceTest < Test::Unit::TestCase
     end
   end
   
+  context "hash_for" do
+    context "url" do
+      setup do
+        @controller.stubs(:hash_for_photo_tag_url).with(:id => @tag.to_param, :photo_id => @photo.to_param).returns("something")
+      end
+
+      should "return the correct hash" do
+        assert_equal "something", @controller.hash_for_smart_url(@photo, @tag)
+      end
+    end
+    
+    context "path" do
+      setup do
+        @photo_tag = stub(:class => stub(:name => "PhotoTag"), :to_param => 'awesomestuff')
+        @controller.stubs(:hash_for_photo_tag_path).with(:id => @tag.to_param, :photo_id => @photo.to_param).returns("something")
+      end
+
+      should "return the correct hash" do
+        assert_equal "something", @controller.hash_for_smart_path(@photo, [:tag, @photo_tag])
+      end
+    end
+    
+    context "collection path" do
+      setup do
+        @controller.stubs(:hash_for_photos_path).with({}).returns('something')
+      end
+
+      should "call the correct methods" do
+        assert_equal 'something', @controller.hash_for_smart_path(:photos)
+      end
+    end
+  end
+  
   private
     def setup_mocks(expected_path, method, *params)
       @expected_path = expected_path
       @controller.stubs("#{method}_path".to_sym).with(*params).returns(@expected_path)
       @controller.stubs("#{method}_url".to_sym).with(*params).returns(@expected_url = "http://localhost#{@expected_path}")
-      @controller.stubs("hash_for_#{method}_url".to_sym).with(*params).returns(@expected_hash = @expected_url.hash)
+      @controller.stubs("hash_for_#{method}_url".to_sym).with(*params).returns(@expected_hash = @expected_url)
     end
 end
