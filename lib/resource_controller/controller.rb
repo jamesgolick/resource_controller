@@ -9,12 +9,8 @@ module ResourceController
         
         class_reader_writer :belongs_to
 
-        cattr_accessor :action_options
-        self.action_options ||= {}
-
         ACTIONS.each do |action|
           class_scoping_reader action, FAILABLE_ACTIONS.include?(action) ? FailableActionOptions.new : ActionOptions.new
-          self.action_options[action] = send action
         end
 
         self.helper_method :object_url, :edit_object_url, :new_object_url, :collection_url, :object, :collection, 

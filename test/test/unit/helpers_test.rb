@@ -169,10 +169,7 @@ class HelpersTest < Test::Unit::TestCase
   
   context "before" do
     setup do
-      @action_options = {:non_existent => ResourceController::ActionOptions.new}
-
-      PostsController.send :cattr_accessor, :action_options
-      PostsController.action_options = @action_options
+      PostsController.stubs(:non_existent).returns ResourceController::ActionOptions.new
     end
     
     should "not choke if there is no block" do
@@ -184,28 +181,28 @@ class HelpersTest < Test::Unit::TestCase
   
   context "get options for action" do
     setup do
-      @action_options = {}
-      @action_options[:create] = ResourceController::FailableActionOptions.new
-      
-      PostsController.send :cattr_accessor, :action_options
-      PostsController.action_options = @action_options
+      @create = ResourceController::FailableActionOptions.new
+      PostsController.stubs(:create).returns @create
     end
 
     should "get correct object for failure action" do
-      assert_equal @action_options[:create].fails, @controller.send(:options_for, :create_fails)
+      assert_equal @create.fails, @controller.send(:options_for, :create_fails)
     end
     
     should "get correct object for successful action" do
-      assert_equal @action_options[:create].success, @controller.send(:options_for, :create)
+      assert_equal @create.success, @controller.send(:options_for, :create)
     end
     
     should "get correct object for non-failable action" do
-      assert_equal @action_options[:index], @controller.send(:options_for, :index)
+      @index = ResourceController::ActionOptions.new
+      PostsController.stubs(:index).returns @index
+      assert_equal @index, @controller.send(:options_for, :index)
     end
     
     should "understand new_action to mean new" do
-      @action_options[:new_action] = ResourceController::ActionOptions.new
-      assert_equal @action_options[:new_action], @controller.send(:options_for, :new_action)
+      @new_action = ResourceController::ActionOptions.new
+      PostsController.stubs(:new_action).returns @new_action
+      assert_equal @new_action, @controller.send(:options_for, :new_action)
     end
   end
   
@@ -316,4 +313,5 @@ class HelpersTest < Test::Unit::TestCase
       assert_equal @post, @comments_controller.send(:parent_object)
     end
   end
+  
 end

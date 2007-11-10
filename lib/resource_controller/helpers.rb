@@ -323,7 +323,7 @@ module ResourceController
       # Calls the before block for the action, if one is present.
       #
       def before(action)
-        block = action_options[action].before
+        block = self.class.send(action).before
         instance_eval &block unless block.nil?
       end
       
@@ -339,7 +339,7 @@ module ResourceController
       #
       def options_for(action)
         action = action == :new_action ? [action] : "#{action}".split('_').map(&:to_sym)
-        options = action_options[action.first]
+        options = self.class.send(action.first)
         options = options.send(action.last == :fails ? :fails : :success) if FAILABLE_ACTIONS.include? action.first
       
         options
