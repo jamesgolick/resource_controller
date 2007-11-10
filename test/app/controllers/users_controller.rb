@@ -1,6 +1,8 @@
 class UsersController < ResourceController::Base
-  private
-    def resource_name
+  object_name :dude
+  route_name :dude
+  private    
+    def route_name
       'dude'
     end
     

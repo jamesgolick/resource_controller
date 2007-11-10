@@ -39,9 +39,11 @@ class HelpersTest < Test::Unit::TestCase
     end
   end
   
-  context "resource name helper" do
-    should "default to returning the singular name of the controller" do
-      assert_equal "post", @controller.send(:resource_name)
+  ResourceController::NAME_ACCESSORS.each do |accessor|
+    context "#{accessor} accessor" do
+      should "default to returning the singular name of the controller" do
+        assert_equal "post", @controller.send(accessor)
+      end
     end
   end
   

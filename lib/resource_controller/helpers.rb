@@ -24,49 +24,9 @@ module ResourceController
       # Used internally to return the model for your resource.  
       #
       def model
-        model_name.camelize.constantize
+        model_name.to_s.camelize.constantize
       end
-      
-      # Returns the name of the model in underscored form.
-      #
-      # Defaults to resource_name
-      #
-      # It is reccomended that you override this method (rather than model), if your controller's name does not follow the pattern ModelNamesController
-      #
-      def model_name
-        resource_name
-      end
-    
-      # Returns the resource name of the model in underscorized form
-      # 
-      # Used to generate defaults for model_name, and url params. 
-      #
-      # If you want to change the model name, url name, and variable name all in one shot, override this.
-      # 
-      def resource_name
-        controller_name.singularize.underscore
-      end
-      
-      # Returns the route name
-      #
-      # This is the name that r_c will use to generate the urls.  If you're using a non-standard controller name, you'll want to override this.
-      # 
-      # Defaults to resource_name
-      #
-      def route_name
-        resource_name
-      end
-      
-      
-      # Returns the singular name of the instance variable should you want to rename it
-      # 
-      # Defaults to resource_name
-      #
-      # i.e. When your object is loaded, it is set to @#{object_name}, or the collection to @#{object_name.pluralize}
-      #
-      def object_name
-        resource_name
-      end
+
     
       # Used to fetch the collection for the index method
       #
@@ -112,7 +72,7 @@ module ResourceController
       #
       def load_collection
         instance_variable_set "@#{parent_type}", parent_object if parent?
-        instance_variable_set "@#{object_name.pluralize}", collection
+        instance_variable_set "@#{object_name.to_s.pluralize}", collection
       end
     
       # Returns the form params.  Defaults to params[model_name] (i.e. params["post"])
@@ -138,7 +98,7 @@ module ResourceController
       # Returns the relevant association proxy of the parent. (i.e. /posts/1/comments # => @post.comments)
       #
       def parent_association
-        @parent_association ||= parent_object.send(model_name.pluralize.to_sym)
+        @parent_association ||= parent_object.send(model_name.to_s.pluralize.to_sym)
       end
       
       # Returns the type of the current parent
@@ -266,7 +226,7 @@ module ResourceController
       # Used internally to provide the options to smart_url from Urligence.
       #
       def collection_url_options
-        namespaces + [parent_url_options, route_name.pluralize.to_sym]
+        namespaces + [parent_url_options, route_name.to_s.pluralize.to_sym]
       end
       
       # Used internally to provide the options to smart_url from Urligence.
