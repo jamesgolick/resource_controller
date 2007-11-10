@@ -17,7 +17,7 @@ class FailableActionOptionsTest < Test::Unit::TestCase
         "return_something"
       end
     
-      assert_equal "return_something", @create.send(accessor).call(nil)
+      assert_equal "return_something", @create.send(accessor).first.call(nil)
     end
   end
   
@@ -31,7 +31,7 @@ class FailableActionOptionsTest < Test::Unit::TestCase
       "something"
     end
     
-    assert_equal "something", @create.success.after.call
+    assert_equal "something", @create.success.after.first.call
   end
   
   should "delegate response to success" do

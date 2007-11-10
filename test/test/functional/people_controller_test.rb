@@ -21,4 +21,14 @@ class PeopleControllerTest < Test::Unit::TestCase
     resource.update.redirect = 'person_url(@person)'
     resource.destroy.redirect = 'people_url'
   end
+  
+  context "before create" do
+    setup do
+      post :create, :person => {}
+    end
+
+    should "name account Bob Loblaw" do
+      assert_equal "Bob Loblaw", assigns(:person).name
+    end
+  end
 end

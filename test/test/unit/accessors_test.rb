@@ -68,4 +68,24 @@ class AccessorsTest < Test::Unit::TestCase
     end
   end
   
+  context "block accessor" do
+    setup do
+      PostsController.class_eval do
+        block_accessor :something
+      end
+      @controller = PostsController.new
+    end
+
+    should "store blocks" do
+      @controller.something {}
+      assert @controller.something.first
+    end
+    
+    should "store symbols as well" do
+      @controller.something(:method, :method_two) {}
+      assert_equal :method,     @controller.something[0]
+      assert_equal :method_two, @controller.something[1]
+      assert @controller.something[2].is_a?(Proc)
+    end
+  end
 end

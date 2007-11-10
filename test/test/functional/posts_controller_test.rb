@@ -17,4 +17,18 @@ class PostsControllerTest < Test::Unit::TestCase
 
     resource.actions = :all
   end
+  
+  context "on post to :create" do
+    setup do
+      post :create, :post => {}
+    end
+
+    should "name the post 'a great post'" do
+      assert_equal 'a great post', assigns(:post).title
+    end
+    
+    should "give the post a body of '...'" do
+      assert_equal '...', assigns(:post).body
+    end
+  end
 end

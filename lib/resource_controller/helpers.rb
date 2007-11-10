@@ -313,18 +313,16 @@ module ResourceController
         end
       end
     
-      # Calls the after block for the action, if one is present.
+      # Calls the after callbacks for the action, if one is present.
       #
       def after(action)
-        block = options_for(action).after
-        instance_eval &block unless block.nil?
+        invoke_callbacks *options_for(action).after
       end
     
       # Calls the before block for the action, if one is present.
       #
       def before(action)
-        block = self.class.send(action).before
-        instance_eval &block unless block.nil?
+        invoke_callbacks *self.class.send(action).before
       end
       
       # Sets the flash for the action, if it is present.
@@ -343,6 +341,15 @@ module ResourceController
         options = options.send(action.last == :fails ? :fails : :success) if FAILABLE_ACTIONS.include? action.first
       
         options
+      end
+      
+      def invoke_callbacks(*callbacks)
+        unless callbacks.empty?
+          callbacks.select { |callback| callback.is_a? Symbol }.each { |symbol| send(symbol) }
+        
+          block = callbacks.detect { |callback| callback.is_a? Proc }
+          instance_eval &block unless block.nil?
+        end
       end
   end
 end

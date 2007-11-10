@@ -17,7 +17,7 @@ class ActionOptionsTest < Test::Unit::TestCase
         "return_something"
       end
     
-      assert_equal "return_something", @create.send(accessor).call(nil)
+      assert_equal "return_something", @create.send(accessor).first.call(nil)
     end
   end
   

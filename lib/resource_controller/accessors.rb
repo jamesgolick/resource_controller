@@ -5,8 +5,12 @@ module ResourceController # :nodoc:
         accessors.each do |block_accessor|
           class_eval <<-"end_eval", __FILE__, __LINE__
 
-            def #{block_accessor}(&block)
-              @#{block_accessor} = block if block_given?
+            def #{block_accessor}(*args, &block)
+              unless args.empty? && block.nil?
+                args.push block if block_given?
+                @#{block_accessor} = [args].flatten
+              end
+              
               @#{block_accessor}
             end
 
