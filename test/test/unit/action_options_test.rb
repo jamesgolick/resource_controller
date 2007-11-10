@@ -27,13 +27,29 @@ class ActionOptionsTest < Test::Unit::TestCase
         wants.html
       end
     end
+    
+    should "accept symbols" do
+      @create.response :html, :js, :xml
+      assert @create.wants[:html]
+      assert @create.wants[:js]
+      assert @create.wants[:xml]
+    end
+    
+    should "accept symbols and blocks" do
+      @create.responds_to :html do |wants| # note the aliasing of response here
+        wants.js
+      end
+      
+      assert @create.wants[:html]
+      assert @create.wants[:js]
+    end
 
     should "collect responses" do
       assert @create.wants[:html]
     end
     
     should "clear the collector on a subsequent call" do
-      @create.response do |wants|
+      @create.respond_to do |wants| # note the other aliasing of response
         wants.js
       end
       
