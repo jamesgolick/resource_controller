@@ -7,8 +7,6 @@ module ResourceController
         extend  ResourceController::Accessors
         extend  ResourceController::ClassMethods
         
-        class_block_accessor :fetches_object_with
-        
         class_reader_writer :belongs_to, *NAME_ACCESSORS
         NAME_ACCESSORS.each { |accessor| send(accessor, controller_name.singularize.underscore) }
 
@@ -26,8 +24,6 @@ module ResourceController
     private
       def self.init_default_actions(klass)
         klass.class_eval do
-          fetches_object_with :find
-          
           index.wants.html
           edit.wants.html
           new_action.wants.html

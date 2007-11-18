@@ -13,16 +13,6 @@ class HelpersTest < Test::Unit::TestCase
     
     @collection = mock()
     Post.stubs(:find).with(:all).returns(@collection)
-    
-    PostsController.class_eval do
-      fetches_object_with :find
-    end
-  end
-  
-  def teardown
-    PostsController.class_eval do
-      fetches_object_with :find
-    end
   end
   
   context "model helper" do
@@ -43,31 +33,9 @@ class HelpersTest < Test::Unit::TestCase
     end
   end
   
-  context "object helper" do 
-    context "with symbol" do
-      setup do
-        Post.expects(:find_by_permalink).with("1").returns "something"
-        PostsController.class_eval do
-          fetches_object_with :find_by_permalink
-        end
-      end
-      
-      should "send the symbol to the model" do
-        assert_equal "something", @controller.send(:object)
-      end
-    end
-    
-    context "with block" do
-      setup do
-        Post.expects(:find_by_permalink).with("asdf").returns "something else"
-        PostsController.class_eval do
-          fetches_object_with { find_by_permalink "asdf" }
-        end
-      end
-
-      should "eval the block at the scope of the model" do
-        assert_equal "something else", @controller.send(:object)
-      end
+  context "object helper" do    
+    should "find the correct object" do
+      assert_equal @object, @controller.send(:object)
     end
   end
   
@@ -244,10 +212,6 @@ class HelpersTest < Test::Unit::TestCase
     setup do
       @products_controller = Cms::ProductsController.new
       
-      Cms::ProductsController.class_eval do
-        fetches_object_with :find
-      end
-        
       @products_controller.stubs(:params).returns(@params)
 
       @product = Product.new

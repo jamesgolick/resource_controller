@@ -18,35 +18,6 @@ module ResourceController # :nodoc:
         end
       end
       
-      def class_block_accessor(*accessors)
-        accessors.each do |block_accessor|
-          class_eval <<-"end_eval", __FILE__, __LINE__
-            unless defined? @@#{block_accessor}
-              @@#{block_accessor} = nil
-            end
-            
-            def self.#{block_accessor}(*args, &block)
-              unless args.empty? && block.nil?
-                args.push block if block_given?
-                @@#{block_accessor} = [args].flatten
-              end
-              
-              @@#{block_accessor}
-            end
-            
-            def #{block_accessor}(*args, &block)
-              unless args.empty? && block.nil?
-                args.push block if block_given?
-                @@#{block_accessor} = [args].flatten
-              end
-              
-              @@#{block_accessor}
-            end
-
-          end_eval
-        end
-      end
-      
       def scoping_reader(*accessor_names)
         accessor_names.each do |accessor_name|        
           class_eval <<-"end_eval", __FILE__, __LINE__
