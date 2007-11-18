@@ -58,7 +58,7 @@ module ResourceController
       #   end
       #
       def object
-        @object ||= end_of_association_chain.find(param)
+        @object ||= fetches_object_with.first.is_a?(Symbol) ? end_of_association_chain.send(fetches_object_with.first, param) : end_of_association_chain.instance_eval(&fetches_object_with.first)
       end
       
       # Used internally to load the member object in to an instance variable @#{model_name} (i.e. @post)
