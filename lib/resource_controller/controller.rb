@@ -15,7 +15,12 @@ module ResourceController
         end
 
         self.helper_method :object_url, :edit_object_url, :new_object_url, :collection_url, :object, :collection, 
-                             :parent, :parent_type, :parent_object, :model_name, :model
+                             :parent, :parent_type, :parent_object, :model_name, :model, :object_path, :edit_object_path,
+                              :new_object_path, :collection_path, :hash_for_collection_path, :hash_for_object_path, 
+                                :hash_for_edit_object_path, :hash_for_new_object_path, :hash_for_collection_url, 
+                                  :hash_for_object_url, :hash_for_edit_object_url, :hash_for_new_object_url, :parent?,
+                                    :collection_url_options, :object_url_options, :new_object_url_options
+                                
       end
       
       init_default_actions(subclass)
