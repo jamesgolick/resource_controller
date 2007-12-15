@@ -1,8 +1,21 @@
 require File.dirname(__FILE__)+'/../../test_helper'
 
+class PostsControllerMock
+  include ResourceController::Helpers
+  extend ResourceController::Accessors
+  class_reader_writer :belongs_to
+end
+
+class CommentsControllerMock
+  include ResourceController::Helpers
+  extend ResourceController::Accessors
+  class_reader_writer :belongs_to
+  belongs_to :post
+end
+
 class Helpers::NestedTest < Test::Unit::TestCase
   def setup
-    @controller = PostsController.new
+    @controller = PostsControllerMock.new
 
     @params = stub :[] => "1"
     @controller.stubs(:params).returns(@params)
@@ -16,7 +29,7 @@ class Helpers::NestedTest < Test::Unit::TestCase
   
   context "parent type helper" do
     setup do
-      @comments_controller = CommentsController.new
+      @comments_controller = CommentsControllerMock.new
       @comment_params = stub()
       @comment_params.stubs(:[]).with(:post_id).returns 2
       
@@ -29,7 +42,7 @@ class Helpers::NestedTest < Test::Unit::TestCase
     
     context "with multiple possible parents" do
       setup do
-        CommentsController.class_eval do
+        CommentsControllerMock.class_eval do
           belongs_to :post, :product
         end
         
@@ -53,7 +66,7 @@ class Helpers::NestedTest < Test::Unit::TestCase
   
   context "parent object helper" do
     setup do
-      @comments_controller = CommentsController.new
+      @comments_controller = CommentsControllerMock.new
       @comment_params = stub()
       @comment_params.stubs(:[]).with(:post_id).returns 2
       
