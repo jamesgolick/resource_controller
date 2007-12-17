@@ -94,23 +94,23 @@ module ResourceController::Helpers::Urls
     # Used internally to provide the options to smart_url from Urligence.
     #
     def collection_url_options
-      namespaces + [parent_url_options, route_name.to_s.pluralize.to_sym]
+      namespaces + [*parent_url_options] + [route_name.to_s.pluralize.to_sym]
     end
     
     # Used internally to provide the options to smart_url from Urligence.
     #
     def object_url_options(action_prefix = nil, alternate_object = nil)
-      namespaces + [parent_url_options, action_prefix, [route_name.to_sym, alternate_object || object]]
+      namespaces + [*parent_url_options] + [action_prefix, [route_name.to_sym, alternate_object || object]]
     end
     
     # Used internally to provide the options to smart_url from Urligence.
     #
     def new_object_url_options
-      namespaces + [parent_url_options, :new, route_name.to_sym]
+      namespaces + [*parent_url_options] + [:new, route_name.to_sym]
     end
     
     def parent_url_options
-      parent? ? [parent_type.to_sym, parent_object] : nil
+      parent? ? parent_objects : nil
     end
     
     # Returns all of the current namespaces of the current controller, symbolized, in array form.

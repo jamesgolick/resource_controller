@@ -53,9 +53,8 @@ class Helpers::UrlsTest < Test::Unit::TestCase
       setup do
         @params = stub :parent_type => 'user'
         @user = mock
-        @controller.expects(:parent_object).returns @user
+        @controller.expects(:parent_objects).returns [[:user, @user]]
         @controller.expects(:parent?).returns(true)
-        @controller.expects(:parent_type).returns "user"
       end
 
       should "return the correct object options for object_url_options" do
