@@ -7,7 +7,21 @@ module ResourceController
         extend  ResourceController::Accessors
         extend  ResourceController::ClassMethods
         
-        class_reader_writer :belongs_to, *NAME_ACCESSORS
+        # these need to behave a little bit differently than the normal class_reader_writers, since they don't pick out the first argument
+        # if one exists, because we need to be able to distinguish between an array being passed, and a normal arg
+        def self.belongs_to(*args)
+          unless args.empty?
+            write_inheritable_attribute(:belongs_to, args)
+          end
+          
+          read_inheritable_attribute(:belongs_to)
+        end
+        
+        def belongs_to
+          self.class.belongs_to
+        end
+        
+        class_reader_writer *NAME_ACCESSORS
         NAME_ACCESSORS.each { |accessor| send(accessor, controller_name.singularize.underscore) }
 
         ACTIONS.each do |action|
