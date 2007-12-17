@@ -25,8 +25,8 @@ module ResourceController::Helpers::Nested
     def parent_objects
       @parent_objects ||= returning [] do |parent_objects|
         parent_types.inject do |last, next_type|
-          parent_objects << last = last.to_s.classify.constantize.find(parent_param(last)) if last.is_a? Symbol
-          parent_objects << last.send(next_type.to_s.pluralize).find(parent_param(next_type))
+          parent_objects << [last, last = last.to_s.classify.constantize.find(parent_param(last))] if last.is_a? Symbol
+          parent_objects << [next_type, last.send(next_type.to_s.pluralize).find(parent_param(next_type))]
         end
       end
     end

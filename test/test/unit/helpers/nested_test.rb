@@ -120,7 +120,7 @@ class Helpers::NestedTest < Test::Unit::TestCase
     end
 
     should "get the parents" do
-      assert_equal [@product, @tag_mock], @comments_controller.send(:parent_objects)
+      assert_equal [[:product, @product], [:tag, @tag_mock]], @comments_controller.send(:parent_objects)
     end
   end
   
