@@ -123,4 +123,19 @@ class Helpers::NestedTest < Test::Unit::TestCase
       assert_equal [@product, @tag_mock], @comments_controller.send(:parent_objects)
     end
   end
+  
+  context "end of association chain when there are parents" do
+    setup do
+      @photo_mock     = mock
+      @photo_mock.expects(:somethings).returns ''
+      @parent_objects = [@photo_mock]
+      @controller.stubs(:parent?).returns true
+      @controller.stubs(:model_name).returns :something
+      @controller.stubs(:parent_objects).returns @parent_objects
+    end
+
+    should "acquire the association proxy for the current model from the last parent object" do
+      assert_equal '', @controller.send(:end_of_association_chain)
+    end
+  end
 end
