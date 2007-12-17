@@ -8,13 +8,13 @@ module ResourceController::Helpers::Nested
     def parent_types
       @parent_types ||= [*belongs_to].reject(&:nil?).
                           map { |parent_type| [*parent_type] }.
-                            select { |parent_type| parent_type.all? { |parent| !parent_param(parent).nil? } }.flatten
+                            detect { |parent_type| parent_type.all? { |parent| !parent_param(parent).nil? } }
     end
     
     # Returns true/false based on whether or not a parent is present.
     #
     def parent?
-      !parent_types.empty?
+      !parent_types.nil?
     end
     
     # Returns the current parent param, if there is a parent. (i.e. params[:post_id])
@@ -24,9 +24,13 @@ module ResourceController::Helpers::Nested
     
     def parent_objects
       @parent_objects ||= returning [] do |parent_objects|
-        parent_types.inject do |last, next_type|
-          parent_objects << [last, last = last.to_s.classify.constantize.find(parent_param(last))] if last.is_a? Symbol
-          parent_objects << [next_type, last.send(next_type.to_s.pluralize).find(parent_param(next_type))]
+        unless parent_types.length == 1
+          parent_types.inject do |last, next_type|
+            parent_objects << [last, last = last.to_s.classify.constantize.find(parent_param(last))] if last.is_a? Symbol
+            parent_objects << [next_type, last.send(next_type.to_s.pluralize).find(parent_param(next_type))]
+          end
+        else
+          parent_objects << [parent_types.last, parent_types.last.to_s.classify.constantize.find(parent_param(parent_types.last))] if parent_types.last.is_a? Symbol
         end
       end
     end

@@ -86,7 +86,7 @@ class Helpers::NestedTest < Test::Unit::TestCase
     
     context "with no possible parent" do      
       should "return nil" do
-        assert @controller.send(:parent_types).empty?, @controller.send(:parent_types).inspect
+        assert @controller.send(:parent_types).nil?, @controller.send(:parent_types).inspect
       end
     end
   end
@@ -99,28 +99,54 @@ class Helpers::NestedTest < Test::Unit::TestCase
   end
   
   context "parent objects" do
-    setup do
-      CommentsControllerMock.class_eval do
-        belongs_to [:product, :tag]
-      end
-      
-      @comments_controller = CommentsControllerMock.new
-      
-      @comment_params = stub()
-      @comment_params.stubs(:[]).with(:product_id).returns 5
-      @comment_params.stubs(:[]).with(:tag_id).returns 5
-      
-      @comments_controller.stubs(:params).returns(@comment_params)
-      
-      @tag_mock    = mock
-      @assoc_proxy = mock
-      @assoc_proxy.expects(:find).with(5).returns(@tag_mock)
-      @product     = stub(:tags => @assoc_proxy)
-      Product.expects(:find).with(5).returns(@product)
-    end
+    context "with multiple possible parents" do
+      setup do
+        CommentsControllerMock.class_eval do
+          belongs_to [:product, :tag], :post
+        end
 
-    should "get the parents" do
-      assert_equal [[:product, @product], [:tag, @tag_mock]], @comments_controller.send(:parent_objects)
+        @comments_controller = CommentsControllerMock.new
+
+        @comment_params = stub()
+        @comment_params.stubs(:[]).with(:post_id).returns 1
+        @comment_params.stubs(:[]).with(:product_id).returns 5
+        @comment_params.stubs(:[]).with(:tag_id).returns 5
+
+        @comments_controller.stubs(:params).returns(@comment_params)
+
+        @tag_mock    = mock
+        @assoc_proxy = mock
+        @assoc_proxy.expects(:find).with(5).returns(@tag_mock)
+        @product     = stub(:tags => @assoc_proxy)
+        Product.expects(:find).with(5).returns(@product)
+      end
+
+      should "get the parents" do
+        assert_equal [[:product, @product], [:tag, @tag_mock]], @comments_controller.send(:parent_objects)
+      end
+    end
+    
+    
+    
+    context "with a single possible parent" do
+      setup do
+        CommentsControllerMock.class_eval do
+          belongs_to :product
+        end
+
+        @comments_controller = CommentsControllerMock.new
+
+        @comment_params = stub()
+        @comment_params.stubs(:[]).with(:product_id).returns 5
+
+        @comments_controller.stubs(:params).returns(@comment_params)
+
+        Product.expects(:find).with(5).returns(@product = mock)
+      end
+
+      should "fetch the single object" do
+        assert_equal [[:product, @product]], @comments_controller.send(:parent_objects)
+      end
     end
   end
   
