@@ -154,10 +154,9 @@ class Helpers::NestedTest < Test::Unit::TestCase
     setup do
       @photo_mock     = mock
       @photo_mock.expects(:somethings).returns ''
-      @parent_objects = [@photo_mock]
       @controller.stubs(:parent?).returns true
       @controller.stubs(:model_name).returns :something
-      @controller.stubs(:parent_objects).returns @parent_objects
+      @controller.stubs(:parent_objects).returns [[:photo, @photo_mock]]
     end
 
     should "acquire the association proxy for the current model from the last parent object" do

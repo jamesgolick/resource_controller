@@ -38,6 +38,6 @@ module ResourceController::Helpers::Nested
     # If there is a parent, returns the relevant association proxy.  Otherwise returns model.
     #
     def end_of_association_chain
-      parent? ? parent_objects.last.send(model_name.to_s.pluralize.intern) : model
+      parent? ? parent_objects.last.last.send(model_name.to_s.pluralize.intern) : model
     end
 end
