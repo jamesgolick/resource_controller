@@ -27,7 +27,10 @@ module ResourceController::Helpers::Nested
         unless parent_types.length == 1
           parent_types.inject do |last, next_type|
             parent_objects << [last, last = parent_model_for(last).find(parent_param(last))] if last.is_a? Symbol
-            parent_objects << [next_type, last.send(next_type.to_s.pluralize).find(parent_param(next_type))]
+            
+            next_entry     = [next_type, last.send(next_type.to_s.pluralize).find(parent_param(next_type))]
+            parent_objects << next_entry
+            next_entry.last
           end
         else
           parent_objects << [parent_types.last, parent_model_for(parent_types.last).find(parent_param(parent_types.last))] if parent_types.last.is_a? Symbol

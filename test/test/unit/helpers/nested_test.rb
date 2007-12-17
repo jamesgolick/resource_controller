@@ -102,7 +102,7 @@ class Helpers::NestedTest < Test::Unit::TestCase
     context "with multiple possible parents" do
       setup do
         CommentsControllerMock.class_eval do
-          belongs_to [:product, :tag], :post
+          belongs_to [:product, :tag, :something_else], :post
         end
 
         @comments_controller = CommentsControllerMock.new
@@ -111,18 +111,23 @@ class Helpers::NestedTest < Test::Unit::TestCase
         @comment_params.stubs(:[]).with(:post_id).returns 1
         @comment_params.stubs(:[]).with(:product_id).returns 5
         @comment_params.stubs(:[]).with(:tag_id).returns 5
+        @comment_params.stubs(:[]).with(:something_else_id).returns 5
 
         @comments_controller.stubs(:params).returns(@comment_params)
 
+        @something_else_mock = mock
+        @something_elses_assoc_proxy = mock
+        @something_elses_assoc_proxy.expects(:find).with(5).returns(@something_else_mock)
         @tag_mock    = mock
-        @assoc_proxy = mock
-        @assoc_proxy.expects(:find).with(5).returns(@tag_mock)
-        @product     = stub(:tags => @assoc_proxy)
+        @tag_mock.stubs(:something_elses => @something_elses_assoc_proxy)
+        @tags_assoc_proxy = mock
+        @tags_assoc_proxy.expects(:find).with(5).returns(@tag_mock)
+        @product     = stub(:tags => @tags_assoc_proxy)
         Product.expects(:find).with(5).returns(@product)
       end
 
       should "get the parents" do
-        assert_equal [[:product, @product], [:tag, @tag_mock]], @comments_controller.send(:parent_objects)
+        assert_equal [[:product, @product], [:tag, @tag_mock], [:something_else, @something_else_mock]], @comments_controller.send(:parent_objects)
       end
     end
     
