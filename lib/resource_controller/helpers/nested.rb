@@ -10,25 +10,27 @@ module ResourceController::Helpers::Nested
     
     # Returns the type of the current parent
     #
-    def parent_type
-      @parent_type ||= [*belongs_to].find { |parent| !params["#{parent}_id".to_sym].nil? }
+    def parent_types
+      @parent_types ||= [*belongs_to].reject(&:nil?).
+                          map { |parent_type| [*parent_type] }.
+                            select { |parent_type| parent_type.all? { |parent| !params["#{parent}_id".to_sym].nil? } }.flatten
     end
     
     # Returns true/false based on whether or not a parent is present.
     #
     def parent?
-      !parent_type.nil?
+      !parent_types.empty?
     end
     
     # Returns the current parent param, if there is a parent. (i.e. params[:post_id])
     def parent_param
-      params["#{parent_type}_id".to_sym]
+      params["#{parent_types.last}_id".to_sym]
     end
     
     # Like the model method, but for a parent relationship.
     # 
     def parent_model
-      parent_type.to_s.camelize.constantize
+      parent_types.last.to_s.camelize.constantize
     end
     
     # Returns the current parent object if a parent object is present.

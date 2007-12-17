@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :ratings
+
   map.resources :projects
 
   map.resources :people
@@ -22,7 +24,9 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   map.resources :posts do |post|
-    post.resources :comments, :name_prefix => "post_"
+    post.resources :comments, :name_prefix => "post_" do |comment|
+      comment.resources :ratings, :name_prefix => "post_comment_"
+    end
   end
   
   map.resources :comments

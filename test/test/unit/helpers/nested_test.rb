@@ -37,7 +37,7 @@ class Helpers::NestedTest < Test::Unit::TestCase
     end
 
     should "get the params for the current parent" do
-      assert_equal :post, @comments_controller.send(:parent_type)
+      assert_equal [:post], @comments_controller.send(:parent_types)
     end
     
     context "with multiple possible parents" do
@@ -53,13 +53,37 @@ class Helpers::NestedTest < Test::Unit::TestCase
       end
 
       should "get the params for whatever models are available" do
-        assert_equal :product, @comments_controller.send(:parent_type)
+        assert_equal [:product], @comments_controller.send(:parent_types)
+      end
+      
+      teardown do
+        CommentsControllerMock.class_eval do
+          belongs_to :post
+        end
       end
     end
     
-    context "with no possible parent" do
+    context "with multiple possible parents including deeply nested parent sets" do
+      setup do
+        CommentsControllerMock.class_eval do
+          belongs_to :post, [:product, :tag]
+        end
+        
+        @comment_params = stub()
+        @comment_params.stubs(:[]).with(:post_id).returns nil
+        @comment_params.stubs(:[]).with(:product_id).returns 5
+        @comment_params.stubs(:[]).with(:tag_id).returns 5
+        @comments_controller.stubs(:params).returns(@comment_params)
+      end
+
+      should "choose the matching set" do
+        assert_equal [:product, :tag], @comments_controller.send(:parent_types)
+      end
+    end
+    
+    context "with no possible parent" do      
       should "return nil" do
-        assert_nil @controller.send(:parent_type)
+        assert @controller.send(:parent_types).empty?, @controller.send(:parent_types).inspect
       end
     end
   end

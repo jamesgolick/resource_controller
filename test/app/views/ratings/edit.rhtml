@@ -1,0 +1,22 @@
+<h1>Editing rating</h1>
+
+<%= error_messages_for :rating %>
+
+<% form_for(:rating, :url => rating_path(@rating), :html => { :method => :put }) do |f| %>
+  <p>
+    <b>Comment</b><br />
+    <%= f.text_field :comment_id %>
+  </p>
+
+  <p>
+    <b>Stars</b><br />
+    <%= f.text_field :stars %>
+  </p>
+
+  <p>
+    <%= submit_tag "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', rating_path(@rating) %> |
+<%= link_to 'Back', ratings_path %>
