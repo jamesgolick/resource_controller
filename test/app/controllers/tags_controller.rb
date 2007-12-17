@@ -8,6 +8,6 @@ class TagsController < ResourceController::Base
   end
   
   create.after do
-    @photo.tags << @tag if parent_type == :photo
+    @photo.tags << @tag if parent_types == [:photo]
   end
 end
