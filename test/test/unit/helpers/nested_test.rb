@@ -29,6 +29,9 @@ class Helpers::NestedTest < Test::Unit::TestCase
   
   context "parent type helper" do
     setup do
+      CommentsControllerMock.class_eval do
+        belongs_to :post
+      end
       @comments_controller = CommentsControllerMock.new
       @comment_params = stub()
       @comment_params.stubs(:[]).with(:post_id).returns 2
@@ -92,6 +95,32 @@ class Helpers::NestedTest < Test::Unit::TestCase
     setup { @controller.params.expects(:[]).with(:post_id) }
     should "add _id to the type passed and pass that as the key to params" do
       @controller.send :parent_param, :post
+    end
+  end
+  
+  context "parent objects" do
+    setup do
+      CommentsControllerMock.class_eval do
+        belongs_to [:product, :tag]
+      end
+      
+      @comments_controller = CommentsControllerMock.new
+      
+      @comment_params = stub()
+      @comment_params.stubs(:[]).with(:product_id).returns 5
+      @comment_params.stubs(:[]).with(:tag_id).returns 5
+      
+      @comments_controller.stubs(:params).returns(@comment_params)
+      
+      @tag_mock    = mock
+      @assoc_proxy = mock
+      @assoc_proxy.expects(:find).with(5).returns(@tag_mock)
+      @product     = stub(:tags => @assoc_proxy)
+      Product.expects(:find).with(5).returns(@product)
+    end
+
+    should "get the parents" do
+      assert_equal [@product, @tag_mock], @comments_controller.send(:parent_objects)
     end
   end
 end

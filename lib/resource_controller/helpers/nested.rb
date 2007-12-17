@@ -2,11 +2,6 @@
 #
 module ResourceController::Helpers::Nested
   protected
-    # Returns the relevant association proxy of the parent. (i.e. /posts/1/comments # => @post.comments)
-    #
-    def parent_association
-      @parent_association ||= parent_object.send(model_name.to_s.pluralize.to_sym)
-    end
     
     # Returns the type of the current parent
     #
@@ -27,16 +22,13 @@ module ResourceController::Helpers::Nested
       params["#{type}_id".to_sym]
     end
     
-    # Like the model method, but for a parent relationship.
-    # 
-    def parent_model
-      parent_types.last.to_s.camelize.constantize
-    end
-    
-    # Returns the current parent object if a parent object is present.
-    #
-    def parent_object
-      parent? ? parent_model.find(parent_param) : nil
+    def parent_objects
+      @parent_objects ||= returning [] do |parent_objects|
+        parent_types.inject do |last, next_type|
+          parent_objects << last = last.to_s.classify.constantize.find(parent_param(last)) if last.is_a? Symbol
+          parent_objects << last.send(next_type.to_s.pluralize).find(parent_param(next_type))
+        end
+      end
     end
     
     # If there is a parent, returns the relevant association proxy.  Otherwise returns model.
