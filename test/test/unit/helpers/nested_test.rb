@@ -88,19 +88,10 @@ class Helpers::NestedTest < Test::Unit::TestCase
     end
   end
   
-  context "parent object helper" do
-    setup do
-      @comments_controller = CommentsControllerMock.new
-      @comment_params = stub()
-      @comment_params.stubs(:[]).with(:post_id).returns 2
-      
-      @comments_controller.stubs(:params).returns(@comment_params)
-      @post = Post.new
-      Post.stubs(:find).with(2).returns @post
-    end
-
-    should "return post with id 2" do
-      assert_equal @post, @comments_controller.send(:parent_object)
+  context "parent param helper" do
+    setup { @controller.params.expects(:[]).with(:post_id) }
+    should "add _id to the type passed and pass that as the key to params" do
+      @controller.send :parent_param, :post
     end
   end
 end
