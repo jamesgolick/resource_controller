@@ -22,7 +22,9 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
 end
 
 desc "Do all necessary tagging for a release"
-task :release do
+task :release => [:tag_release, :upload_docs]
+
+task :tag_release do
   unless ENV.include?('human') && ENV.include?('tag')
     raise "Usage: rake release human=0.something tag=rel_2.0"
   end
@@ -39,4 +41,15 @@ task :release do
 
   puts "tag stable release"
   `svn copy #{repo_root}/tags/#{tag_name} #{repo_root}/tags/stable -m"tag stable release"`
+end
+
+task :upload_docs => :rdoc do
+  puts 'Deleting previous rdoc'
+  `ssh jamesgolick.com 'rm -Rf /home/apps/jamesgolick.com/public/resource_controller/rdoc'`
+  
+  puts "Uploading current rdoc"
+  `scp -r rdoc jamesgolick.com:/home/apps/jamesgolick.com/public/resource_controller`
+  
+  puts "Deleting rdoc"
+  `rm -Rf rdoc`
 end
