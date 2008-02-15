@@ -100,13 +100,13 @@ module ResourceController::Helpers::Urls
     # Used internally to provide the options to smart_url from Urligence.
     #
     def object_url_options(action_prefix = nil, alternate_object = nil)
-      [action_prefix] + namespaces + [parent_url_options, [route_name.to_sym, alternate_object || object]]
+      [action_prefix] + namespaces + [*parent_url_options] + [[route_name.to_sym, alternate_object || object]]
     end
     
     # Used internally to provide the options to smart_url from Urligence.
     #
     def new_object_url_options
-      [:new] + namespaces + [parent_url_options, route_name.to_sym]
+      [:new] + namespaces + [*parent_url_options] + [route_name.to_sym]
     end
     
     def parent_url_options
