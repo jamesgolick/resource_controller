@@ -2,7 +2,7 @@
 
 <%= error_messages_for :product %>
 
-<% form_for(:product, :url => smart_url(:cms, :products)) do |f| %>
+<% form_for(:product, :url => collection_url) do |f| %>
   <p>
     <b>Name</b><br />
     <%= f.text_field :name %>
@@ -13,4 +13,4 @@
   </p>
 <% end %>
 
-<%= link_to 'Back', smart_url(:cms, :products) %>
+<%= link_to 'Back', collection_url %>

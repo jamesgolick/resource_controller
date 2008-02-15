@@ -37,16 +37,16 @@ class Helpers::UrlsTest < Test::Unit::TestCase
     end
     
     should "return the correct object options for a namespaced controller" do
-      assert_equal [:cms, nil, nil, [:product, @product]], @products_controller.send(:object_url_options)
+      assert_equal [nil, :cms, nil, [:product, @product]], @products_controller.send(:object_url_options)
     end
     
     should "return the correct object options when passed an action" do
-      assert_equal [:cms, nil, :edit, [:product, @product]], @products_controller.send(:object_url_options, :edit)
+      assert_equal [:edit, :cms, nil, [:product, @product]], @products_controller.send(:object_url_options, :edit)
     end
     
     should "accept an alternate object when passed one" do
       p = Product.new
-      assert_equal [:cms, nil, nil, [:product, p]], @products_controller.send(:object_url_options, nil, p)
+      assert_equal [nil, :cms, nil, [:product, p]], @products_controller.send(:object_url_options, nil, p)
     end
     
     context "with parent" do
@@ -59,7 +59,7 @@ class Helpers::UrlsTest < Test::Unit::TestCase
 
       should "return the correct object options for object_url_options" do
         @controller.expects(:object).returns @object
-        assert_equal [[:user, @user], :edit, [:post, @object]], @controller.send(:object_url_options, :edit)
+        assert_equal [:edit, [:user, @user], [:post, @object]], @controller.send(:object_url_options, :edit)
       end
       
       should "return the correct object options for collection" do

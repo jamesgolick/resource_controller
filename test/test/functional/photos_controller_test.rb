@@ -48,7 +48,7 @@ class PhotosControllerTest < Test::Unit::TestCase
       should_assign_to :photo
       should_assign_to :user
       should "scope photo to user" do
-        assert accounts :one, assigns(:photo).user
+        assert accounts(:one), assigns(:photo).user
       end
     end
   end
