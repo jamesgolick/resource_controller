@@ -3,32 +3,12 @@
 resource_controller makes RESTful controllers easier, more maintainable, and super readable.  With the RESTful controller pattern hidden away, you can focus on what makes your controller special.
 
 == Get It
-  
-resource_controller is currently available in two streams:
-
-=== 1.2.3+ Compatible
-
-Install it:
 
   svn export http://svn.jamesgolick.com/resource_controller/tags/stable vendor/plugins/resource_controller
   
 SVN (stable): {http://svn.jamesgolick.com/resource_controller/tags/stable}[http://svn.jamesgolick.com/resource_controller/tags/stable]
 
 SVN (ongoing): {http://svn.jamesgolick.com/resource_controller/trunk}[http://svn.jamesgolick.com/resource_controller/trunk]
-
-  Note: If you want to run the tests, cd in to the test directory, and type rake test.
-
-=== Edge/Rails 2.0 Compatible
-
-Install it:
-
-  svn export http://svn.jamesgolick.com/resource_controller/tags/edge_compatible/stable vendor/plugins/resource_controller
-  
-SVN (stable): {http://svn.jamesgolick.com/resource_controller/tags/edge_compatible/stable}[http://svn.jamesgolick.com/resource_controller/tags/edge_compatible/stable]
-
-SVN (ongoing): {http://svn.jamesgolick.com/resource_controller/branches/edge_compatible}[http://svn.jamesgolick.com/resource_controller/branches/edge_compatible]
-
-  Note: If you want to run the tests in the edge-compatible version, cd in to the test directory, and type rake rails:freeze:edge, and then rake test.
 
 = Usage
 
