@@ -16,9 +16,9 @@ ActionController::Routing::Routes.draw do |map|
   end
   
   map.resources :tags
-
-  map.resources :products, :name_prefix => "cms_" do |product|
-    product.resources :options, :name_prefix => "cms_product_"
+  
+  map.namespace :cms do |cms|
+    cms.resources :products, :has_many => :options
   end
 
   map.resources :posts do |post|

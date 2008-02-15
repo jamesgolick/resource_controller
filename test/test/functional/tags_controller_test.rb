@@ -21,6 +21,10 @@ class TagsControllerTest < Test::Unit::TestCase
       should_assign_to :products
       should_render_template "index"
       should_respond_with :success
+      
+      should "respond with html" do
+        assert_equal 'text/html', @response.content_type
+      end
     end
     
     context "xhr to :index" do
@@ -29,8 +33,11 @@ class TagsControllerTest < Test::Unit::TestCase
       end
 
       should_assign_to :products
-      should_render_template "index.rjs"
       should_respond_with :success
+
+      should "respond with rjs" do
+        assert_equal 'text/javascript', @response.content_type
+      end
     end
     
     context "post to create" do

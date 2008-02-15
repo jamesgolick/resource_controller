@@ -8,13 +8,13 @@
 <% for product in @products %>
   <tr>
     <td><%=h product.name %></td>
-    <td><%= link_to 'Show', smart_url(:cms, product) %></td>
-    <td><%= link_to 'Edit', smart_url(:cms, :edit, product) %></td>
-    <td><%= link_to 'Destroy', smart_url(:cms, product), :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Show', object_url(product) %></td>
+    <td><%= link_to 'Edit', edit_object_url(product) %></td>
+    <td><%= link_to 'Destroy', object_url(product), :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New product', smart_url(:cms, :new, :product) %>
+<%= link_to 'New product', new_object_url %>

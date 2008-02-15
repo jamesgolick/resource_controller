@@ -39,19 +39,12 @@ class ScaffoldResourceGenerator < Rails::Generator::NamedBase
       m.directory(File.join('test/functional', controller_class_path))
       m.directory(File.join('test/unit', class_path))
       
-      generator_template_ext = (defined? Haml )? "haml" : "erb"
-      
-      # we want to call erb templates .rhtml or .haml if this is rails 1
-      if RAILS_GEM_VERSION.to_i == 1
-        template_ext = generator_template_ext == 'erb' ? 'rhtml' : generator_template_ext
-      else
-        template_ext = "html.#{generator_template_ext}"
-      end
-      
-      scaffold_views.each do |action|
+      for action in scaffold_views
+        template_ext = (defined? Haml )? "haml" : "erb"
+
         m.template(
-          "view_#{action}.#{generator_template_ext}",
-          File.join('app/views', controller_class_path, controller_file_name, "#{action}.#{template_ext}")
+          "view_#{action}.#{template_ext}",
+          File.join('app/views', controller_class_path, controller_file_name, "#{action}.html.#{template_ext}")
         )
       end
 
@@ -69,10 +62,8 @@ class ScaffoldResourceGenerator < Rails::Generator::NamedBase
       m.template('fixtures.yml',       File.join('test/fixtures', "#{table_name}.yml"))
 
       unless options[:skip_migration]
-        migration_template = RAILS_GEM_VERSION.to_i == 1 ? 'old_migration.rb' : 'migration.rb'
-        
         m.migration_template(
-          migration_template, 'db/migrate', 
+          'migration.rb', 'db/migrate', 
           :assigns => {
             :migration_name => "Create#{class_name.pluralize.gsub(/::/, '')}",
             :attributes     => attributes
