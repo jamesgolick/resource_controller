@@ -30,12 +30,12 @@ module ResourceController # :nodoc:
       end
       
       def class_scoping_reader(accessor_name, start_value)
-        class_variable_set "@@#{accessor_name}", start_value
+        write_inheritable_attribute accessor_name, start_value
         
         class_eval <<-"end_eval", __FILE__, __LINE__
           def self.#{accessor_name}(&block)
-            @@#{accessor_name}.instance_eval &block if block_given?
-            @@#{accessor_name}
+            read_inheritable_attribute(:#{accessor_name}).instance_eval(&block) if block_given?
+            read_inheritable_attribute(:#{accessor_name})
           end
         end_eval
       end
