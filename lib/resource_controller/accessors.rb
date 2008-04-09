@@ -30,12 +30,12 @@ module ResourceController # :nodoc:
       end
       
       def class_scoping_reader(accessor_name, start_value)
-        class_variable_set "@@#{accessor_name}", start_value
+        write_inheritable_attribute accessor_name, start_value
         
         class_eval <<-"end_eval", __FILE__, __LINE__
           def self.#{accessor_name}(&block)
-            @@#{accessor_name}.instance_eval &block if block_given?
-            @@#{accessor_name}
+            read_inheritable_attribute(:#{accessor_name}).instance_eval(&block) if block_given?
+            read_inheritable_attribute(:#{accessor_name})
           end
         end_eval
       end
@@ -52,26 +52,22 @@ module ResourceController # :nodoc:
       def class_reader_writer(*accessor_names)
         accessor_names.each do |accessor_name|
           class_eval <<-"end_eval", __FILE__, __LINE__
-            unless defined? @@#{accessor_name}
-              @@#{accessor_name} = nil
-            end
-        
             def self.#{accessor_name}(*args)
               unless args.empty?
-                @@#{accessor_name} = args.first if args.length == 1
-                @@#{accessor_name} = args if args.length > 1
+                write_inheritable_attribute :#{accessor_name}, args.first if args.length == 1
+                write_inheritable_attribute :#{accessor_name}, args if args.length > 1
               end
             
-              @@#{accessor_name}
+              read_inheritable_attribute :#{accessor_name}
             end
           
             def #{accessor_name}(*args)
               unless args.empty?
-                @@#{accessor_name} = args.first if args.length == 1
-                @@#{accessor_name} = args if args.length > 1
+                self.class.write_inheritable_attribute :#{accessor_name}, args.first if args.length == 1
+                self.class.write_inheritable_attribute :#{accessor_name}, args if args.length > 1
               end
             
-              @@#{accessor_name}
+              self.class.read_inheritable_attribute :#{accessor_name}
             end
           end_eval
         end
