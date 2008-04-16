@@ -376,6 +376,7 @@ You get the idea.  Everything is automagical!  All parameters are inferred.
 == Credits
 
 resource_controller was created, and is maintained by {James Golick}[http://jamesgolick.com].
+Dynamic route detection and callbacks added by {Nate Wiger}[http://nate.wiger.org]
 
 == License
 
