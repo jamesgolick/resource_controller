@@ -1,40 +1,145 @@
 = Resource Controller
 
-resource_controller makes RESTful controllers easier, more maintainable, and super readable.  With the RESTful controller pattern hidden away, you can focus on what makes your controller special.
+resource_controller makes RESTful controllers easier, more maintainable, and super readable.
+With the RESTful controller pattern hidden away, you can focus on what makes your controller special.
 
 == Get It
 
-  svn export http://svn.jamesgolick.com/resource_controller/tags/stable vendor/plugins/resource_controller
-  
-SVN (stable): {http://svn.jamesgolick.com/resource_controller/tags/stable}[http://svn.jamesgolick.com/resource_controller/tags/stable]
-
-SVN (ongoing): {http://svn.jamesgolick.com/resource_controller/trunk}[http://svn.jamesgolick.com/resource_controller/trunk]
+  git clone git://github.com/giraffesoft/resource_controller.git
 
 = Usage
 
-Creating a basic RESTful controller is as easy as...
+Creating a basic RESTful controller is as easy as inheriting from +ResourceController::Base+
 
   class PostsController < ResourceController::Base
   end
-  
-...or if you prefer, you can use the method-call syntax.  If you need to inherit from some other class, this syntax is definitely for you:
+
+...or if you prefer, you can use the method-call syntax.  Since +ResourceController::Base+ now properly
+supports inheritance, the above way is the preferred way to use +resource_controller+, but this also
+works:
 
   class PostsController < ApplicationController
     resource_controller
   end
 
-Both syntaxes are identical in their behavior.  Just make sure you call resource_controller before you use any other r_c functionality in your controller.
-  
-  
-Nobody just uses the default RESTful controller, though.  resource_controller provides a simple API for customizations.
+Both syntaxes are identical in their behavior.
+
+When loaded, +resource_controller+ will actually iterate through all the routes you have defined in +routes.rb+.
+A sequence of callbacks is defined for each resource, which can then be customized. For member routes,
+the default action will attempt to lookup the record in the model and render it. For collection routes,
+the default action will use +find(:all)+ to retrieve all models. Assuming this set of routes:
+
+  map.resources :users, :collection => {:extended_list => :get}, :member => {:rename => :post}
+
+Note that +ResourceController::Base+ itself inherits from +ApplicationController+, so all of your global
+filters will still be applied.
+
+Nobody just uses the default RESTful controller, though. +resource_controller+ provides a simple API for customizations.
 
 == Action Lifecycle
 
-It's really easy to make changes to the lifecycle of your actions.
+It's really easy to make changes to the lifecycle of your actions. For each action, the following
+callbacks are executed in order:
 
-  Note: We had to call the new accessor "new_action", since new is somewhat reserved in ruby.
+  build
+  before
+  action  # only on non-GET requests
+  after
+  flash
+  wants
+
+Each of these callbacks can be redefined by calling them on the name of the action:
+
+  index.build { #do stuff }
+  index.flash "Success"
+  index.wants.html
+
+Note: We had to call the new accessor "new_action", since new is somewhat reserved in ruby.
+
+=== Build
+
+Build is called on each request. For default actions created, these will either 
+load an object or a collection:
+
+  index.build { load_collection }
+  edit.build  { load_object }
+
+If you have defined a custom resource, you may have to alter these, although +resource_controller+
+tries to figure it out. Using our example routes, these would be created for you:
+
+  extended_list { load_collection }
+  rename { load_object }
+
+To change one, simply redefine the block.
+
+  extended_list { @users = User.find(:all, :include => [:profile]) }
+
+If you want to change the way all objects are looked up for a given controller, see
+below under "Building objects".
+
+=== Action
+
+The +action+ callback is *only* called on non-GET requests. This provides safety against
+making changes to your database via the GET request method. In addition, it provides an easy
+way to implement those special actions (such as "login") that you would normally wrap in
+an +if request.post?+ block.
+
+The following are two examples of RESTful actions created for you:
+
+  create.action  { object.save }
+  destroy.action { object.destroy }
+
+If you were building a login method, you might define an +action+ like this:
+
+  login.action { Account.login(params[:login]) }
+
+If this returns true, then the action is considered a success. If it returns
+false, then the action is considered a failure.
+
+=== Response (respond_to)
+
+Since +resource_controller+ already understands whether an action was successful or not
+based you the +build+ and +action+ calls, you can define two separate +respond_to+
+blocks:
+
+  login.success.wants.html  # login.rhtml
+  login.failure.wants.html { render :text => "Your login failed" }
+
+The response type defaults to success, meaning that +wants.html+ == +wants.success.html+:
+
+  login.wants.html  # same as login.success.wants.html
+
+When defining responses, you can add to what's already there:
+  
+  class ProjectsController < ResourceController::Base      
+    create.wants.js { render :template => "show.rjs" }
+  end
+
+Or you can create a whole new block.  This syntax destroys everything that's there, and starts again:
+
+  class ProjectsController < ResourceController::Base      
+    create.response do |wants|
+      wants.html
+      wants.js { render :template => "show.rjs" }
+    end
+  end
+
+=== Flash
+
+You can also set the flash on a callback basis. The appropriate one will automatically be used:
+
+  class ProjectsController < ResourceController::Base
+    create.flash "Can you believe how easy it is to use resource_controller?  Neither could I!"
+    create.failure.flash "A major boo-boo happened. Uh-oh!"
+  end
+
+== Advanced Usage
 
 === Before and After
+
+The +before+ callback is used to perform steps once your object or colletion has
+been built, but before +action+ is called. Conversely, +after+ is called once
++action+ has been executed, *but only on success*
 
   class ProjectsController < ResourceController::Base
     
@@ -43,42 +148,18 @@ It's really easy to make changes to the lifecycle of your actions.
     end
     
     create.after do
+      # This won't be called on failure
       object.creator = current_user
     end
     
   end
   
-=== Flash
-
-  class ProjectsController < ResourceController::Base
-    create.flash "Can you believe how easy it is to use resource_controller?  Neither could I!"
-  end
-
-=== respond_to
-
-You can add to what's already there...
-  
-  class ProjectsController < ResourceController::Base      
-    create.wants.js { render :template => "show.rjs" }
-  end
-  
-Or you can create a whole new block.  This syntax destroys everything that's there, and starts again...
-
-  class ProjectsController < ResourceController::Base      
-    create.response do |wants|
-      wants.html
-      wants.js { render :template => "show.rjs" }
-    end
-  end
-  
-=== Scoping
+=== Scoping with Blocks
 
 Because sometimes you want to make a bunch of customizations at once, most of the helpers accept blocks that make grouping calls really easy.  Is it a DSL?  Maybe; maybe not.  But, it's definitely awesome.
 
-With actions that can fail, the scoping defaults to success.  That means that create.flash == create.success.flash.
-
   class ProjectsController < ResourceController::Base
-    
+
     create do
       flash "Object successfully created!"
       wants.js { render :template => "show.rjs" }
@@ -96,6 +177,31 @@ With actions that can fail, the scoping defaults to success.  That means that cr
     end
     
   end
+
+=== Rescuing Exceptions
+
++resource_controller+ also adds a handy way to catch exceptions, and count these as failures.
+That way, you don't have to check for failures *and* exceptions everywhere:
+
+  show do
+    build { load_object }
+    rescues ActiveRecord::RecordNotFound
+    wants.html
+    wants.failure.html { render :text => "Record not found" }
+  end
+
+If you use +rescues+, you can also check the +exception+ accessor to print out the exception
+that occurred:
+
+  destroy do
+    action { object.destroy }
+    rescues ActiveRecord::StatementInvalid
+    wants.failure.html { render :text => exception || "Error occurred" }
+  end
+
+Remember that exceptions handled with +rescues+ are still counted as failures - this just
+prevents your views from blowing up. If you want to ignore certain exceptions, you need
+to wrap your +action+ in a begin/end block.
 
 == Helpers (ResourceController::Helpers)
 
@@ -166,7 +272,7 @@ Everything, including url generation is handled completely automatically.  Take 
   map.resources :products, :has_many => :comments
   map.resources :users, :has_many => :comments
 
-All you have to do is that, and r_c will infer whichever relationship is present, and perform all the actions at the scope of the parent object.
+All you have to do is that, and +resource_controller+ will infer whichever relationship is present, and perform all the actions at the scope of the parent object.
 
 === Parent Helpers
 
