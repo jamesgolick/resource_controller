@@ -31,14 +31,20 @@ module ResourceController
 
         if respond_to? :new_action
           new_action do
-            build { build_object }
+            build do
+              build_object
+              load_object
+            end
             wants.html
           end
         end
 
         if respond_to? :create
           create do
-            build  { build_object }
+            build do
+              build_object
+              load_object
+            end
             action { object.save  }
             flash "Successfully created!"
             wants.html { redirect_to object_url }

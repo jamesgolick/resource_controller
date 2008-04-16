@@ -64,7 +64,6 @@ module ResourceController::Helpers::CurrentObjects
     #
     def build_object
       @object ||= end_of_association_chain.send parent? ? :build : :new, object_params
-      load_object
     end
 
 end
