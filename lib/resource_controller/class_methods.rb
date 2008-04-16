@@ -11,7 +11,7 @@ module ResourceController
       config.merge!(opts.pop) if opts.last.is_a?(Hash)
 
       actions_to_remove = []
-      actions_to_remove += (ResourceController::ACTIONS - [:new_action] + [:new]) - opts unless opts.first == :all                
+      actions_to_remove += (@actions - [:new_action] + [:new]) - opts unless opts.first == :all                
       actions_to_remove += [*config[:except]] if config[:except]
       actions_to_remove.uniq!
 

@@ -1,18 +1,25 @@
 module ResourceController
   module Controller    
+    NAME_ACCESSORS = [:model_name, :route_name, :object_name]  
+
     def self.included(subclass)
+      subclass.extend ResourceController::Accessors
+      subclass.extend ResourceController::ClassMethods
+      subclass.extend ResourceController::Definer
       subclass.class_eval do
         include ResourceController::Helpers
-        include ResourceController::Actions
-        extend  ResourceController::Accessors
-        extend  ResourceController::ClassMethods
-        
+        include ResourceController::Handler
+
         class_reader_writer :belongs_to, *NAME_ACCESSORS
         NAME_ACCESSORS.each { |accessor| send(accessor, controller_name.singularize.underscore) }
 
-        ACTIONS.each do |action|
-          class_scoping_reader action, FAILABLE_ACTIONS.include?(action) ? FailableActionOptions.new : ActionOptions.new
+        # Iterate all routes defined in routes.rb to create accessors for them
+        @actions = []
+        ActionController::Routing::Routes.routes.select{|r| r.requirements[:controller] == controller_name}.each do |route|
+          @actions << route.requirements[:action].to_sym
+          define_route_action route
         end
+        logger.warn "Warning: No routes defined for #{controller_name} controller" if @actions.empty?
 
         self.helper_method :object_url, :edit_object_url, :new_object_url, :collection_url, :object, :collection, 
                              :parent, :parent_type, :parent_object, :model_name, :model, :object_path, :edit_object_path,
@@ -20,44 +27,9 @@ module ResourceController
                                 :hash_for_edit_object_path, :hash_for_new_object_path, :hash_for_collection_url, 
                                   :hash_for_object_url, :hash_for_edit_object_url, :hash_for_new_object_url, :parent?,
                                     :collection_url_options, :object_url_options, :new_object_url_options
-                                
+
+        include ResourceController::DefaultActions  # new/edit/destroy default actions
       end
-      
-      init_default_actions(subclass)
     end
-        
-    private
-      def self.init_default_actions(klass)
-        klass.class_eval do
-          index.wants.html
-          edit.wants.html
-          new_action.wants.html
-
-          show do
-            wants.html
-
-            failure.wants.html { render :text => "Member object not found." }
-          end
-
-          create do
-            flash "Successfully created!"
-            wants.html { redirect_to object_url }
-
-            failure.wants.html { render :action => "new" }
-          end
-
-          update do
-            flash "Successfully updated!"
-            wants.html { redirect_to object_url }
-
-            failure.wants.html { render :action => "edit" }
-          end
-
-          destroy do
-            flash "Successfully removed!"
-            wants.html { redirect_to collection_url }
-          end
-        end
-      end
   end
 end

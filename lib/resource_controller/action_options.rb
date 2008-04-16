@@ -3,12 +3,12 @@ module ResourceController
     extend ResourceController::Accessors
     
     reader_writer  :flash
-    block_accessor :after, :before
-    
+    block_accessor :after, :before, :setup, :action, :rescues
+
     def initialize
       @collector = ResourceController::ResponseCollector.new
     end
-    
+
     def response(*args, &block)
       if !args.empty? || block_given?
         @collector.clear
