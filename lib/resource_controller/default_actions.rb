@@ -8,57 +8,75 @@ module ResourceController
   module DefaultActions
     def self.included(subclass)
       subclass.class_eval do
-        index do
-          setup { load_collection }
-          wants.html
-          wants.xml  { render :xml => collection }
-          failure.wants.html { render :text => "Collection not found.", :status => 404 }
-          failure.wants.xml  { head 404 }
+        if respond_to? :index
+          index do
+            setup { load_collection }
+            wants.html
+            wants.xml  { render :xml => collection }
+            failure.wants.html { render :text => "Collection not found.", :status => 404 }
+            failure.wants.xml  { head 404 }
+          end
         end
 
-        show do
-          setup { load_object }
-          rescues ActiveRecord::RecordNotFound
-          wants.html
-          wants.xml  { render :xml => object }
-          failure.wants.html { render :text => "Member object not found.", :status => 404 }
-          failure.wants.xml  { head 404 }
+        if respond_to? :show
+          show do
+            setup { load_object }
+            rescues ActiveRecord::RecordNotFound
+            wants.html
+            wants.xml  { render :xml => object }
+            failure.wants.html { render :text => "Member object not found.", :status => 404 }
+            failure.wants.xml  { head 404 }
+          end
         end
 
-        new_action do
-          setup { build_object }
-          wants.html
+        if respond_to? :new_action
+          new_action do
+            setup { build_object }
+            wants.html
+          end
         end
 
-        create do
-          setup  { build_object }
-          action { object.save  }
-          flash "Successfully created!"
-          wants.html { redirect_to object_url }
-          wants.xml  { render :xml => object, :status => :created, :location => object }
-          failure.wants.html { render :action => "new" }
-          failure.wants.xml  { render :xml => object.errors, :status => :unprocessable_entity }
+        if respond_to? :create
+          create do
+            setup  { build_object }
+            action { object.save  }
+            flash "Successfully created!"
+            wants.html { redirect_to object_url }
+            wants.xml  { render :xml => object, :status => :created, :location => object }
+            failure.wants.html { render :action => "new" }
+            failure.wants.xml  { render :xml => object.errors, :status => :unprocessable_entity }
+          end
         end
 
-        edit.wants.html
-
-        update do
-          setup  { load_object }
-          action { object.update_attributes object_params }
-          flash "Successfully updated!"
-          wants.html { redirect_to object_url }
-          wants.xml  { head :ok }
-          failure.wants.html { render :action => "edit" }
-          failure.wants.xml  { render :xml => object.errors, :status => :unprocessable_entity }
+        if respond_to? :edit
+          edit do
+            setup { load_object }
+            wants.html
+          end
         end
 
-        destroy do
-          setup  { load_object }
-          action { object.destroy } 
-          flash "Successfully removed!"
-          wants.html { redirect_to collection_url }
-          wants.xml  { head :ok }
+        if respond_to? :update
+          update do
+            setup  { load_object }
+            action { object.update_attributes object_params }
+            flash "Successfully updated!"
+            wants.html { redirect_to object_url }
+            wants.xml  { head :ok }
+            failure.wants.html { render :action => "edit" }
+            failure.wants.xml  { render :xml => object.errors, :status => :unprocessable_entity }
+          end
         end
+
+        if respond_to? :destroy
+          destroy do
+            setup  { load_object }
+            action { object.destroy } 
+            flash "Successfully removed!"
+            wants.html { redirect_to collection_url }
+            wants.xml  { head :ok }
+          end
+        end
+
       end
     end
   end
