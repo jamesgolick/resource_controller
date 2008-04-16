@@ -37,9 +37,9 @@ module ResourceController::Helpers::Internal
       flash[:notice] = fl if fl
     end
  
-    # Sets up the object or collection for the request
-    def setup(action_name)
-      invoke_callbacks *options_for(action_name).setup
+    # Builds the object or collection for the request
+    def build(action_name)
+      invoke_callbacks *options_for(action_name).build
     end
 
     # Executes the action block
@@ -51,6 +51,9 @@ module ResourceController::Helpers::Internal
     def rescues(action_name)
       options_for(action_name).rescues || []
     end
+
+    # Returns the exception caught by rescues, if any
+    attr_reader :exception
 
     # Returns the options for an action, which is a symbol.
     #

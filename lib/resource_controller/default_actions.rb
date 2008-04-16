@@ -10,7 +10,7 @@ module ResourceController
       subclass.class_eval do
         if respond_to? :index
           index do
-            setup { load_collection }
+            build { load_collection }
             wants.html
             wants.xml  { render :xml => collection }
             failure.wants.html { render :text => "Collection not found.", :status => 404 }
@@ -20,7 +20,7 @@ module ResourceController
 
         if respond_to? :show
           show do
-            setup { load_object }
+            build { load_object }
             rescues ActiveRecord::RecordNotFound
             wants.html
             wants.xml  { render :xml => object }
@@ -31,14 +31,14 @@ module ResourceController
 
         if respond_to? :new_action
           new_action do
-            setup { build_object }
+            build { build_object }
             wants.html
           end
         end
 
         if respond_to? :create
           create do
-            setup  { build_object }
+            build  { build_object }
             action { object.save  }
             flash "Successfully created!"
             wants.html { redirect_to object_url }
@@ -50,14 +50,14 @@ module ResourceController
 
         if respond_to? :edit
           edit do
-            setup { load_object }
+            build { load_object }
             wants.html
           end
         end
 
         if respond_to? :update
           update do
-            setup  { load_object }
+            build  { load_object }
             action { object.update_attributes object_params }
             flash "Successfully updated!"
             wants.html { redirect_to object_url }
@@ -69,7 +69,7 @@ module ResourceController
 
         if respond_to? :destroy
           destroy do
-            setup  { load_object }
+            build  { load_object }
             action { object.destroy } 
             flash "Successfully removed!"
             wants.html { redirect_to collection_url }

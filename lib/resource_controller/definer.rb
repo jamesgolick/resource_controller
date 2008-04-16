@@ -2,7 +2,7 @@ module ResourceController
   module Definer
     # This is the main definer method, which is called when iterating through the routes.
     # It creates a stub method which then dispatches to Handler.handle_action when the
-    # action is called. In addition, it includes logic to setup the correct setup
+    # action is called. In addition, it includes logic to setup the correct build
     # pattern, depending on whether it's a collection or member action.
     #
     def define_route_action(route)
@@ -29,16 +29,15 @@ module ResourceController
     # in the information that Rails stores about routes.
     #
     def assign_default_callbacks(action_name, is_member=false)
-      logger.debug "SETUP: #{action_name}: #{is_member}" if action_name == :coll
       if is_member
-        send(action_name).setup { load_object }
+        send(action_name).build { load_object }
         send(action_name).wants.html
         send(action_name).wants.xml  { render :xml => object }
         send(action_name).failure.flash "Request failed"
         send(action_name).failure.wants.html
         send(action_name).failure.wants.xml { render :xml => object.errors }
       else
-        send(action_name).setup { load_collection }
+        send(action_name).build { load_collection }
         send(action_name).wants.html
         send(action_name).wants.xml  { render :xml => collection }
         send(action_name).failure.flash "Request failed"

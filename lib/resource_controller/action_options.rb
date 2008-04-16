@@ -3,7 +3,7 @@ module ResourceController
     extend ResourceController::Accessors
     
     reader_writer  :flash
-    block_accessor :after, :before, :setup, :action, :rescues
+    block_accessor :after, :before, :build, :action, :rescues
 
     def initialize
       @collector = ResourceController::ResponseCollector.new
