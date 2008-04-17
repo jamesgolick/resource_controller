@@ -76,7 +76,7 @@ class Helpers::InternalTest < Test::Unit::TestCase
     should "understand new_action to mean new" do
       @new_action = ResourceController::FailableActionOptions.new
       PostsController.stubs(:new_action).returns @new_action
-      assert_equal @new_action, @controller.send(:options_for, :new_action), @controller.send(:options_for, :new_action).inspect
+      assert_equal @new_action.success, @controller.send(:options_for, :new_action), @controller.send(:options_for, :new_action).inspect
     end
   end
 end
