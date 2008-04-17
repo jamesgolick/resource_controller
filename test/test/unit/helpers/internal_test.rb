@@ -16,10 +16,10 @@ class Helpers::InternalTest < Test::Unit::TestCase
   
   context "response_for" do
     setup do
-      @options = ResourceController::ActionOptions.new
+      @options = ResourceController::FailableActionOptions.new
       @options.response {|wants| wants.html}
       @controller.expects(:respond_to).yields(mock(:html => ""))
-      @controller.stubs(:options_for).with(:create).returns( @options )
+      @controller.stubs(:options_for).with(:create, {}).returns( @options )
     end
 
     should "yield a wants object to the response block" do      
@@ -49,7 +49,7 @@ class Helpers::InternalTest < Test::Unit::TestCase
   
   context "before" do
     setup do
-      PostsController.stubs(:non_existent).returns ResourceController::ActionOptions.new
+      PostsController.stubs(:non_existent).returns ResourceController::FailableActionOptions.new
     end
     
     should "not choke if there is no block" do
@@ -66,23 +66,17 @@ class Helpers::InternalTest < Test::Unit::TestCase
     end
 
     should "get correct object for failure action" do
-      assert_equal @create.fails, @controller.send(:options_for, :create_fails)
+      assert_equal @create.fails, @controller.send(:options_for, :create, :failure => true)
     end
     
     should "get correct object for successful action" do
       assert_equal @create.success, @controller.send(:options_for, :create)
     end
     
-    should "get correct object for non-failable action" do
-      @index = ResourceController::ActionOptions.new
-      PostsController.stubs(:index).returns @index
-      assert_equal @index, @controller.send(:options_for, :index)
-    end
-    
     should "understand new_action to mean new" do
-      @new_action = ResourceController::ActionOptions.new
+      @new_action = ResourceController::FailableActionOptions.new
       PostsController.stubs(:new_action).returns @new_action
-      assert_equal @new_action, @controller.send(:options_for, :new_action)
+      assert_equal @new_action, @controller.send(:options_for, :new_action), @controller.send(:options_for, :new_action).inspect
     end
   end
 end
