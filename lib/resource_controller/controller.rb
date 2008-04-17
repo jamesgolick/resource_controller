@@ -15,7 +15,7 @@ module ResourceController
 
         # Iterate all routes defined in routes.rb to create accessors for them
         @actions = []
-        ActionController::Routing::Routes.routes.select{|r| r.requirements[:controller] == controller_name}.each do |route|
+        ActionController::Routing::Routes.routes.select{|r| r.requirements[:controller] == controller_path}.each do |route|
           @actions << route.requirements[:action].to_sym
           define_route_action route
         end
