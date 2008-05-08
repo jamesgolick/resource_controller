@@ -5,13 +5,13 @@ module ResourceController
     scoping_reader :success, :fails
     alias_method :failure, :fails
     
-    block_accessor :before
+    block_accessor :before, :build, :action
     
     def initialize
       @success = ActionOptions.new
       @fails   = ActionOptions.new
     end
     
-    delegate :flash, :after, :build, :action, :response, :wants, :rescues, :to => :success
+    delegate :flash, :after, :response, :wants, :rescues, :to => :success
   end
 end

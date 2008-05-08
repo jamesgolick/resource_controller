@@ -39,12 +39,12 @@ module ResourceController::Helpers::Internal
  
     # Builds the object or collection for the request
     def build(action_name)
-      invoke_callbacks *options_for(action_name).build
+      invoke_callbacks *self.class.send(action_name).build
     end
 
     # Executes the action block
     def action(action_name)
-      invoke_callbacks *options_for(action_name).action
+      invoke_callbacks *self.class.send(action_name).action
     end
     
     # Returns a list of those exceptions which the call rescues
