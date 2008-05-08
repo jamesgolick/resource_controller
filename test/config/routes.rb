@@ -25,7 +25,7 @@ ActionController::Routing::Routes.draw do |map|
     post.resources :comments, :name_prefix => "post_"
   end
   
-  map.resources :comments
+  map.resources :comments, :member => {:custom_action => :post}
 
   # The priority is based upon order of creation: first created -> highest priority.
   

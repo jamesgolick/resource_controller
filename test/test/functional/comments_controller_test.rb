@@ -23,4 +23,13 @@ class CommentsControllerTest < Test::Unit::TestCase
   should_be_restful do |resource|
     resource.formats = [:html]
   end
+  
+  context "on post to custom_action" do
+    setup do
+      post :custom_action, :id => @comment
+    end
+
+    should_render_template 'custom_action'
+    should_assign_to :comment
+  end
 end
