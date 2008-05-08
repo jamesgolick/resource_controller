@@ -29,22 +29,23 @@ module ResourceController
     # in the information that Rails stores about routes.
     #
     def assign_default_callbacks(action_name, is_member=false)
-      DefaultActions.send(action_name, self) if ResourceController::DEFAULT_ACTIONS.include?(action_name)
-      # if is_member
-      #   send(action_name).build { load_object }
-      #   send(action_name).wants.html
-      #   send(action_name).wants.xml  { render :xml => object }
-      #   send(action_name).failure.flash "Request failed"
-      #   send(action_name).failure.wants.html
-      #   send(action_name).failure.wants.xml { render :xml => object.errors }
-      # else
-      #   send(action_name).build { load_collection }
-      #   send(action_name).wants.html
-      #   send(action_name).wants.xml  { render :xml => collection }
-      #   send(action_name).failure.flash "Request failed"
-      #   send(action_name).failure.wants.html
-      #   send(action_name).failure.wants.xml { head 500 }
-      # end
+      if ResourceController::DEFAULT_ACTIONS.include?(action_name)
+        DefaultActions.send(action_name, self)
+      elsif is_member
+        send(action_name).build { load_object }
+        send(action_name).wants.html
+        send(action_name).wants.xml  { render :xml => object }
+        send(action_name).failure.flash "Request failed"
+        send(action_name).failure.wants.html
+        send(action_name).failure.wants.xml { render :xml => object.errors }
+      else
+        send(action_name).build { load_collection }
+        send(action_name).wants.html
+        send(action_name).wants.xml  { render :xml => collection }
+        send(action_name).failure.flash "Request failed"
+        send(action_name).failure.wants.html
+        send(action_name).failure.wants.xml { head 500 }
+      end
     end
 
     # Assign a default response block so that the request works automatically.
