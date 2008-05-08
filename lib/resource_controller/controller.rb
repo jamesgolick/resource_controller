@@ -3,10 +3,10 @@ module ResourceController
     NAME_ACCESSORS = [:model_name, :route_name, :object_name]  
 
     def self.included(subclass)
-      subclass.extend ResourceController::Accessors
-      subclass.extend ResourceController::ClassMethods
-      subclass.extend ResourceController::Definer
       subclass.class_eval do
+        extend  ResourceController::Accessors
+        extend  ResourceController::ClassMethods
+        extend  ResourceController::Definer
         include ResourceController::Helpers
         include ResourceController::Handler
 
