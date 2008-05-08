@@ -44,7 +44,7 @@ module ResourceController::Helpers::Internal
 
     # Executes the action block
     def action(action_name)
-      invoke_callbacks *self.class.send(action_name).action
+      self.class.send(action_name).action.nil? ? true : invoke_callbacks(*self.class.send(action_name).action)
     end
     
     # Returns a list of those exceptions which the call rescues

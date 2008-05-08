@@ -55,10 +55,5 @@ class TagsControllerTest < Test::Unit::TestCase
     should_be_restful do |resource|
       resource.formats = [:html]
     end
-    
-    should "render text for a missing object" do
-      get :show, :id => 50000
-      assert @response.body.match(/not found/i), @response.body
-    end
   end
 end
