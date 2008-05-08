@@ -58,19 +58,6 @@ ActiveRecord::Schema.define(:version => 11) do
     t.string "title"
   end
 
-  create_table "projects", :force => true do |t|
-    t.column "title", :string
-  end
-
-  create_table "ratings", :force => true do |t|
-    t.column "comment_id", :integer
-    t.column "stars",      :integer
-  end
-
-  create_table "somethings", :force => true do |t|
-    t.column "title", :string
-  end
-
   create_table "tags", :force => true do |t|
     t.string "name"
   end
