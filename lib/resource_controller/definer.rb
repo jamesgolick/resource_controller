@@ -29,6 +29,7 @@ module ResourceController
     # in the information that Rails stores about routes.
     #
     def assign_default_callbacks(action_name, is_member=false)
+      DefaultActions.send(action_name, self) if ResourceController::DEFAULT_ACTIONS.include?(action_name)
       # if is_member
       #   send(action_name).build { load_object }
       #   send(action_name).wants.html
