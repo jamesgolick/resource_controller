@@ -24,5 +24,14 @@ module ResourceController
     def wants
       @collector
     end
+    
+    def dup
+      returning self.class.new do |duplicate|
+        duplicate.instance_variable_set(:@collector, wants.dup)
+        duplicate.instance_variable_set(:@before, before.dup)
+        duplicate.instance_variable_set(:@after, after.dup)
+        duplicate.instance_variable_set(:@flash, flash.dup)
+      end
+    end
   end
 end
