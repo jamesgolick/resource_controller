@@ -40,6 +40,10 @@ class ResponseCollectorTest < Test::Unit::TestCase
     should "not bleed in to the original" do
       assert @duplicate[:css].nil?
     end
+    
+    should "duplicate existing responses at the time of duplication" do
+      assert_equal :js, @duplicate[:js].first
+    end
   end
   
 end
