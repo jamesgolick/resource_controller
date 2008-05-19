@@ -47,4 +47,31 @@ class FailableActionOptionsTest < Test::Unit::TestCase
     
     assert @create.wants[:html]
   end
+  
+  context "duplication" do
+    setup do
+      @opts = ResourceController::FailableActionOptions.new
+      @opts.wants.js
+      @opts.failure.wants.js
+      @opts.before {}
+      
+      @dup = @opts.dup
+    end
+
+    should "duplicate success" do
+      assert !@dup.success.equal?(@opts.success)
+      assert @dup.success.wants[:js]
+    end
+    
+    should "duplicate failure" do
+      assert !@dup.failure.equal?(@opts.failure)
+      assert @dup.failure.wants[:js]
+    end
+    
+    should "duplicate before" do
+      assert !@dup.before.equal?(@opts.before)
+      assert @dup.before
+    end
+  end
+  
 end

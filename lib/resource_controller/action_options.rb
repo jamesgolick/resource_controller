@@ -28,9 +28,9 @@ module ResourceController
     def dup
       returning self.class.new do |duplicate|
         duplicate.instance_variable_set(:@collector, wants.dup)
-        duplicate.instance_variable_set(:@before, before.dup)
-        duplicate.instance_variable_set(:@after, after.dup)
-        duplicate.instance_variable_set(:@flash, flash.dup)
+        duplicate.instance_variable_set(:@before, before.dup) unless before.nil?
+        duplicate.instance_variable_set(:@after, after.dup) unless after.nil?
+        duplicate.instance_variable_set(:@flash, flash.dup) unless flash.nil?
       end
     end
   end
