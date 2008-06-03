@@ -13,5 +13,13 @@ module ResourceController
     end
     
     delegate :flash, :after, :response, :wants, :to => :success
+    
+    def dup
+      returning self.class.new do |duplicate|
+        duplicate.instance_variable_set(:@success, success.dup)
+        duplicate.instance_variable_set(:@fails,   fails.dup)
+        duplicate.instance_variable_set(:@before,  before.dup) unless before.nil?
+      end
+    end
   end
 end
