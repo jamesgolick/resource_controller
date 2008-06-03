@@ -4,7 +4,6 @@ module ThoughtBot # :nodoc:
       def self.included(other) # :nodoc:
         other.class_eval do
           extend ThoughtBot::Shoulda::General::ClassMethods
-          # include ThoughtBot::Shoulda::General::InstanceMethods
         end
       end
       
@@ -21,24 +20,6 @@ module ThoughtBot # :nodoc:
       # Prints a message to stdout, tagged with the name of the calling method.
       def report!(msg = "")
         puts("#{caller.first}: #{msg}")
-      end
-
-      # Ensures that the number of items in the collection changes
-      #
-      #   assert_difference(User, :count, 1) { User.create }
-      #   assert_difference(User.packages, :size, 3, true) { User.add_three_packages }
-      #
-      # Setting reload to true will call <tt>object.reload</tt> after the block (for ActiveRecord associations)
-      def assert_difference(object, method, difference, reload = false, msg = nil)
-        initial_value = object.send(method)
-        yield
-        object.send(:reload) if reload
-        assert_equal initial_value + difference, object.send(method), (msg || "#{object}##{method} after block")
-      end
-
-      # Ensures that object.method does not change.  See assert_difference for usage.
-      def assert_no_difference(object, method, reload = false, msg = nil, &block)
-        assert_difference(object, method, 0, reload, msg, &block)
       end
 
       # Asserts that two arrays contain the same elements, the same number of times.  Essentially ==, but unordered.
@@ -63,7 +44,7 @@ module ThoughtBot # :nodoc:
       #   assert_contains(['a', '1'], /not there/) => fails
       def assert_contains(collection, x, extra_msg = "")
         collection = [collection] unless collection.is_a?(Array)
-        msg = "#{x.inspect} not found in #{collection.to_a.inspect} " + extra_msg
+        msg = "#{x.inspect} not found in #{collection.to_a.inspect} #{extra_msg}"
         case x
         when Regexp: assert(collection.detect { |e| e =~ x }, msg)
         else         assert(collection.include?(x), msg)
@@ -85,33 +66,51 @@ module ThoughtBot # :nodoc:
       #
       #  assert_save User.new(params)
       def assert_save(obj)
-        assert obj.save, "Errors: #{obj.errors.full_messages.join('; ')}"
+        assert obj.save, "Errors: #{pretty_error_messages obj}"
         obj.reload
       end
 
       # Asserts that the given object is valid
       #
-      #  assert_save User.new(params)
+      #  assert_valid User.new(params)
       def assert_valid(obj)
-        assert obj.valid?, "Errors: #{obj.errors.full_messages.join('; ')}"
+        assert obj.valid?, "Errors: #{pretty_error_messages obj}"
       end
       
-      # Asserts that the block uses ActionMailer to send emails
+      # Asserts that an email was delivered.  Can take a block that can further
+      # narrow down the types of emails you're expecting. 
       #
-      #  assert_sends_email(2) { Mailer.deliver_messages }
-      def assert_sends_email(num = 1, &blk)
-        ActionMailer::Base.deliveries.clear
-        blk.call
-        msg = "Sent #{ActionMailer::Base.deliveries.size} emails, when #{num} expected:\n"
-        ActionMailer::Base.deliveries.each { |m| msg << "  '#{m.subject}' sent to #{m.to.to_sentence}\n" }
-        assert(num == ActionMailer::Base.deliveries.size, msg)
+      #  assert_sent_email 
+      #
+      # Passes if ActionMailer::Base.deliveries has an email
+      #  
+      #  assert_sent_email do |email|
+      #    email.subject =~ /hi there/ && email.to.include?('none@none.com')
+      #  end
+      #  
+      # Passes if there is an email with subject containing 'hi there' and
+      # 'none@none.com' as one of the recipients.
+      #    
+      def assert_sent_email
+        emails = ActionMailer::Base.deliveries
+        assert !emails.empty?, "No emails were sent"
+        if block_given?
+          matching_emails = emails.select {|email| yield email }
+          assert !matching_emails.empty?, "None of the emails matched."
+        end
       end
 
-      # Asserts that the block does not send emails thorough ActionMailer
+      # Asserts that no ActionMailer mails were delivered
       #
-      #  assert_does_not_send_email { # do nothing }
-      def assert_does_not_send_email(&blk)
-        assert_sends_email 0, &blk
+      #  assert_did_not_send_email
+      def assert_did_not_send_email
+        msg = "Sent #{ActionMailer::Base.deliveries.size} emails.\n"
+        ActionMailer::Base.deliveries.each { |m| msg << "  '#{m.subject}' sent to #{m.to.to_sentence}\n" }
+        assert ActionMailer::Base.deliveries.empty?, msg
+      end
+
+      def pretty_error_messages(obj)
+        obj.errors.map { |a, m| "#{a} #{m} (#{obj.send(a).inspect})" }
       end
       
     end

@@ -37,7 +37,7 @@ module ThoughtBot # :nodoc:
       # controller responds restfully to a variety of requested formats.
       module ClassMethods
         # Formats tested by #should_be_restful.  Defaults to [:html, :xml]
-        VALID_FORMATS = Dir.glob(File.join(File.dirname(__FILE__), 'formats', '*')).map { |f| File.basename(f, '.rb') }.map(&:to_sym) # :doc:
+        VALID_FORMATS = Dir.glob(File.join(File.dirname(__FILE__), 'formats', '*.rb')).map { |f| File.basename(f, '.rb') }.map(&:to_sym) # :doc:
         VALID_FORMATS.each {|f| require "shoulda/controller_tests/formats/#{f}.rb"}
 
         # Actions tested by #should_be_restful
@@ -145,14 +145,16 @@ module ThoughtBot # :nodoc:
           attr_accessor :identifier
           
           # Name of the ActiveRecord class this resource is responsible for.  Automatically determined from
-          # test class if not explicitly set.  UserTest => :user
+          # test class if not explicitly set.  UserTest => "User"
           attr_accessor :klass
 
           # Name of the instantiated ActiveRecord object that should be used by some of the tests.  
           # Defaults to the underscored name of the AR class.  CompanyManager => :company_manager
           attr_accessor :object
 
-          # Name of the parent AR objects.
+          # Name of the parent AR objects.  Can be set as parent= or parents=, and can take either
+          # the name of the parent resource (if there's only one), or an array of names (if there's
+          # more than one).
           #
           # Example:
           #   # in the routes...
@@ -239,24 +241,19 @@ module ThoughtBot # :nodoc:
             ensure_valid_members(@formats,        VALID_FORMATS, 'formats')
             
             @identifier    ||= :id
-            @namespace     ||= target.name.split('::').slice(0..-2).map(&:underscore).map(&:to_sym)
-            @klass         ||= target.name.split('::').last.gsub(/ControllerTest$/, '').singularize.constantize
+            @klass         ||= target.name.gsub(/ControllerTest$/, '').singularize.constantize
             @object        ||= @klass.name.tableize.singularize
             @parent        ||= []
             @parent          = [@parent] unless @parent.is_a? Array
 
-            singular_args = @parent.map {|n| "@#{object}.#{n}"}
-            
-            namespace_pieces = [@namespace, @parent].flatten
-            @namespace_prefix = ''
-            @namespace_prefix << namespace_pieces.join('_')
-            @namespace_prefix << '_' unless @namespace_prefix == ''
-            
-            @destroy.redirect ||= "#{@namespace_prefix}#{@object.pluralize}_url(#{singular_args.join(', ')})" 
+            collection_helper = [@parent, @object.to_s.pluralize, 'url'].flatten.join('_')
+            collection_args   = @parent.map {|n| "@#{object}.#{n}"}.join(', ')
+            @destroy.redirect ||= "#{collection_helper}(#{collection_args})"
 
-            singular_args << "@#{object}"
-            @create.redirect  ||= "#{@namespace_prefix}#{@object}_url(#{singular_args.join(', ')})"
-            @update.redirect  ||= "#{@namespace_prefix}#{@object}_url(#{singular_args.join(', ')})"
+            member_helper = [@parent, @object, 'url'].flatten.join('_')
+            member_args   = [@parent.map {|n| "@#{object}.#{n}"}, "@#{object}"].flatten.join(', ')
+            @create.redirect  ||= "#{member_helper}(#{member_args})"
+            @update.redirect  ||= "#{member_helper}(#{member_args})"
             @denied.redirect  ||= "new_session_url"
           end
           
@@ -376,7 +373,7 @@ module ThoughtBot # :nodoc:
         #
         #   should_render_template :new
         def should_render_template(template)
-          should "render '#{template}' template" do            
+          should "render template #{template.inspect}" do            
             assert_template template.to_s
           end
         end
@@ -389,7 +386,7 @@ module ThoughtBot # :nodoc:
         #   should_redirect_to '"/"'
         #   should_redirect_to "users_url(@user)"
         def should_redirect_to(url)
-          should "redirect to \"#{url}\"" do
+          should "redirect to #{url.inspect}" do
             instantiate_variables_from_assigns do
               assert_redirected_to eval(url, self.send(:binding), __FILE__, __LINE__)
             end
@@ -460,7 +457,7 @@ module ThoughtBot # :nodoc:
           parent_name = parent_names.shift
           parent = record ? record.send(parent_name) : parent_name.to_s.classify.constantize.find(:first)
 
-          { :"#{parent_name}_id" => parent.id }.merge(make_parent_params(resource, parent, parent_names))
+          { :"#{parent_name}_id" => parent.to_param }.merge(make_parent_params(resource, parent, parent_names))
         end
 
       end
