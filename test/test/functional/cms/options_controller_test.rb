@@ -14,7 +14,10 @@ class Cms::OptionsControllerTest < Test::Unit::TestCase
 
   should_be_restful do |resource|
     resource.formats = [:html]
-    
+    resource.klass  = ::Option
     resource.parent = :product
+    resource.update.redirect  = 'cms_product_option_path(@product, @option)'
+    resource.destroy.redirect = 'cms_product_options_path(@product)'
+    resource.create.redirect  = 'cms_product_option_path(@product, @option)'
   end
 end
