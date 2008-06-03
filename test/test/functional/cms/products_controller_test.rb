@@ -14,5 +14,9 @@ class Cms::ProductsControllerTest < Test::Unit::TestCase
 
   should_be_restful do |resource|
     resource.formats = [:html]
+    resource.klass   = ::Product
+    resource.update.redirect  = 'cms_product_path(@product)'
+    resource.destroy.redirect = 'cms_products_path'
+    resource.create.redirect  = 'cms_product_path(@product)'
   end
 end
