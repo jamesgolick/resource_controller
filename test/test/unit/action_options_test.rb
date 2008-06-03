@@ -63,4 +63,36 @@ class ActionOptionsTest < Test::Unit::TestCase
       assert @create.wants[:html]
     end
   end
+  
+  context "duplicating action options" do
+    setup do
+      @opts = ResourceController::ActionOptions.new
+      @opts.wants.js
+      @opts.after {}
+      @opts.before {}
+      @opts.flash ''
+      @dup = @opts.dup
+    end
+
+    should "duplicate the response collector" do
+      assert !@opts.wants.equal?(@dup.wants)
+      assert @dup.wants[:js]
+    end
+    
+    should "duplicate the after block" do
+      assert !@opts.after.equal?(@dup.after)
+      assert @dup.after
+    end
+    
+    should "duplicate the before block" do
+      assert !@opts.before.equal?(@dup.before)
+      assert @dup.before
+    end
+    
+    should "duplicate the flash" do
+      assert !@opts.flash.equal?(@dup.flash)
+      assert @dup.flash
+    end
+  end
+  
 end
