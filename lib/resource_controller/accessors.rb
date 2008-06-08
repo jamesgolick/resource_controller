@@ -42,7 +42,8 @@ module ResourceController # :nodoc:
       
       def reader_writer(accessor_name)
         class_eval <<-"end_eval", __FILE__, __LINE__
-          def #{accessor_name}(*args)
+          def #{accessor_name}(*args, &block)
+            args << block unless block.nil?
             @#{accessor_name} = args.first unless args.empty?
             @#{accessor_name}
           end
