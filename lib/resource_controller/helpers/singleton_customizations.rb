@@ -12,38 +12,38 @@ module ResourceController::Helpers::SingletonCustomizations
   end
   
   protected
-  # Used to fetch the current object in a singleton controller.
-  #
-  # By defult this method is able to fetch the current object for resources nested with the :has_one association only. (i.e. /users/1/image # => @user.image)
-  # In other cases you should override this method and provide your custom code to fetch a singleton resource object, like using a session hash.
-  #
-  # class AccountsController < ResourceController::Singleton
-  #   private
-  #     def object
-  #       @object ||= Account.find(session[:account_id])
-  #     end
-  #   end
-  #  
-  def object
-    @object ||= parent? ? end_of_association_chain : nil
-  end
+    # Used to fetch the current object in a singleton controller.
+    #
+    # By defult this method is able to fetch the current object for resources nested with the :has_one association only. (i.e. /users/1/image # => @user.image)
+    # In other cases you should override this method and provide your custom code to fetch a singleton resource object, like using a session hash.
+    #
+    # class AccountsController < ResourceController::Singleton
+    #   private
+    #     def object
+    #       @object ||= Account.find(session[:account_id])
+    #     end
+    #   end
+    #  
+    def object
+      @object ||= parent? ? end_of_association_chain : nil
+    end
 
-  # Returns the :has_one association proxy of the parent. (i.e. /users/1/image # => @user.image)
-  #  
-  def parent_association
-    @parent_association ||= parent_object.send(model_name.to_sym)
-  end
+    # Returns the :has_one association proxy of the parent. (i.e. /users/1/image # => @user.image)
+    #  
+    def parent_association
+      @parent_association ||= parent_object.send(model_name.to_sym)
+    end
   
-  # Used internally to provide the options to smart_url in a singleton controller.
-  #  
-  def object_url_options(action_prefix = nil, alternate_object = nil)
-    [action_prefix] + namespaces + [parent_url_options, route_name.to_sym]
-  end
+    # Used internally to provide the options to smart_url in a singleton controller.
+    #  
+    def object_url_options(action_prefix = nil, alternate_object = nil)
+      [action_prefix] + namespaces + [parent_url_options, route_name.to_sym]
+    end
   
-  # Builds the object, but doesn't save it, during the new, and create action.
-  #
-  def build_object
-    base = parent? ? parent_object : model
-    @object ||= base.send parent? ? "build_#{model_name}".to_sym : :new, object_params
-  end  
+    # Builds the object, but doesn't save it, during the new, and create action.
+    #
+    def build_object
+      base = parent? ? parent_object : model
+      @object ||= base.send parent? ? "build_#{model_name}".to_sym : :new, object_params
+    end
 end
