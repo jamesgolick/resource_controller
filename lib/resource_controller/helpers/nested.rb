@@ -52,7 +52,7 @@ module ResourceController::Helpers::Nested
     # Returns the current parent object if a parent object is present.
     #
     def parent_object
-      parent? and !parent_singleton? ? parent_model.find(parent_param) : nil
+      parent? && !parent_singleton? ? parent_model.find(parent_param) : nil
     end
     
     # If there is a parent, returns the relevant association proxy.  Otherwise returns model.
