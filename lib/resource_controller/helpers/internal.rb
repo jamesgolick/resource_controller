@@ -33,7 +33,9 @@ module ResourceController::Helpers::Internal
     # Sets the flash for the action, if it is present.
     #
     def set_flash(action)
-      flash[:notice] = options_for(action).flash if options_for(action).flash
+      if f = options_for(action).flash
+        flash[:notice] = f.is_a?(Proc) ? instance_eval(&f) : options_for(action).flash
+      end
     end
     
     # Returns the options for an action, which is a symbol.
