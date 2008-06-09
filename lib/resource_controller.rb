@@ -6,9 +6,10 @@ module ResourceController
   module ActionControllerExtension
     def resource_controller(*args)
       include ResourceController::Controller
-      if args.first == :singleton
+      
+      if args.include?(:singleton)
         include ResourceController::Helpers::SingletonCustomizations
-      end      
+      end
     end  
   end
 end
