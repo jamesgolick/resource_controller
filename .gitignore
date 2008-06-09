@@ -2,3 +2,4 @@ test/log
 test/tmp
 test/nbproject
 .gitignore~
+test/config/database.yml
