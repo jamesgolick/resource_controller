@@ -1,1 +1,4 @@
 test/log
+test/tmp
+test/nbproject
+.gitignore~
