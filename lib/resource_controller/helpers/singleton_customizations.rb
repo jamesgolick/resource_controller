@@ -43,7 +43,12 @@ module ResourceController::Helpers::SingletonCustomizations
     # Builds the object, but doesn't save it, during the new, and create action.
     #
     def build_object
-      base = parent? ? parent_object : model
-      @object ||= base.send parent? ? "build_#{model_name}".to_sym : :new, object_params
+      @object ||= singleton_build_object_base.send parent? ? "build_#{model_name}".to_sym : :new, object_params
+    end
+    
+    # Singleton controllers don't build off of association proxy, so we can't use end_of_association_chain here
+    #
+    def singleton_build_object_base
+      parent? ? parent_object : model
     end
 end
