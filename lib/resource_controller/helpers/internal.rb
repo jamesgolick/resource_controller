@@ -34,7 +34,15 @@ module ResourceController::Helpers::Internal
     #
     def set_flash(action)
       if f = options_for(action).flash
-        flash[:notice] = f.is_a?(Proc) ? instance_eval(&f) : options_for(action).flash
+        flash[:notice]     = f.is_a?(Proc) ? instance_eval(&f) : options_for(action).flash
+      end
+      
+      set_flash_now(action)
+    end
+    
+    def set_flash_now(action)
+      if f = options_for(action).flash_now
+        flash.now[:notice] = f.is_a?(Proc) ? instance_eval(&f) : options_for(action).flash_now
       end
     end
     

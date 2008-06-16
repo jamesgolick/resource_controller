@@ -85,4 +85,22 @@ class Helpers::InternalTest < Test::Unit::TestCase
       assert_equal @new_action, @controller.send(:options_for, :new_action)
     end
   end
+  
+  context "flash now helper" do
+    setup do
+      klass = Class.new do
+        include ResourceController::Helpers::Internal
+      end
+      
+      @c = klass.new
+      @c.stubs(:options_for).returns(stub(:flash_now => 'something'))
+      flash_now = mock()
+      flash_now.expects(:[]=).with(:notice, 'something')
+      @c.stubs(:flash).returns(stub(:now => flash_now))
+    end
+
+    should "set the flash_now" do
+      @c.send :set_flash_now, :new
+    end
+  end
 end
