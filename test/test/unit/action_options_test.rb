@@ -2,13 +2,18 @@ require File.dirname(__FILE__)+'/../test_helper'
 
 class ActionOptionsTest < Test::Unit::TestCase
   def setup
-    @controller     = PostsController.new
-    @create = ResourceController::ActionOptions.new
+    @controller = PostsController.new
+    @create     = ResourceController::ActionOptions.new
   end
   
   should "have attr accessor for flash" do
     @create.flash "Successfully created."
     assert_equal "Successfully created.", @create.flash
+  end
+  
+  should "have attr accessor for flash_now" do
+    @create.flash_now "Successfully created."
+    assert_equal "Successfully created.", @create.flash_now
   end
 
   %w(before after).each do |accessor|
@@ -68,9 +73,10 @@ class ActionOptionsTest < Test::Unit::TestCase
     setup do
       @opts = ResourceController::ActionOptions.new
       @opts.wants.js
-      @opts.after {}
-      @opts.before {}
-      @opts.flash ''
+      @opts.after     {}
+      @opts.before    {}
+      @opts.flash     ''
+      @opts.flash_now ''
       @dup = @opts.dup
     end
 
@@ -92,6 +98,11 @@ class ActionOptionsTest < Test::Unit::TestCase
     should "duplicate the flash" do
       assert !@opts.flash.equal?(@dup.flash)
       assert @dup.flash
+    end
+    
+    should "duplicate the flash_now" do
+      assert !@opts.flash_now.equal?(@dup.flash_now)
+      assert @dup.flash_now
     end
   end
   

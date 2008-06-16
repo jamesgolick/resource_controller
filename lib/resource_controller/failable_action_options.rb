@@ -12,7 +12,7 @@ module ResourceController
       @fails   = ActionOptions.new
     end
     
-    delegate :flash, :after, :response, :wants, :to => :success
+    delegate :flash, :flash_now, :after, :response, :wants, :to => :success
     
     def dup
       returning self.class.new do |duplicate|
