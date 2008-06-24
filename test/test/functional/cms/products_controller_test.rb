@@ -18,5 +18,6 @@ class Cms::ProductsControllerTest < Test::Unit::TestCase
     resource.update.redirect  = 'cms_product_path(@product)'
     resource.destroy.redirect = 'cms_products_path'
     resource.create.redirect  = 'cms_product_path(@product)'
+    resource.create.flash     = /something/i
   end
 end

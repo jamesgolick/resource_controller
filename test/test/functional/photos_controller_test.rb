@@ -19,9 +19,11 @@ class PhotosControllerTest < Test::Unit::TestCase
   end
   
   should_be_restful do |resource|
-    resource.formats = [:html]
+    resource.formats       = [:html]
     
-    resource.actions = [:index, :new, :create, :destroy, :show, :edit]
+    resource.actions       = [:index, :new, :create, :destroy, :show, :edit]
+    resource.create.params = {:title => 'Some Photo Title'}
+    resource.create.flash  = "Some Photo Title was created!"
   end
   
   context "with user as parent" do

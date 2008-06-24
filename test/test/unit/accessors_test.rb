@@ -88,4 +88,23 @@ class AccessorsTest < Test::Unit::TestCase
       assert @controller.something[2].is_a?(Proc)
     end
   end
+  
+  context "reader writer" do
+    setup do
+      PostsController.class_eval do
+        reader_writer :rw
+      end
+      
+      @controller = PostsController.new
+    end
+
+    should "store blocks" do
+      @controller.rw do
+        "asdf"
+      end
+      
+      assert @controller.rw.is_a?(Proc), @controller.rw
+    end
+  end
+  
 end
