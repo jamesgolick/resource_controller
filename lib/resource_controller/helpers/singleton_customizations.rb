@@ -8,6 +8,12 @@ module ResourceController::Helpers::SingletonCustomizations
       methods_to_undefine = [:param, :index, :collection, :load_collection, :collection_url, 
         :collection_path, :hash_for_collection_url, :hash_for_collection_path]
       methods_to_undefine.each { |method| undef_method(method) if method_defined? method }
+      
+      class << self
+        def singleton?
+          true
+        end
+      end
     end
   end
   
