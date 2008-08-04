@@ -281,6 +281,7 @@ files:
 - generators/scaffold_resource/templates/view_show.erb
 - generators/scaffold_resource/templates/view_show.haml
 - generators/scaffold_resource/USAGE
+- rails/init.rb
 has_rdoc: true
 homepage: http://jamesgolick.com/resource_controller
 post_install_message: 
