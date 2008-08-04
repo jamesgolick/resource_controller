@@ -1,4 +1,5 @@
 require 'rake/gempackagetask'
+require 'yaml'
 
 task :clean => :clobber_package
 
