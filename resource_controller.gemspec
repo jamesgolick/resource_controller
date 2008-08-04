@@ -1,14 +1,311 @@
-Gem::Specification.new do |s|
-  s.name         = "resource_controller"
-  s.version      = "0.4.9"
-  s.date         = "2008-08-04"
-  s.summary      = "Rails RESTful controller abstraction plugin."
-  s.email        = "james@giraffesoft.ca"
-  s.homepage     = "http://jamesgolick.com/resource_controller"
-  s.description  = "resource_controller makes RESTful controllers easier, more maintainable, and super readable.  With the RESTful controller pattern hidden away, you can focus on what makes your controller special."
-  s.has_rdoc     = true
-  s.authors      = ["James Golick"]
-  s.files        = %w(LICENSE README Rakefile init.rb) + ["lib/resource_controller", "lib/resource_controller/accessors.rb", "lib/resource_controller/action_options.rb", "lib/resource_controller/actions.rb", "lib/resource_controller/base.rb", "lib/resource_controller/class_methods.rb", "lib/resource_controller/controller.rb", "lib/resource_controller/failable_action_options.rb", "lib/resource_controller/helpers", "lib/resource_controller/helpers/current_objects.rb", "lib/resource_controller/helpers/internal.rb", "lib/resource_controller/helpers/nested.rb", "lib/resource_controller/helpers/urls.rb", "lib/resource_controller/helpers.rb", "lib/resource_controller/response_collector.rb", "lib/resource_controller.rb", "lib/urligence.rb"]
-  s.test_files   = ["test/app", "test/app/controllers", "test/app/controllers/application.rb", "test/app/controllers/cms", "test/app/controllers/cms/options_controller.rb", "test/app/controllers/cms/products_controller.rb", "test/app/controllers/comments_controller.rb", "test/app/controllers/people_controller.rb", "test/app/controllers/photos_controller.rb", "test/app/controllers/posts_controller.rb", "test/app/controllers/projects_controller.rb", "test/app/controllers/somethings_controller.rb", "test/app/controllers/tags_controller.rb", "test/app/controllers/users_controller.rb", "test/app/helpers", "test/app/helpers/application_helper.rb", "test/app/helpers/cms", "test/app/helpers/cms/products_helper.rb", "test/app/helpers/comments_helper.rb", "test/app/helpers/options_helper.rb", "test/app/helpers/people_helper.rb", "test/app/helpers/photos_helper.rb", "test/app/helpers/posts_helper.rb", "test/app/helpers/projects_helper.rb", "test/app/helpers/somethings_helper.rb", "test/app/helpers/tags_helper.rb", "test/app/helpers/users_helper.rb", "test/app/models", "test/app/models/account.rb", "test/app/models/comment.rb", "test/app/models/option.rb", "test/app/models/photo.rb", "test/app/models/post.rb", "test/app/models/product.rb", "test/app/models/project.rb", "test/app/models/something.rb", "test/app/models/tag.rb", "test/app/views", "test/app/views/cms", "test/app/views/cms/options", "test/app/views/cms/options/edit.rhtml", "test/app/views/cms/options/index.rhtml", "test/app/views/cms/options/new.rhtml", "test/app/views/cms/options/show.rhtml", "test/app/views/cms/products", "test/app/views/cms/products/edit.rhtml", "test/app/views/cms/products/index.rhtml", "test/app/views/cms/products/new.rhtml", "test/app/views/cms/products/show.rhtml", "test/app/views/comments", "test/app/views/comments/edit.rhtml", "test/app/views/comments/index.rhtml", "test/app/views/comments/new.rhtml", "test/app/views/comments/show.rhtml", "test/app/views/layouts", "test/app/views/layouts/application.rhtml", "test/app/views/layouts/comments.rhtml", "test/app/views/layouts/options.rhtml", "test/app/views/layouts/people.rhtml", "test/app/views/layouts/photos.rhtml", "test/app/views/layouts/projects.rhtml", "test/app/views/layouts/somethings.rhtml", "test/app/views/layouts/tags.rhtml", "test/app/views/people", "test/app/views/people/edit.rhtml", "test/app/views/people/index.rhtml", "test/app/views/people/new.rhtml", "test/app/views/people/show.rhtml", "test/app/views/photos", "test/app/views/photos/edit.rhtml", "test/app/views/photos/index.rhtml", "test/app/views/photos/new.rhtml", "test/app/views/photos/show.rhtml", "test/app/views/posts", "test/app/views/posts/edit.rhtml", "test/app/views/posts/index.rhtml", "test/app/views/posts/new.rhtml", "test/app/views/posts/show.rhtml", "test/app/views/projects", "test/app/views/projects/edit.rhtml", "test/app/views/projects/index.rhtml", "test/app/views/projects/new.rhtml", "test/app/views/projects/show.rhtml", "test/app/views/somethings", "test/app/views/somethings/edit.rhtml", "test/app/views/somethings/index.rhtml", "test/app/views/somethings/new.rhtml", "test/app/views/somethings/show.rhtml", "test/app/views/tags", "test/app/views/tags/edit.rhtml", "test/app/views/tags/index.rhtml", "test/app/views/tags/index.rjs", "test/app/views/tags/new.rhtml", "test/app/views/tags/show.rhtml", "test/app/views/users", "test/app/views/users/edit.rhtml", "test/app/views/users/index.rhtml", "test/app/views/users/new.rhtml", "test/app/views/users/show.rhtml", "test/config", "test/config/boot.rb", "test/config/database.yml", "test/config/environment.rb", "test/config/environments", "test/config/environments/development.rb", "test/config/environments/test.rb", "test/config/routes.rb", "test/db", "test/db/migrate", "test/db/migrate/001_create_posts.rb", "test/db/migrate/002_create_products.rb", "test/db/migrate/003_create_comments.rb", "test/db/migrate/004_create_options.rb", "test/db/migrate/005_create_photos.rb", "test/db/migrate/006_create_tags.rb", "test/db/migrate/007_create_somethings.rb", "test/db/migrate/008_create_accounts.rb", "test/db/migrate/009_add_account_id_to_photos.rb", "test/db/migrate/010_create_projects.rb", "test/db/schema.rb", "test/log", "test/Rakefile", "test/script", "test/script/console", "test/script/destroy", "test/script/generate", "test/script/server", "test/test", "test/test/fixtures", "test/test/fixtures/accounts.yml", "test/test/fixtures/comments.yml", "test/test/fixtures/options.yml", "test/test/fixtures/photos.yml", "test/test/fixtures/photos_tags.yml", "test/test/fixtures/posts.yml", "test/test/fixtures/products.yml", "test/test/fixtures/projects.yml", "test/test/fixtures/somethings.yml", "test/test/fixtures/tags.yml", "test/test/functional", "test/test/functional/cms", "test/test/functional/cms/options_controller_test.rb", "test/test/functional/cms/products_controller_test.rb", "test/test/functional/comments_controller_test.rb", "test/test/functional/people_controller_test.rb", "test/test/functional/photos_controller_test.rb", "test/test/functional/posts_controller_test.rb", "test/test/functional/projects_controller_test.rb", "test/test/functional/somethings_controller_test.rb", "test/test/functional/tags_controller_test.rb", "test/test/functional/users_controller_test.rb", "test/test/test_helper.rb", "test/test/unit", "test/test/unit/accessors_test.rb", "test/test/unit/account_test.rb", "test/test/unit/action_options_test.rb", "test/test/unit/base_test.rb", "test/test/unit/comment_test.rb", "test/test/unit/failable_action_options_test.rb", "test/test/unit/helpers", "test/test/unit/helpers/current_objects_test.rb", "test/test/unit/helpers/internal_test.rb", "test/test/unit/helpers/nested_test.rb", "test/test/unit/helpers/urls_test.rb", "test/test/unit/helpers_test.rb", "test/test/unit/option_test.rb", "test/test/unit/photo_test.rb", "test/test/unit/post_test.rb", "test/test/unit/project_test.rb", "test/test/unit/response_collector_test.rb", "test/test/unit/something_test.rb", "test/test/unit/tag_test.rb", "test/test/unit/urligence_test.rb", "test/tmp", "test/vendor", "test/vendor/plugins", "test/vendor/plugins/shoulda", "test/vendor/plugins/shoulda/bin", "test/vendor/plugins/shoulda/bin/convert_to_should_syntax", "test/vendor/plugins/shoulda/init.rb", "test/vendor/plugins/shoulda/lib", "test/vendor/plugins/shoulda/lib/shoulda", "test/vendor/plugins/shoulda/lib/shoulda/active_record_helpers.rb", "test/vendor/plugins/shoulda/lib/shoulda/color.rb", "test/vendor/plugins/shoulda/lib/shoulda/controller_tests", "test/vendor/plugins/shoulda/lib/shoulda/controller_tests/controller_tests.rb", "test/vendor/plugins/shoulda/lib/shoulda/controller_tests/formats", "test/vendor/plugins/shoulda/lib/shoulda/controller_tests/formats/html.rb", "test/vendor/plugins/shoulda/lib/shoulda/controller_tests/formats/xml.rb", "test/vendor/plugins/shoulda/lib/shoulda/gem", "test/vendor/plugins/shoulda/lib/shoulda/gem/proc_extensions.rb", "test/vendor/plugins/shoulda/lib/shoulda/gem/shoulda.rb", "test/vendor/plugins/shoulda/lib/shoulda/general.rb", "test/vendor/plugins/shoulda/lib/shoulda/private_helpers.rb", "test/vendor/plugins/shoulda/lib/shoulda.rb", "test/vendor/plugins/shoulda/Rakefile"]
-  s.rdoc_options = ["--main", "README"]
-end
+--- !ruby/object:Gem::Specification 
+name: resource_controller
+version: !ruby/object:Gem::Version 
+  version: 0.4.9
+platform: ruby
+authors: 
+- James Golick
+autorequire: 
+bindir: bin
+cert_chain: []
+
+date: 2008-08-04 00:00:00 -04:00
+default_executable: 
+dependencies: []
+
+description: Rails RESTful controller abstraction plugin.
+email: james@giraffesoft.ca
+executables: []
+
+extensions: []
+
+extra_rdoc_files: []
+
+files: 
+- README.rdoc
+- README
+- LICENSE
+- init.rb
+- Rakefile
+- lib/resource_controller
+- lib/resource_controller/accessors.rb
+- lib/resource_controller/action_options.rb
+- lib/resource_controller/actions.rb
+- lib/resource_controller/base.rb
+- lib/resource_controller/class_methods.rb
+- lib/resource_controller/controller.rb
+- lib/resource_controller/failable_action_options.rb
+- lib/resource_controller/helpers
+- lib/resource_controller/helpers/current_objects.rb
+- lib/resource_controller/helpers/internal.rb
+- lib/resource_controller/helpers/nested.rb
+- lib/resource_controller/helpers/urls.rb
+- lib/resource_controller/helpers.rb
+- lib/resource_controller/response_collector.rb
+- lib/resource_controller/version.rb
+- lib/resource_controller.rb
+- lib/tasks
+- lib/tasks/gem.rake
+- lib/urligence.rb
+- test/app
+- test/app/controllers
+- test/app/controllers/application.rb
+- test/app/controllers/cms
+- test/app/controllers/cms/options_controller.rb
+- test/app/controllers/cms/products_controller.rb
+- test/app/controllers/comments_controller.rb
+- test/app/controllers/people_controller.rb
+- test/app/controllers/photos_controller.rb
+- test/app/controllers/posts_controller.rb
+- test/app/controllers/projects_controller.rb
+- test/app/controllers/somethings_controller.rb
+- test/app/controllers/tags_controller.rb
+- test/app/controllers/users_controller.rb
+- test/app/helpers
+- test/app/helpers/application_helper.rb
+- test/app/helpers/cms
+- test/app/helpers/cms/products_helper.rb
+- test/app/helpers/comments_helper.rb
+- test/app/helpers/options_helper.rb
+- test/app/helpers/people_helper.rb
+- test/app/helpers/photos_helper.rb
+- test/app/helpers/posts_helper.rb
+- test/app/helpers/projects_helper.rb
+- test/app/helpers/somethings_helper.rb
+- test/app/helpers/tags_helper.rb
+- test/app/helpers/users_helper.rb
+- test/app/models
+- test/app/models/account.rb
+- test/app/models/comment.rb
+- test/app/models/option.rb
+- test/app/models/photo.rb
+- test/app/models/post.rb
+- test/app/models/product.rb
+- test/app/models/project.rb
+- test/app/models/something.rb
+- test/app/models/tag.rb
+- test/app/views
+- test/app/views/cms
+- test/app/views/cms/options
+- test/app/views/cms/options/edit.rhtml
+- test/app/views/cms/options/index.rhtml
+- test/app/views/cms/options/new.rhtml
+- test/app/views/cms/options/show.rhtml
+- test/app/views/cms/products
+- test/app/views/cms/products/edit.rhtml
+- test/app/views/cms/products/index.rhtml
+- test/app/views/cms/products/new.rhtml
+- test/app/views/cms/products/show.rhtml
+- test/app/views/comments
+- test/app/views/comments/edit.rhtml
+- test/app/views/comments/index.rhtml
+- test/app/views/comments/new.rhtml
+- test/app/views/comments/show.rhtml
+- test/app/views/layouts
+- test/app/views/layouts/application.rhtml
+- test/app/views/layouts/comments.rhtml
+- test/app/views/layouts/options.rhtml
+- test/app/views/layouts/people.rhtml
+- test/app/views/layouts/photos.rhtml
+- test/app/views/layouts/projects.rhtml
+- test/app/views/layouts/somethings.rhtml
+- test/app/views/layouts/tags.rhtml
+- test/app/views/people
+- test/app/views/people/edit.rhtml
+- test/app/views/people/index.rhtml
+- test/app/views/people/new.rhtml
+- test/app/views/people/show.rhtml
+- test/app/views/photos
+- test/app/views/photos/edit.rhtml
+- test/app/views/photos/index.rhtml
+- test/app/views/photos/new.rhtml
+- test/app/views/photos/show.rhtml
+- test/app/views/posts
+- test/app/views/posts/edit.rhtml
+- test/app/views/posts/index.rhtml
+- test/app/views/posts/new.rhtml
+- test/app/views/posts/show.rhtml
+- test/app/views/projects
+- test/app/views/projects/edit.rhtml
+- test/app/views/projects/index.rhtml
+- test/app/views/projects/new.rhtml
+- test/app/views/projects/show.rhtml
+- test/app/views/somethings
+- test/app/views/somethings/edit.rhtml
+- test/app/views/somethings/index.rhtml
+- test/app/views/somethings/new.rhtml
+- test/app/views/somethings/show.rhtml
+- test/app/views/tags
+- test/app/views/tags/edit.rhtml
+- test/app/views/tags/index.rhtml
+- test/app/views/tags/index.rjs
+- test/app/views/tags/new.rhtml
+- test/app/views/tags/show.rhtml
+- test/app/views/users
+- test/app/views/users/edit.rhtml
+- test/app/views/users/index.rhtml
+- test/app/views/users/new.rhtml
+- test/app/views/users/show.rhtml
+- test/config
+- test/config/boot.rb
+- test/config/database.yml
+- test/config/environment.rb
+- test/config/environments
+- test/config/environments/development.rb
+- test/config/environments/test.rb
+- test/config/routes.rb
+- test/db
+- test/db/migrate
+- test/db/migrate/001_create_posts.rb
+- test/db/migrate/002_create_products.rb
+- test/db/migrate/003_create_comments.rb
+- test/db/migrate/004_create_options.rb
+- test/db/migrate/005_create_photos.rb
+- test/db/migrate/006_create_tags.rb
+- test/db/migrate/007_create_somethings.rb
+- test/db/migrate/008_create_accounts.rb
+- test/db/migrate/009_add_account_id_to_photos.rb
+- test/db/migrate/010_create_projects.rb
+- test/db/schema.rb
+- test/log
+- test/log/development.log
+- test/log/test.log
+- test/log/thin.log
+- test/Rakefile
+- test/script
+- test/script/console
+- test/script/destroy
+- test/script/generate
+- test/script/server
+- test/test
+- test/test/fixtures
+- test/test/fixtures/accounts.yml
+- test/test/fixtures/comments.yml
+- test/test/fixtures/options.yml
+- test/test/fixtures/photos.yml
+- test/test/fixtures/photos_tags.yml
+- test/test/fixtures/posts.yml
+- test/test/fixtures/products.yml
+- test/test/fixtures/projects.yml
+- test/test/fixtures/somethings.yml
+- test/test/fixtures/tags.yml
+- test/test/functional
+- test/test/functional/cms
+- test/test/functional/cms/options_controller_test.rb
+- test/test/functional/cms/products_controller_test.rb
+- test/test/functional/comments_controller_test.rb
+- test/test/functional/people_controller_test.rb
+- test/test/functional/photos_controller_test.rb
+- test/test/functional/posts_controller_test.rb
+- test/test/functional/projects_controller_test.rb
+- test/test/functional/somethings_controller_test.rb
+- test/test/functional/tags_controller_test.rb
+- test/test/functional/users_controller_test.rb
+- test/test/test_helper.rb
+- test/test/unit
+- test/test/unit/accessors_test.rb
+- test/test/unit/account_test.rb
+- test/test/unit/action_options_test.rb
+- test/test/unit/base_test.rb
+- test/test/unit/comment_test.rb
+- test/test/unit/failable_action_options_test.rb
+- test/test/unit/helpers
+- test/test/unit/helpers/current_objects_test.rb
+- test/test/unit/helpers/internal_test.rb
+- test/test/unit/helpers/nested_test.rb
+- test/test/unit/helpers/urls_test.rb
+- test/test/unit/helpers_test.rb
+- test/test/unit/option_test.rb
+- test/test/unit/photo_test.rb
+- test/test/unit/post_test.rb
+- test/test/unit/project_test.rb
+- test/test/unit/response_collector_test.rb
+- test/test/unit/something_test.rb
+- test/test/unit/tag_test.rb
+- test/test/unit/urligence_test.rb
+- test/tmp
+- test/tmp/pids
+- test/vendor
+- test/vendor/plugins
+- test/vendor/plugins/shoulda
+- test/vendor/plugins/shoulda/bin
+- test/vendor/plugins/shoulda/bin/convert_to_should_syntax
+- test/vendor/plugins/shoulda/init.rb
+- test/vendor/plugins/shoulda/lib
+- test/vendor/plugins/shoulda/lib/shoulda
+- test/vendor/plugins/shoulda/lib/shoulda/active_record_helpers.rb
+- test/vendor/plugins/shoulda/lib/shoulda/color.rb
+- test/vendor/plugins/shoulda/lib/shoulda/controller_tests
+- test/vendor/plugins/shoulda/lib/shoulda/controller_tests/controller_tests.rb
+- test/vendor/plugins/shoulda/lib/shoulda/controller_tests/formats
+- test/vendor/plugins/shoulda/lib/shoulda/controller_tests/formats/html.rb
+- test/vendor/plugins/shoulda/lib/shoulda/controller_tests/formats/xml.rb
+- test/vendor/plugins/shoulda/lib/shoulda/gem
+- test/vendor/plugins/shoulda/lib/shoulda/gem/proc_extensions.rb
+- test/vendor/plugins/shoulda/lib/shoulda/gem/shoulda.rb
+- test/vendor/plugins/shoulda/lib/shoulda/general.rb
+- test/vendor/plugins/shoulda/lib/shoulda/private_helpers.rb
+- test/vendor/plugins/shoulda/lib/shoulda.rb
+- test/vendor/plugins/shoulda/Rakefile
+- test/vendor/plugins/shoulda/tasks
+- generators/scaffold_resource
+- generators/scaffold_resource/scaffold_resource_generator.rb
+- generators/scaffold_resource/templates
+- generators/scaffold_resource/templates/controller.rb
+- generators/scaffold_resource/templates/fixtures.yml
+- generators/scaffold_resource/templates/functional_test.rb
+- generators/scaffold_resource/templates/helper.rb
+- generators/scaffold_resource/templates/migration.rb
+- generators/scaffold_resource/templates/model.rb
+- generators/scaffold_resource/templates/old_migration.rb
+- generators/scaffold_resource/templates/rspec
+- generators/scaffold_resource/templates/rspec/functional_spec.rb
+- generators/scaffold_resource/templates/rspec/helper_spec.rb
+- generators/scaffold_resource/templates/rspec/routing_spec.rb
+- generators/scaffold_resource/templates/rspec/unit_spec.rb
+- generators/scaffold_resource/templates/rspec/views
+- generators/scaffold_resource/templates/rspec/views/edit_spec.rb
+- generators/scaffold_resource/templates/rspec/views/index_spec.rb
+- generators/scaffold_resource/templates/rspec/views/new_spec.rb
+- generators/scaffold_resource/templates/rspec/views/show_spec.rb
+- generators/scaffold_resource/templates/shoulda_functional_test.rb
+- generators/scaffold_resource/templates/unit_test.rb
+- generators/scaffold_resource/templates/view__form.erb
+- generators/scaffold_resource/templates/view__form.haml
+- generators/scaffold_resource/templates/view_edit.erb
+- generators/scaffold_resource/templates/view_edit.haml
+- generators/scaffold_resource/templates/view_index.erb
+- generators/scaffold_resource/templates/view_index.haml
+- generators/scaffold_resource/templates/view_new.erb
+- generators/scaffold_resource/templates/view_new.haml
+- generators/scaffold_resource/templates/view_show.erb
+- generators/scaffold_resource/templates/view_show.haml
+- generators/scaffold_resource/USAGE
+has_rdoc: true
+homepage: http://jamesgolick.com/resource_controller
+post_install_message: 
+rdoc_options: []
+
+require_paths: 
+- lib
+required_ruby_version: !ruby/object:Gem::Requirement 
+  requirements: 
+  - - ">="
+    - !ruby/object:Gem::Version 
+      version: 1.8.5
+  version: 
+required_rubygems_version: !ruby/object:Gem::Requirement 
+  requirements: 
+  - - ">="
+    - !ruby/object:Gem::Version 
+      version: "0"
+  version: 
+requirements: []
+
+rubyforge_project: giraffesoft
+rubygems_version: 1.2.0
+signing_key: 
+specification_version: 2
+summary: resource_controller makes RESTful controllers easier, more maintainable, and super readable. With the RESTful controller pattern hidden away, you can focus on what makes your controller special.
+test_files: []
+
