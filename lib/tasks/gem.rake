@@ -17,7 +17,7 @@ spec = Gem::Specification.new do |s|
   s.required_ruby_version = '>= 1.8.5'
 
   s.files                 = %w(README.rdoc README LICENSE init.rb Rakefile) +
-                            Dir.glob("{lib,test,generators}/**/*")
+                            Dir.glob("{lib,test,generators,rails}/**/*")
   
   s.require_path          = "lib"
 end
