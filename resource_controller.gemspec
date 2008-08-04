@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name         = "resource_controller"
   s.version      = "0.4.9"
-  s.date         = "2008-06-25"
+  s.date         = "2008-08-04"
   s.summary      = "Rails RESTful controller abstraction plugin."
   s.email        = "james@giraffesoft.ca"
   s.homepage     = "http://jamesgolick.com/resource_controller"
