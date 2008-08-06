@@ -43,7 +43,7 @@ task :gem => :tag_warn
 
 namespace :gem do
   desc 'Upload gems to rubyforge.org'
-  task :release => :gem do
+  task :rubyforge => :gem do
     sh 'rubyforge login'
     sh "rubyforge add_release giraffesoft resource_controller #{ResourceController::VERSION::STRING} pkg/#{spec.full_name}.gem"
     sh "rubyforge add_file    giraffesoft resource_controller #{ResourceController::VERSION::STRING} pkg/#{spec.full_name}.gem"
