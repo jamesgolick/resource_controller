@@ -1,7 +1,7 @@
 --- !ruby/object:Gem::Specification 
 name: resource_controller
 version: !ruby/object:Gem::Version 
-  version: 0.4.10
+  version: 0.4.11
 platform: ruby
 authors: 
 - James Golick
