@@ -1,7 +1,7 @@
 --- !ruby/object:Gem::Specification 
 name: resource_controller
 version: !ruby/object:Gem::Version 
-  version: 0.4.9
+  version: 0.4.10
 platform: ruby
 authors: 
 - James Golick
@@ -9,7 +9,7 @@ autorequire:
 bindir: bin
 cert_chain: []
 
-date: 2008-08-04 00:00:00 -04:00
+date: 2008-08-06 00:00:00 -04:00
 default_executable: 
 dependencies: []
 
@@ -39,9 +39,11 @@ files:
 - lib/resource_controller/helpers/current_objects.rb
 - lib/resource_controller/helpers/internal.rb
 - lib/resource_controller/helpers/nested.rb
+- lib/resource_controller/helpers/singleton_customizations.rb
 - lib/resource_controller/helpers/urls.rb
 - lib/resource_controller/helpers.rb
 - lib/resource_controller/response_collector.rb
+- lib/resource_controller/singleton.rb
 - lib/resource_controller/version.rb
 - lib/resource_controller.rb
 - lib/tasks
@@ -49,11 +51,14 @@ files:
 - lib/urligence.rb
 - test/app
 - test/app/controllers
+- test/app/controllers/accounts_controller.rb
 - test/app/controllers/application.rb
 - test/app/controllers/cms
 - test/app/controllers/cms/options_controller.rb
 - test/app/controllers/cms/products_controller.rb
 - test/app/controllers/comments_controller.rb
+- test/app/controllers/images_controller.rb
+- test/app/controllers/options_controller.rb
 - test/app/controllers/people_controller.rb
 - test/app/controllers/photos_controller.rb
 - test/app/controllers/posts_controller.rb
@@ -62,10 +67,12 @@ files:
 - test/app/controllers/tags_controller.rb
 - test/app/controllers/users_controller.rb
 - test/app/helpers
+- test/app/helpers/accounts_helper.rb
 - test/app/helpers/application_helper.rb
 - test/app/helpers/cms
 - test/app/helpers/cms/products_helper.rb
 - test/app/helpers/comments_helper.rb
+- test/app/helpers/images_helper.rb
 - test/app/helpers/options_helper.rb
 - test/app/helpers/people_helper.rb
 - test/app/helpers/photos_helper.rb
@@ -77,6 +84,7 @@ files:
 - test/app/models
 - test/app/models/account.rb
 - test/app/models/comment.rb
+- test/app/models/image.rb
 - test/app/models/option.rb
 - test/app/models/photo.rb
 - test/app/models/post.rb
@@ -84,7 +92,13 @@ files:
 - test/app/models/project.rb
 - test/app/models/something.rb
 - test/app/models/tag.rb
+- test/app/models/user.rb
 - test/app/views
+- test/app/views/accounts
+- test/app/views/accounts/_form.html.erb
+- test/app/views/accounts/edit.html.erb
+- test/app/views/accounts/new.html.erb
+- test/app/views/accounts/show.html.erb
 - test/app/views/cms
 - test/app/views/cms/options
 - test/app/views/cms/options/edit.rhtml
@@ -101,6 +115,10 @@ files:
 - test/app/views/comments/index.rhtml
 - test/app/views/comments/new.rhtml
 - test/app/views/comments/show.rhtml
+- test/app/views/images
+- test/app/views/images/_form.html.erb
+- test/app/views/images/edit.html.erb
+- test/app/views/images/new.html.erb
 - test/app/views/layouts
 - test/app/views/layouts/application.rhtml
 - test/app/views/layouts/comments.rhtml
@@ -110,6 +128,12 @@ files:
 - test/app/views/layouts/projects.rhtml
 - test/app/views/layouts/somethings.rhtml
 - test/app/views/layouts/tags.rhtml
+- test/app/views/options
+- test/app/views/options/_form.html.erb
+- test/app/views/options/edit.html.erb
+- test/app/views/options/index.html.erb
+- test/app/views/options/new.html.erb
+- test/app/views/options/show.html.erb
 - test/app/views/people
 - test/app/views/people/edit.rhtml
 - test/app/views/people/index.rhtml
@@ -166,6 +190,8 @@ files:
 - test/db/migrate/008_create_accounts.rb
 - test/db/migrate/009_add_account_id_to_photos.rb
 - test/db/migrate/010_create_projects.rb
+- test/db/migrate/011_create_images.rb
+- test/db/migrate/012_create_users.rb
 - test/db/schema.rb
 - test/log
 - test/log/development.log
@@ -181,6 +207,7 @@ files:
 - test/test/fixtures
 - test/test/fixtures/accounts.yml
 - test/test/fixtures/comments.yml
+- test/test/fixtures/images.yml
 - test/test/fixtures/options.yml
 - test/test/fixtures/photos.yml
 - test/test/fixtures/photos_tags.yml
@@ -189,11 +216,13 @@ files:
 - test/test/fixtures/projects.yml
 - test/test/fixtures/somethings.yml
 - test/test/fixtures/tags.yml
+- test/test/fixtures/users.yml
 - test/test/functional
 - test/test/functional/cms
 - test/test/functional/cms/options_controller_test.rb
 - test/test/functional/cms/products_controller_test.rb
 - test/test/functional/comments_controller_test.rb
+- test/test/functional/images_controller_test.rb
 - test/test/functional/people_controller_test.rb
 - test/test/functional/photos_controller_test.rb
 - test/test/functional/posts_controller_test.rb
@@ -213,8 +242,12 @@ files:
 - test/test/unit/helpers/current_objects_test.rb
 - test/test/unit/helpers/internal_test.rb
 - test/test/unit/helpers/nested_test.rb
+- test/test/unit/helpers/singleton_current_objects_test.rb
+- test/test/unit/helpers/singleton_nested_test.rb
+- test/test/unit/helpers/singleton_urls_test.rb
 - test/test/unit/helpers/urls_test.rb
 - test/test/unit/helpers_test.rb
+- test/test/unit/image_test.rb
 - test/test/unit/option_test.rb
 - test/test/unit/photo_test.rb
 - test/test/unit/post_test.rb
