@@ -1,7 +1,7 @@
 --- !ruby/object:Gem::Specification 
 name: resource_controller
 version: !ruby/object:Gem::Version 
-  version: 0.4.11
+  version: 0.4.12
 platform: ruby
 authors: 
 - James Golick
@@ -9,7 +9,7 @@ autorequire:
 bindir: bin
 cert_chain: []
 
-date: 2008-08-06 00:00:00 -04:00
+date: 2008-08-11 00:00:00 -04:00
 default_executable: 
 dependencies: []
 
@@ -46,8 +46,6 @@ files:
 - lib/resource_controller/singleton.rb
 - lib/resource_controller/version.rb
 - lib/resource_controller.rb
-- lib/tasks
-- lib/tasks/gem.rake
 - lib/urligence.rb
 - test/app
 - test/app/controllers
