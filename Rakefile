@@ -2,7 +2,7 @@ require 'rake'
 require 'rake/testtask'
 require 'rake/rdoctask'
 require File.dirname(__FILE__)+'/lib/resource_controller/version'
-Dir['lib/tasks/**.rake'].each { |tasks| load tasks }
+Dir['tasks/**.rake'].each { |tasks| load tasks }
 
 desc 'Default: run unit tests.'
 task :default => :test
