@@ -1,7 +1,7 @@
 --- !ruby/object:Gem::Specification 
 name: resource_controller
 version: !ruby/object:Gem::Version 
-  version: 0.4.12
+  version: 0.5.0
 platform: ruby
 authors: 
 - James Golick
@@ -9,7 +9,7 @@ autorequire:
 bindir: bin
 cert_chain: []
 
-date: 2008-08-11 00:00:00 -04:00
+date: 2008-09-03 00:00:00 -04:00
 default_executable: 
 dependencies: []
 
@@ -23,7 +23,6 @@ extra_rdoc_files: []
 
 files: 
 - README.rdoc
-- README
 - LICENSE
 - init.rb
 - Rakefile
