@@ -1,7 +1,7 @@
 --- !ruby/object:Gem::Specification 
 name: resource_controller
 version: !ruby/object:Gem::Version 
-  version: 0.5.1
+  version: 0.5.2
 platform: ruby
 authors: 
 - James Golick
@@ -9,7 +9,7 @@ autorequire:
 bindir: bin
 cert_chain: []
 
-date: 2008-09-03 00:00:00 -04:00
+date: 2008-09-11 00:00:00 -04:00
 default_executable: 
 dependencies: []
 
