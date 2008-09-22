@@ -44,21 +44,6 @@ Rails::Initializer.run do |config|
   # See Rails::Configuration for more options
   
   config.action_controller.session = { :session_key => "_myapp_session", :secret => "6c1372e61789239a727cdbc8252eb6da" }
+  
+  config.gem 'resource_controller'
 end
-
-require "#{RAILS_ROOT}/../init"
-
-# Add new inflection rules using the following format 
-# (all these examples are active by default):
-# Inflector.inflections do |inflect|
-#   inflect.plural /^(ox)$/i, '\1en'
-#   inflect.singular /^(ox)en/i, '\1'
-#   inflect.irregular 'person', 'people'
-#   inflect.uncountable %w( fish sheep )
-# end
-
-# Add new mime types for use in respond_to blocks:
-# Mime::Type.register "text/richtext", :rtf
-# Mime::Type.register "application/x-mobile", :mobile
-
-# Include your application configuration below
