@@ -1,7 +1,7 @@
 --- !ruby/object:Gem::Specification 
 name: resource_controller
 version: !ruby/object:Gem::Version 
-  version: 0.5.2
+  version: 0.5.3
 platform: ruby
 authors: 
 - James Golick
@@ -9,7 +9,7 @@ autorequire:
 bindir: bin
 cert_chain: []
 
-date: 2008-09-11 00:00:00 -04:00
+date: 2008-09-22 00:00:00 -04:00
 default_executable: 
 dependencies: []
 
@@ -256,6 +256,8 @@ files:
 - test/tmp
 - test/tmp/pids
 - test/vendor
+- test/vendor/gems
+- test/vendor/gems/resource_controller-0.5.2
 - test/vendor/plugins
 - test/vendor/plugins/shoulda
 - test/vendor/plugins/shoulda/bin
