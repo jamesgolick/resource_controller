@@ -1,3 +1,16 @@
+$LOAD_PATH << File.dirname(__FILE__) unless $LOAD_PATH.include?(File.dirname(__FILE__))
+require 'application'
+require 'resource_controller/accessors'
+require 'resource_controller/action_options'
+require 'resource_controller/actions'
+require 'resource_controller/base'
+require 'resource_controller/class_methods'
+require 'resource_controller/controller'
+require 'resource_controller/failable_action_options'
+require 'resource_controller/helpers'
+require 'resource_controller/response_collector'
+require 'resource_controller/singleton'
+require 'resource_controller/version'
 require 'urligence'
 
 module ResourceController
