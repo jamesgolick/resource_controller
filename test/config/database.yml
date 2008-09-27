@@ -1,13 +1,17 @@
 development:
-  adapter: mysql
-  database: resource_controller_test
-  username: root
-  password:
-  socket: /tmp/mysql.sock
+      host: localhost
+      adapter: mysql
+      database: resource_controller_test
+      port: 3306
+      username: root
+      password: Robotnik
+
 
 test:
-  adapter: mysql
-  database: resource_controller_test
-  username: root
-  password:
-  socket: /tmp/mysql.sock
+      host: localhost
+      adapter: mysql
+      database: resource_controller_test
+      port: 3306
+      username: root
+      password: Robotnik
+

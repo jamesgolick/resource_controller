@@ -37,7 +37,7 @@ module ResourceController
         # Returns true/false based on whether or not a parent is a singleton.
         #    
         def parent_singleton?
-          !parent_type_from_request.nil?
+          !parent_type_from_request.nil? && parent_type_from_params.nil?
         end
     
         # Returns the current parent param, if there is a parent. (i.e. params[:post_id])
