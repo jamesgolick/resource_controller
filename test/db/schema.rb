@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(:version => 14) do
     t.string  "title"
   end
 
-  create_table "personel", :force => true do |t|
+  create_table "personnel", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(:version => 14) do
   create_table "photos", :force => true do |t|
     t.string  "title"
     t.integer "account_id"
-    t.integer "personel_id"
+    t.integer "personnel_id"
   end
 
   create_table "photos_tags", :force => true do |t|

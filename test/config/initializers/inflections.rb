@@ -10,5 +10,5 @@
 # end
 
 ActiveSupport::Inflector.inflections do |inflect|
-  inflect.irregular "personel", "personel"
+  inflect.irregular "personnel", "personnel"
 end

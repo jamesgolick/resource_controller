@@ -20,8 +20,8 @@ ActionController::Routing::Routes.draw do |map|
   
   map.namespace :cms do |cms|
     cms.resources :products, :has_many => :options
-    cms.resources :personel do |personel|
-      personel.resources :photos
+    cms.resources :personnel do |personnel|
+      personnel.resources :photos
     end
   end
 

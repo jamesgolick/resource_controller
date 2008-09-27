@@ -12,31 +12,31 @@ class Cms::PhotosControllerTest < Test::Unit::TestCase
     @photo      = Photo.find 1
   end
   
-  context "with personel as parent" do
+  context "with personnel as parent" do
     context "on get to :index" do
       setup do
-        get :index, :personel_id => 1
+        get :index, :personnel_id => 1
       end
 
       should_respond_with :success
       should_render_template "index"
       should_assign_to :photos
-      should_assign_to :personel
-      should "scope photos to personel" do
-        assert assigns(:photos).all? { |photo| photo.personel.id == 1 }
+      should_assign_to :personnel
+      should "scope photos to personnel" do
+        assert assigns(:photos).all? { |photo| photo.personnel.id == 1 }
       end
     end
     
     context "on post to :create" do
       setup do
-        post :create, :personel_id => 1, :photo => {}
+        post :create, :personnel_id => 1, :photo => {}
       end
 
-      should_redirect_to 'cms_personel_photo_path(@photo.personel, @photo)'
+      should_redirect_to 'cms_personnel_photo_path(@photo.personnel, @photo)'
       should_assign_to :photo
-      should_assign_to :personel
+      should_assign_to :personnel
       should "scope photo to personel" do
-        assert personel(:one), assigns(:photo).personel
+        assert personnel(:one), assigns(:photo).personnel
       end
     end
   end
