@@ -1,13 +1,9 @@
 development:
-  adapter: mysql
-  database: resource_controller_test
-  username: root
-  password:
-  socket: /tmp/mysql.sock
+  adapter: sqlite3
+  database: db/test.sqlite3
+  timeout: 5000
 
 test:
-  adapter: mysql
-  database: resource_controller_test
-  username: root
-  password:
-  socket: /tmp/mysql.sock
+  adapter: sqlite3
+  database: db/test.sqlite3
+  timeout: 5000

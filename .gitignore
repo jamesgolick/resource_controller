@@ -4,6 +4,5 @@ test/tmp
 test/nbproject
 nbproject/*
 .gitignore~
-test/config/*.yml
 rdoc
 test/db/test.sqlite3
