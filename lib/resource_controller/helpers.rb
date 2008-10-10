@@ -1,9 +1,3 @@
-require 'resource_controller/helpers/current_objects'
-require 'resource_controller/helpers/internal'
-require 'resource_controller/helpers/nested'
-require 'resource_controller/helpers/singleton_customizations'
-require 'resource_controller/helpers/urls'
-
 module ResourceController
   # == ResourceController::Helpers
   #
