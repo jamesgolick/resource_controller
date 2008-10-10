@@ -44,6 +44,4 @@ Rails::Initializer.run do |config|
   # See Rails::Configuration for more options
   
   config.action_controller.session = { :session_key => "_myapp_session", :secret => "6c1372e61789239a727cdbc8252eb6da" }
-  
-  config.gem 'resource_controller'
 end
