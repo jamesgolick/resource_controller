@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(:version => 14) do
 
   create_table "posts", :force => true do |t|
     t.string "title", :default => ""
-    t.text   "body"
+    t.text   "body",  :default => ""
   end
 
   create_table "products", :force => true do |t|

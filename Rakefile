@@ -1,7 +1,5 @@
 Dir.chdir('test')
 load 'Rakefile'
-require File.dirname(__FILE__)+'/lib/resource_controller/version'
-Dir['tasks/**.rake'].each { |tasks| load tasks }
 
 desc 'Generate documentation for the ResourceController plugin.'
 Rake::RDocTask.new(:rdoc) do |rdoc|
