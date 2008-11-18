@@ -23,7 +23,7 @@ module ResourceController
     def responds_to(*args)
       options = args.extract_options!
 
-      (actions - [:edit]).each { |action| setup_action_response_for_format(action, *args) }
+      (ACTIONS - [:edit, :new_action] + [:new]).each { |action| setup_action_response_for_format(action, *args) }
     end
 
     def setup_create_response_for_format(format)
@@ -40,7 +40,7 @@ module ResourceController
     end
 
     def setup_update_response_for_format(format)
-      update.wants.send(format) { render nothing => true, :status => :ok }
+      update.wants.send(format) { render :nothing => true, :status => :ok }
       update.fails.wants.send(format) { render format => object.errors, :status => :unprocessable_entity }
     end
 
@@ -49,8 +49,8 @@ module ResourceController
     end
 
     def setup_destroy_response_for_format(format)
-      destroy.wants.send(format) { render nothing => true, :status => :ok }
-      destroy.fails.wants.send(format) { render nothing => true, :status => :not_found }
+      destroy.wants.send(format) { render :nothing => true, :status => :ok }
+      destroy.fails.wants.send(format) { render :nothing => true, :status => :not_found }
     end
 
     def setup_action_response_for_format(action, *formats)

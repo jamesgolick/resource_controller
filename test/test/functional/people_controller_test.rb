@@ -34,7 +34,7 @@ class PeopleControllerTest < Test::Unit::TestCase
 
   context "index" do
     setup do
-      get :index, :format => :xml
+      get :index, :format => 'xml'
     end
 
     should_respond_with :success
@@ -50,7 +50,7 @@ class PeopleControllerTest < Test::Unit::TestCase
   
   context "show" do
     setup do
-      get :show, :format => :xml
+      get :show, :format => 'xml'
     end
 
     should_respond_with :success
@@ -60,13 +60,13 @@ class PeopleControllerTest < Test::Unit::TestCase
     end
 
     should "respond with the index in XML form" do
-      assert_equal Account.find(:first).to_xml, @response.body
+      assert_equal assigns(:person).to_xml, @response.body
     end
   end
   
   context "on get to new" do
     setup do
-      get :new, :format => :xml
+      get :new, :format => 'xml'
     end
 
     should_respond_with :success
@@ -76,13 +76,13 @@ class PeopleControllerTest < Test::Unit::TestCase
     end
 
     should "respond with the index in XML form" do
-      assert_equal Account.find(:first).to_xml, @response.body
+      assert_equal assigns(:person).to_xml, @response.body
     end
   end
   
   context "on post to create" do
     setup do
-      post :create, :person => {}, :format => :xml
+      post :create, :person => {}, :format => 'xml'
     end
 
     should_respond_with :created
@@ -98,7 +98,7 @@ class PeopleControllerTest < Test::Unit::TestCase
   
   context "on put to update" do
     setup do
-      put :update, :id => 1, :person => {}, :format => :xml
+      put :update, :id => 1, :person => {}, :format => 'xml'
     end
 
     should_respond_with :ok
@@ -111,7 +111,7 @@ class PeopleControllerTest < Test::Unit::TestCase
 
   context "on destroy" do
     setup do
-      post :destroy, :id => 1, :format => :xml
+      post :destroy, :id => 1, :format => 'xml'
     end
 
     should_respond_with :ok
@@ -125,7 +125,7 @@ class PeopleControllerTest < Test::Unit::TestCase
   context "on put to update fails" do
     setup do
       Account.any_instance.stubs(:save).returns(false)
-      put :update, :id => 1, :person => {}, :format => :xml
+      put :update, :id => 1, :person => {}, :format => 'xml'
     end
 
     should_respond_with :unprocessable_entity
@@ -142,7 +142,7 @@ class PeopleControllerTest < Test::Unit::TestCase
   context "on post to create fails" do
     setup do
       Account.any_instance.stubs(:save).returns(false)
-      post :create, :person => {}, :format => :xml
+      post :create, :person => {}, :format => 'xml'
     end
 
     should_respond_with :unprocessable_entity
