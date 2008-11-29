@@ -17,7 +17,7 @@ module ResourceController
       actions_to_remove += [*config[:except]] if config[:except]
       actions_to_remove.uniq!
 
-      actions_to_remove.each { |action| undef_method(action) if instance_methods.include?(action.to_s) }
+      actions_to_remove.each { |action| undef_method(action) if method_defined?(action) }
     end
     
   end
