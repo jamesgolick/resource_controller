@@ -4,7 +4,7 @@ require 'cms/photos_controller'
 # Re-raise errors caught by the controller.
 class Cms::PhotosController; def rescue_action(e) raise e end; end
 
-class Cms::PhotosControllerTest < Test::Unit::TestCase
+class Cms::PhotosControllerTest < ActionController::TestCase
   def setup
     @controller = Cms::PhotosController.new
     @request    = ActionController::TestRequest.new

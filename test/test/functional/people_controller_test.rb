@@ -4,7 +4,7 @@ require 'people_controller'
 # Re-raise errors caught by the controller.
 class PeopleController; def rescue_action(e) raise e end; end
 
-class PeopleControllerTest < Test::Unit::TestCase
+class PeopleControllerTest < ActionController::TestCase
   def setup
     @controller = PeopleController.new
     @request    = ActionController::TestRequest.new

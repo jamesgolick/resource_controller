@@ -4,7 +4,7 @@ require 'posts_controller'
 # Re-raise errors caught by the controller.
 class PostsController; def rescue_action(e) raise e end; end
 
-class PostsControllerTest < Test::Unit::TestCase
+class PostsControllerTest < ActionController::TestCase
   def setup
     @controller = PostsController.new
     @request    = ActionController::TestRequest.new

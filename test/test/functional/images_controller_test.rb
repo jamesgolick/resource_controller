@@ -4,7 +4,7 @@ require 'images_controller'
 # Re-raise errors caught by the controller.
 class ImagesController; def rescue_action(e) raise e end; end
 
-class ImagesControllerTest < Test::Unit::TestCase
+class ImagesControllerTest < ActionController::TestCase
   def setup
     @controller           = ImagesController.new
     @request              = ActionController::TestRequest.new

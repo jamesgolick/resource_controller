@@ -4,7 +4,7 @@ require 'cms/options_controller'
 # Re-raise errors caught by the controller.
 class Cms::OptionsController; def rescue_action(e) raise e end; end
 
-class Cms::OptionsControllerTest < Test::Unit::TestCase
+class Cms::OptionsControllerTest < ActionController::TestCase
   def setup
     @controller = Cms::OptionsController.new
     @request    = ActionController::TestRequest.new

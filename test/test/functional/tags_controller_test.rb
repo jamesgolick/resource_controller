@@ -4,7 +4,7 @@ require 'tags_controller'
 # Re-raise errors caught by the controller.
 class TagsController; def rescue_action(e) raise e end; end
 
-class TagsControllerTest < Test::Unit::TestCase
+class TagsControllerTest < ActionController::TestCase
   def setup
     @controller = TagsController.new
     @request    = ActionController::TestRequest.new
