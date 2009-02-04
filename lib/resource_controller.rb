@@ -1,3 +1,5 @@
+require_dependency 'application'
+
 module ResourceController
   ACTIONS           = [:index, :show, :new_action, :create, :edit, :update, :destroy].freeze
   SINGLETON_ACTIONS = (ACTIONS - [:index]).freeze
