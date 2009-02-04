@@ -1,6 +1,6 @@
 require File.dirname(__FILE__)+'/../test_helper'
 
-class BaseTest < Test::Unit::TestCase
+class BaseTest < ActiveSupport::TestCase
   def setup
     @controller = ResourceController::Base.new
   end

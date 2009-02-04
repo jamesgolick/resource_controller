@@ -5,7 +5,7 @@ class PhotosController
   include Urligence
 end
 
-class UrligenceTest < Test::Unit::TestCase  
+class UrligenceTest < ActiveSupport::TestCase  
   def setup
     @controller = PhotosController.new
     @tag   = stub(:class => stub(:name => "Tag"), :to_param => 'awesomestuff')

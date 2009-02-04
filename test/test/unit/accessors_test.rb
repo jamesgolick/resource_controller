@@ -1,6 +1,6 @@
 require File.dirname(__FILE__)+'/../test_helper'
 
-class AccessorsTest < Test::Unit::TestCase
+class AccessorsTest < ActiveSupport::TestCase
   def setup
     PostsController.class_eval do
       extend ResourceController::Accessors

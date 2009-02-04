@@ -1,6 +1,6 @@
 require File.dirname(__FILE__)+'/../test_helper'
 
-class ResponseCollectorTest < Test::Unit::TestCase
+class ResponseCollectorTest < ActiveSupport::TestCase
   context "yielding a block to a collector object" do
     setup do
       @collector = ResourceController::ResponseCollector.new

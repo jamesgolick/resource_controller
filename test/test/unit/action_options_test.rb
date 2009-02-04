@@ -1,6 +1,6 @@
 require File.dirname(__FILE__)+'/../test_helper'
 
-class ActionOptionsTest < Test::Unit::TestCase
+class ActionOptionsTest < ActiveSupport::TestCase
   def setup
     @controller = PostsController.new
     @create     = ResourceController::ActionOptions.new
