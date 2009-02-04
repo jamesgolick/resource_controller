@@ -1,3 +1,5 @@
+require_dependency 'application'
+
 module ResourceController
   
   # == ResourceController::Base
