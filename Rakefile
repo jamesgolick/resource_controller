@@ -11,6 +11,7 @@ begin
     s.homepage = "http://jamesgolick.com/resource_controller"
     s.description = ""
     s.authors = ["James Golick"]
+    s.files = FileList["[A-Z]*.*", "{bin,generators,lib,test,spec,rails}/**/*"]
   end
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
