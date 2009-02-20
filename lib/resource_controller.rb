@@ -1,4 +1,8 @@
-require_dependency 'application'
+begin
+  require_dependency 'application_controller'
+rescue LoadError => e
+  require_dependency 'application'
+end
 
 module ResourceController
   ACTIONS           = [:index, :show, :new_action, :create, :edit, :update, :destroy].freeze
