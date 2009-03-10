@@ -72,6 +72,16 @@ Or you can create a whole new block.  This syntax destroys everything that's the
       wants.js { render :template => "show.rjs" }
     end
   end
+
+If you have a nested resource and want to redirect to the parent after create/update and destroy you can do this in the object controller
+
+ class CommentsController < ResourceController::Base
+    belongs_to :post
+    
+    create.wants.html { redirect_to smart_url(parent_url_options) } 
+    update.wants.html { redirect_to smart_url(parent_url_options) } 
+    destroy.wants.html { redirect_to smart_url(parent_url_options) }
+  end
   
 === Scoping
 
