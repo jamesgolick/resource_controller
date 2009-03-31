@@ -116,6 +116,12 @@ If you want to create a singleton RESTful controller inherit from ResourceContro
   class AccountsController < ResourceController::Singleton
   end
 
+...or if need to inherit from some other class:
+
+  class AccountsController < ApplicationController
+    resource_controller :singleton
+  end
+
 *Note:* This type of controllers handle a single resource only so the index action and all the collection helpers (collection_url, collection_path...) are not available for them.
 
 Loading objects in singletons is similar to plural controllers with one exception. For non-nested singleton controllers you should override the object method as it defaults to nil for them.
