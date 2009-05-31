@@ -13,6 +13,7 @@ begin
     s.authors = ["James Golick"]
     file_list = FileList.new("[A-Z]*.*", "{bin,generators,lib,test,spec,rails}/**/*") do |f|
       f.exclude(/\.sqlite3/)
+      f.exclude(/\.log/)
     end
     s.files = file_list
   end
