@@ -11,7 +11,10 @@ begin
     s.homepage = "http://jamesgolick.com/resource_controller"
     s.description = ""
     s.authors = ["James Golick"]
-    s.files = FileList["[A-Z]*.*", "{bin,generators,lib,test,spec,rails}/**/*"]
+    file_list = FileList.new("[A-Z]*.*", "{bin,generators,lib,test,spec,rails}/**/*") do |f|
+      f.exclude(/\.sqlite3/)
+    end
+    s.files = file_list
   end
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
