@@ -56,6 +56,7 @@ module ResourceController
           destroy do
             flash "Successfully removed!"
             wants.html { redirect_to collection_url }
+            failure.wants.html { redirect_to object_url }
           end
           
           class << self
