@@ -1,15 +1,8 @@
 require File.dirname(__FILE__) + '/../test_helper'
-require 'people_controller'
-
-# Re-raise errors caught by the controller.
-class PeopleController; def rescue_action(e) raise e end; end
 
 class PeopleControllerTest < ActionController::TestCase
   def setup
-    @controller = PeopleController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
-    @person     = accounts :one
+    @person = accounts :one
   end
 
   should_be_restful do |resource|

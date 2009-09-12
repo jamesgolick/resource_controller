@@ -1,15 +1,8 @@
 require File.dirname(__FILE__) + '/../test_helper'
-require 'somethings_controller'
-
-# Re-raise errors caught by the controller.
-class SomethingsController; def rescue_action(e) raise e end; end
 
 class SomethingsControllerTest < ActionController::TestCase
   def setup
-    @controller = SomethingsController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
-    @something  = somethings :one
+    @something = somethings :one
   end
 
   context "actions specified" do
