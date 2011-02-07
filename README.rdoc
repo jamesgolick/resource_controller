@@ -1,3 +1,5 @@
+=[FIXED] Moved contents of rails/init.rb into init.rb to avoid Rails 3 deprecation warnings.
+
 = Resource Controller
 
 resource_controller makes RESTful controllers easier, more maintainable, and super readable.  With the RESTful controller pattern hidden away, you can focus on what makes your controller special.
