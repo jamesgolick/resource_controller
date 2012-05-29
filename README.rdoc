@@ -6,11 +6,11 @@ resource_controller makes RESTful controllers easier, more maintainable, and sup
 
 Install it as a plugin:
 
-  script/plugin install git://github.com/giraffesoft/resource_controller.git
+  script/plugin install git://github.com/jamesgolick/resource_controller.git
   
 Or grab the source
   
-  git clone git://github.com/giraffesoft/resource_controller.git
+  git clone git://github.com/jamesgolick/resource_controller.git
 
 = Usage
 
