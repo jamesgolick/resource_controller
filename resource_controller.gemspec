@@ -65,7 +65,6 @@ Gem::Specification.new do |s|
      "lib/resource_controller/response_collector.rb",
      "lib/resource_controller/singleton.rb",
      "lib/urligence.rb",
-     "rails/init.rb",
      "test/Rakefile",
      "test/app/controllers/accounts_controller.rb",
      "test/app/controllers/application_controller.rb",

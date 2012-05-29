@@ -1,1 +1,8 @@
-require File.dirname(__FILE__)+'/rails/init.rb'
+require 'resource_controller'
+
+ActionController::Base.class_eval do
+  include Urligence
+  helper_method :smart_url
+  
+  extend ResourceController::ActionControllerExtension
+end
