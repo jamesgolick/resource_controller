@@ -19,7 +19,7 @@ module ResourceController
     end
     
     def dup
-      returning ResponseCollector.new do |duplicate|
+      ResponseCollector.new.tap do |duplicate|
         duplicate.instance_variable_set(:@responses, responses.dup)
       end
     end
